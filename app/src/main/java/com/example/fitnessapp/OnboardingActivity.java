@@ -22,7 +22,7 @@ public class OnboardingActivity extends AppCompatActivity {
     private TextView onboardingDesc;
     private View[] dots; // Zamiast 3 oddzielnych zmiennych
     private Button btnNext;
-=
+
     private final int[] bgColors = {R.color.blue_primary, R.color.purple_bg, R.color.orange_bg};
     private final int[] icons = {R.drawable.ic_onboarding_1, R.drawable.ic_onboarding_2, R.drawable.ic_onboarding_3};
     private final int[] titles = {R.string.onboarding_1_title, R.string.onboarding_2_title, R.string.onboarding_3_title};
@@ -38,7 +38,7 @@ public class OnboardingActivity extends AppCompatActivity {
         onboardingTitle = findViewById(R.id.onboarding_title);
         onboardingDesc = findViewById(R.id.onboarding_desc);
         btnNext = findViewById(R.id.btn_next);
-=
+
         dots = new View[]{
                 findViewById(R.id.dot1),
                 findViewById(R.id.dot2),
@@ -59,17 +59,17 @@ public class OnboardingActivity extends AppCompatActivity {
     private void updateStep() {
         int activeDotColor = ContextCompat.getColor(this, R.color.blue_primary);
         int inactiveDotColor = ContextCompat.getColor(this, R.color.gray_dot);
-=
+
         iconContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, bgColors[currentStep])));
         onboardingIcon.setImageResource(icons[currentStep]);
         onboardingTitle.setText(titles[currentStep]);
         onboardingDesc.setText(descs[currentStep]);
-=
+
         for (int i = 0; i < dots.length; i++) {
             int colorToSet = (i == currentStep) ? activeDotColor : inactiveDotColor;
             dots[i].setBackgroundTintList(ColorStateList.valueOf(colorToSet));
         }
-=
+
         if (currentStep == dots.length - 1) {
             btnNext.setText(R.string.start_now);
         } else {

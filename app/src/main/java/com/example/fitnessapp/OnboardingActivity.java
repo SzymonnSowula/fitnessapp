@@ -46,6 +46,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
         OnboardingAdapter adapter = new OnboardingAdapter();
         viewPager.setAdapter(adapter);
+        viewPager.setUserInputEnabled(true);
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

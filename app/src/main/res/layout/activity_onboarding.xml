@@ -4,13 +4,13 @@
     android:id="@+id/onboarding_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="24dp">
+    android:background="@color/white">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/dots_container"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +52,7 @@
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginBottom="32dp"
+        android:layout_margin="24dp"
         android:background="@drawable/bg_button_primary"
         android:text="@string/next"
         android:textAllCaps="false"

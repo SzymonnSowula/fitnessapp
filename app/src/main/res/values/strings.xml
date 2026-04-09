@@ -19,4 +19,12 @@
     <string name="register_btn">Zarejestruj się</string>
     <string name="main_page_title">Witaj w Asystencie Aktywności!</string>
     <string name="main_page_desc">To jest Twój panel sterowania.</string>
+    <string name="settings_title">Ustawienia</string>
+    <string name="change_name">Zmień imię</string>
+    <string name="change_password">Zmień hasło</string>
+    <string name="notification_settings">Ustawienia przypomnień</string>
+    <string name="logout">Wyloguj się</string>
+    <string name="nav_start">Start</string>
+    <string name="nav_assistant">Asystent</string>
+    <string name="nav_settings">Ustawienia</string>
 </resources>

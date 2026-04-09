@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
         Button btnRegister = findViewById(R.id.btn_register);
 
         btnLogin.setOnClickListener(v -> {
-            // Przejdź do Main Page
+
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         });

@@ -16,7 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
         Button btnDoRegister = findViewById(R.id.btn_do_register);
         btnDoRegister.setOnClickListener(v -> {
             Toast.makeText(this, "Rejestracja pomyślna!", Toast.LENGTH_SHORT).show();
-            finish(); // Powrót do ekranu logowania
+            finish();
         });
 
         findViewById(R.id.tv_back_to_login).setOnClickListener(v -> finish());

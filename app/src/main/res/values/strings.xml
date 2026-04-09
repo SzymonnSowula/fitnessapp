@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">fitnessapp</string>
+    <string name="onboarding_1_title">Bądź aktywny bezpiecznie każdego dnia</string>
+    <string name="onboarding_1_desc">Ta aplikacja wspiera delikatny ruch na co dzień</string>
+    <string name="onboarding_2_title">Wsparcie codziennego dobrego samopoczucia</string>
+    <string name="onboarding_2_desc">Asystent sprawdza jak się czujesz każdego dnia</string>
+    <string name="onboarding_3_title">Proste propozycje ruchu</string>
+    <string name="onboarding_3_desc">Otrzymujesz łatwe pomysły na aktywność dostosowane do Twojego samopoczucia</string>
+    <string name="next">Dalej</string>
+    <string name="start_now">Zacznij teraz</string>
+    <string name="assistant_title">Asystent Aktywności</string>
+    <string name="login_google">Zaloguj się przez Google</string>
+    <string name="or">lub</string>
+    <string name="email">Email</string>
+    <string name="password">Hasło</string>
+    <string name="email_hint">twoj@email.com</string>
+    <string name="password_hint">Wpisz hasło</string>
+    <string name="login_btn">Zaloguj się</string>
+    <string name="register_btn">Zarejestruj się</string>
+    <string name="main_page_title">Witaj w Asystencie Aktywności!</string>
+    <string name="main_page_desc">To jest Twój panel sterowania.</string>
 </resources>

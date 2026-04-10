@@ -15,7 +15,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText etEmail, etPassword;
     private Button btnDoRegister;
-    private TextView tvBackToLogin; // Dodana zmienna dla tekstu powrotu
+    private TextView tvBackToLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +24,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        // Podpięcie zmiennych pod dokładne ID z Twojego pliku XML
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         btnDoRegister = findViewById(R.id.btn_do_register);
         tvBackToLogin = findViewById(R.id.tv_back_to_login);
 
-        // 1. Logika TWORZENIA KONTA
         btnDoRegister.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -57,9 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
         });
 
-        // 2. Logika POWROTU DO LOGOWANIA
         tvBackToLogin.setOnClickListener(v -> {
-            // Po prostu zamykamy ten ekran, pod spodem cały czas czeka ekran logowania
             finish();
         });
     }

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,8 +30,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Opcjonalnie: setContentView(R.layout.activity_splash); 
-        // ale na razie możemy wyświetlać domyślny biały ekran lub dodać prosty layout
+        setContentView(R.layout.activity_splash);
 
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
@@ -57,7 +58,8 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.w(TAG, "signInAnonymously:failure", task.getException());
-                    // Tutaj można dodać obsługę błędu, np. Toast lub ponowna próba
+                    Toast.makeText(SplashActivity.this, "Błąd autoryzacji. Sprawdź połączenie z internetem.", Toast.LENGTH_LONG).show();
+                    // Można dodać przycisk "Ponów" na layout, ale na razie Toast wystarczy
                 }
             });
     }
@@ -93,6 +95,7 @@ public class SplashActivity extends AppCompatActivity {
             })
             .addOnFailureListener(e -> {
                 Log.w(TAG, "Error initializing user", e);
+                Toast.makeText(SplashActivity.this, "Błąd inicjalizacji profilu.", Toast.LENGTH_LONG).show();
             });
     }
 
@@ -116,6 +119,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
+                    Toast.makeText(SplashActivity.this, "Błąd pobierania danych użytkownika.", Toast.LENGTH_LONG).show();
                 }
             });
     }

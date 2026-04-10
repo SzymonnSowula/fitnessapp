@@ -32,7 +32,7 @@
     <LinearLayout
         android:id="@+id/btn_google"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="72dp"
         android:layout_marginTop="48dp"
         android:background="@drawable/bg_input_field"
         android:backgroundTint="@color/white"
@@ -132,27 +132,27 @@
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="80dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/bg_button_primary"
         android:text="@string/login_btn"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="22sp"
         app:backgroundTint="@null"
         app:layout_constraintTop_toBottomOf="@id/et_password" />
 
     <Button
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="80dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/bg_input_field"
         android:backgroundTint="@color/light_gray_bg"
         android:text="@string/register_btn"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="22sp"
         app:backgroundTint="@null"
         app:layout_constraintTop_toBottomOf="@id/btn_login" />
 

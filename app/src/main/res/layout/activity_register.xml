@@ -66,13 +66,13 @@
     <Button
         android:id="@+id/btn_do_register"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="80dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/bg_button_primary"
         android:text="@string/register_btn"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="22sp"
         app:backgroundTint="@null"
         app:layout_constraintTop_toBottomOf="@id/et_password" />
 

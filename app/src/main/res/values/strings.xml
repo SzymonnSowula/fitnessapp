@@ -24,6 +24,7 @@
     <string name="change_password">Zmień hasło</string>
     <string name="notification_settings">Ustawienia przypomnień</string>
     <string name="logout">Wyloguj się</string>
+    <string name="add_condition">Dodaj schorzenie</string>
     <string name="nav_start">Start</string>
     <string name="nav_assistant">Asystent</string>
     <string name="nav_settings">Ustawienia</string>

@@ -49,5 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.change_password, Toast.LENGTH_SHORT).show());
         findViewById(R.id.tv_notification_settings).setOnClickListener(v -> 
             Toast.makeText(this, R.string.notification_settings, Toast.LENGTH_SHORT).show());
+        findViewById(R.id.tv_add_condition).setOnClickListener(v -> 
+            Toast.makeText(this, R.string.add_condition, Toast.LENGTH_SHORT).show());
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
+private FirebaseAuth mAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,22 +14,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        Button btnLogin = findViewById(R.id.btn_login);
-        Button btnRegister = findViewById(R.id.btn_register);
+        mAuth = FirebaseAuth.getInstance(); // Inicjalizacja
 
         btnLogin.setOnClickListener(v -> {
+            String email = etEmail.getText().toString();
+            String password = etPassword.getText().toString();
 
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        });
-
-        btnRegister.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-        });
-        
-        findViewById(R.id.btn_google).setOnClickListener(v -> {
-            Toast.makeText(this, "Google login clicked", Toast.LENGTH_SHORT).show();
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(this, "Błąd logowania!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
     }
-}

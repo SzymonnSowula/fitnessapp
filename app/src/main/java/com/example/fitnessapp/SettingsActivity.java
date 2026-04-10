@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -38,7 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
         // Wylogowanie
         Button btnLogout = findViewById(R.id.btn_logout_settings);
         btnLogout.setOnClickListener(v -> {
-            startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(SettingsActivity.this, SplashActivity.class));
             finishAffinity();
         });
 

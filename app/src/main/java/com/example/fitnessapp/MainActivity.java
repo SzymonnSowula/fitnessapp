@@ -49,32 +49,25 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        // Wylogowanie
+        // Wylogowanie - teraz przekierowuje do SplashActivity (która zainicjuje nowe anonimowe konto)
         Button btnLogout = findViewById(R.id.btn_logout);
-        if (btnLogout != null) { // Zabezpieczenie na wypadek braku przycisku w XML
+        if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> {
-                // 3. Złota zasada: Najpierw wylogowujemy z bazy Firebase!
                 mAuth.signOut();
-
-                // Następnie przenosimy do ekranu logowania i zamykamy MainActivity
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+                startActivity(new Intent(MainActivity.this, SplashActivity.class));
+                finishAffinity();
             });
         }
     }
 
-    // 4. Prawidłowe miejsce na sprawdzanie, czy użytkownik jest zalogowany
     @Override
     protected void onStart() {
         super.onStart();
 
-        // Pobieramy aktualnego użytkownika
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        // Jeśli jest nullem, to znaczy, że nie jest zalogowany
-        if (currentUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish(); // Zamykamy MainActivity, żeby nie miał do niego dostępu
+        // Jeśli nikt nie jest zalogowany - odsyłamy do SplashActivity
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(this, SplashActivity.class));
+            finish();
         }
     }
 }

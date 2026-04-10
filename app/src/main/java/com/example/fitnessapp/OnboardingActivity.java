@@ -17,6 +17,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class OnboardingActivity extends AppCompatActivity {
 
     private int currentStep = 0;
@@ -61,10 +64,25 @@ public class OnboardingActivity extends AppCompatActivity {
             if (currentStep < dots.length - 1) {
                 viewPager.setCurrentItem(currentStep + 1);
             } else {
-                startActivity(new Intent(OnboardingActivity.this, LoginActivity.class));
-                finish();
+                completeOnboarding();
             }
         });
+    }
+
+    private void completeOnboarding() {
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid != null) {
+            FirebaseFirestore.getInstance().collection("users").document(uid)
+                .update("onboardingCompleted", true)
+                .addOnCompleteListener(task -> {
+                    startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
+                    finish();
+                });
+        } else {
+            // Failsafe
+            startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     private void updateStep() {

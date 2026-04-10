@@ -1,0 +1,1 @@
+Zdefiniowałem główne funkcjonalności oraz założenia wizualne (design) aplikacji. Skonfigurowałem projekt w systemie Jira, tworząc backlog zadań. Następnie utworzyłem repozytorium Git i zainicjalizowałem projekt w środowisku Android Studio, przygotowując strukturę plików pod dalszą implementację.

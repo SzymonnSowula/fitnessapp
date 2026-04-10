@@ -1,0 +1,5 @@
+Dzisiejszego dnia wypisałem
+główne funkcjonalności oraz wykonałem design aplikacji.
+Utworzyłem projekt w Jira, stworzyłem plan na sprint 4 tygodniowy, 
+utworzyłem repozytorium i przygotowałem strukture plików pod aplikacje
+Zrobiłem wstępny research naszego pomysły na aplikacje

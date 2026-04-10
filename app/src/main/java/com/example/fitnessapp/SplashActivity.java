@@ -35,14 +35,18 @@ public class SplashActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
 
+        // Dodajemy logowanie stanu na wypadek gdyby Firebase "wisiał"
+        Log.d(TAG, "onCreate: Initializing Firebase Auth...");
         checkUserAuth();
     }
 
     private void checkUserAuth() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
+            Log.d(TAG, "checkUserAuth: User is null, signing in anonymously...");
             signInAnonymously();
         } else {
+            Log.d(TAG, "checkUserAuth: User exists, fetching data: " + currentUser.getUid());
             fetchUserData(currentUser.getUid());
         }
     }
@@ -58,8 +62,13 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.w(TAG, "signInAnonymously:failure", task.getException());
-                    Toast.makeText(SplashActivity.this, "Błąd autoryzacji. Sprawdź połączenie z internetem.", Toast.LENGTH_LONG).show();
-                    // Można dodać przycisk "Ponów" na layout, ale na razie Toast wystarczy
+                    String errorMessage = "Błąd autoryzacji: " + (task.getException() != null ? task.getException().getMessage() : "Nieznany błąd");
+                    Toast.makeText(SplashActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    // Dodajmy informację dla użytkownika, że musi skonfigurować Firebase
+                    if (task.getException() != null && task.getException().getMessage() != null 
+                        && task.getException().getMessage().contains("configuration")) {
+                        Toast.makeText(SplashActivity.this, "Sprawdź plik google-services.json w projekcie.", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
     }
@@ -90,36 +99,44 @@ public class SplashActivity extends AppCompatActivity {
         mFirestore.collection("users").document(uid)
             .set(userMap)
             .addOnSuccessListener(aVoid -> {
+                Log.d(TAG, "initializeNewUser: Success");
                 startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));
                 finish();
             })
             .addOnFailureListener(e -> {
-                Log.w(TAG, "Error initializing user", e);
-                Toast.makeText(SplashActivity.this, "Błąd inicjalizacji profilu.", Toast.LENGTH_LONG).show();
+                Log.w(TAG, "initializeNewUser: failure", e);
+                String errorMsg = "Błąd inicjalizacji: " + e.getMessage();
+                Toast.makeText(SplashActivity.this, errorMsg, Toast.LENGTH_LONG).show();
             });
     }
 
     private void fetchUserData(String uid) {
+        Log.d(TAG, "fetchUserData: Fetching data for UID: " + uid);
         mFirestore.collection("users").document(uid).get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        Log.d(TAG, "fetchUserData: Document exists");
                         Boolean onboardingCompleted = document.getBoolean("onboardingCompleted");
                         if (onboardingCompleted != null && onboardingCompleted) {
+                            Log.d(TAG, "fetchUserData: Navigating to MainActivity");
                             startActivity(new Intent(SplashActivity.this, MainActivity.class));
                         } else {
+                            Log.d(TAG, "fetchUserData: Navigating to OnboardingActivity");
                             startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));
                         }
                     } else {
+                        Log.d(TAG, "fetchUserData: Document does not exist, initializing...");
                         // Jeśli dokument nie istnieje, zainicjalizuj go
                         initializeNewUser(uid);
                         return;
                     }
                     finish();
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                    Toast.makeText(SplashActivity.this, "Błąd pobierania danych użytkownika.", Toast.LENGTH_LONG).show();
+                    Log.w(TAG, "fetchUserData: failure", task.getException());
+                    String errorMsg = "Błąd pobierania danych: " + (task.getException() != null ? task.getException().getMessage() : "Nieznany");
+                    Toast.makeText(SplashActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                 }
             });
     }

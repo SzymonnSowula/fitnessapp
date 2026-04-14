@@ -31,6 +31,14 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE category = :category COLLATE NOCASE ORDER BY ABS(poziomTrudnosciNum - :prefDifficulty) + ABS(intensywnoscNum - :prefIntensity) ASC")
     List<Exercise> getByCategorySortedByMood(String category, float prefDifficulty, float prefIntensity);
 
+    // Najtrudniejsze i najbardziej intensywne (dla "Czuję się dobrze")
+    @Query("SELECT * FROM exercises WHERE category = :category COLLATE NOCASE AND poziomTrudnosciNum <= :maxDifficulty AND intensywnoscNum <= :maxIntensity ORDER BY poziomTrudnosciNum DESC, intensywnoscNum DESC")
+    List<Exercise> getHardestByCategory(String category, float maxDifficulty, float maxIntensity);
+
+    // Najłatwiejsze i najmniej intensywne (dla "Nie czuję się dobrze")
+    @Query("SELECT * FROM exercises WHERE category = :category COLLATE NOCASE AND poziomTrudnosciNum <= :maxDifficulty AND intensywnoscNum <= :maxIntensity ORDER BY poziomTrudnosciNum ASC, intensywnoscNum ASC")
+    List<Exercise> getEasiestByCategory(String category, float maxDifficulty, float maxIntensity);
+
     @Query("SELECT * FROM exercises WHERE id = :id")
     Exercise getById(int id);
 

@@ -7,23 +7,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -75,34 +67,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // UI dla rekomendacji
-        tvRecommendationTitle = findViewById(R.id.tv_recommendation_title);
-        cardRecommendation = findViewById(R.id.card_recommendation);
-        tvRecommendedCategory = findViewById(R.id.tv_recommended_category);
-        tvRecommendedExercises = findViewById(R.id.tv_recommended_exercises);
+//        tvRecommendationTitle = findViewById(R.id.tv_recommendation_title);
+//        cardRecommendation = findViewById(R.id.card_recommendation);
+//        tvRecommendedCategory = findViewById(R.id.tv_recommended_category);
+//        tvRecommendedExercises = findViewById(R.id.tv_recommended_exercises);
 
-        // Obsługa nastrojów
-        findViewById(R.id.card_mood_happy).setOnClickListener(v -> generateRecommendation(0.8f, 0.8f));
-        findViewById(R.id.card_mood_sad).setOnClickListener(v -> generateRecommendation(0.4f, 0.4f));
-        findViewById(R.id.card_mood_very_sad).setOnClickListener(v -> generateRecommendation(0.2f, 0.2f));
-
-        // Nawigacja dolna
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.nav_start);
-
-        bottomNav.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_start) {
-                return true;
-            } else if (itemId == R.id.nav_assistant) {
-                Toast.makeText(this, "Asystent (Wkrótce)", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (itemId == R.id.nav_settings) {
-                startActivity(new Intent(this, SettingsActivity.class));
-                overridePendingTransition(0, 0);
-                // Nie używamy tu finish(), aby użytkownik mógł wrócić do MainActivity
-                return true;
-            }
-            return false;
+        // Obsługa nastrojów - teraz otwieramy SingleExerciseActivity z jednym ćwiczeniem
+        findViewById(R.id.card_mood_happy).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SingleExerciseActivity.class);
+            intent.putExtra("mood_type", SingleExerciseActivity.MOOD_HAPPY);
+            startActivity(intent);
+        });
+        findViewById(R.id.card_mood_sad).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SingleExerciseActivity.class);
+            intent.putExtra("mood_type", SingleExerciseActivity.MOOD_SAD);
+            startActivity(intent);
+        });
+        findViewById(R.id.card_mood_very_sad).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SingleExerciseActivity.class);
+            intent.putExtra("mood_type", SingleExerciseActivity.MOOD_VERY_SAD);
+            startActivity(intent);
         });
 
         // Wylogowanie - teraz przekierowuje do SplashActivity (która zainicjuje nowe anonimowe konto)

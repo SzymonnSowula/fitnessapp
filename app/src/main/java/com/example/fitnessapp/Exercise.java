@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Exercise {
     @PrimaryKey(autoGenerate = true)
     public int id;
-    
+
     public String name;
     public float wplywNaSileNum;
     public float wplywNaElastycznoscNum;
@@ -22,6 +22,10 @@ public class Exercise {
     public float wymagaPodlogiBin;
     public float zrodloEnc;
     public String category;
+
+    // NOWE POLA POTRZEBNE DO FILTROWANIA I WYŚWIETLANIA:
+    public String opis;
+    public String przeciwwskazania;
 
     public float[] toFeatureArray() {
         return new float[]{

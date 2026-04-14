@@ -44,8 +44,8 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ExerciseDetailActivity"
-            android:exported="false"
             android:parentActivityName=".RecommendationListActivity" />
+
     </application>
 
 </manifest>

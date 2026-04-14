@@ -1,9 +1,12 @@
 package com.example.fitnessapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -13,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RecommendationListActivity extends AppCompatActivity {
 
@@ -49,21 +54,61 @@ public class RecommendationListActivity extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
         if (category == null) category = "mieszana";
 
+        float maxDifficulty = getIntent().getFloatExtra("maxDifficulty", 3.0f);
+        float maxIntensity = getIntent().getFloatExtra("maxIntensity", 3.0f);
+        float prefDifficulty = getIntent().getFloatExtra("prefDifficulty", 2.0f);
+        float prefIntensity = getIntent().getFloatExtra("prefIntensity", 2.0f);
+
+        // --- POBIERANIE DANYCH Z ONBOARDINGU (Z poprawnym importem Context) ---
+        SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", Context.MODE_PRIVATE);
+        Set<String> userConditions = prefs.getStringSet("conditions", new HashSet<>());
+
         String finalCategory = category;
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         tvEmpty.setVisibility(View.GONE);
 
         new Thread(() -> {
-            List<Exercise> list = db.exerciseDao().getByCategory(finalCategory);
+            List<Exercise> list = db.exerciseDao().getByCategorySortedByMood(finalCategory, prefDifficulty, prefIntensity);
+
+            if (list == null || list.isEmpty()) {
+                list = db.exerciseDao().getByCategory(finalCategory);
+            }
+
+            if (list != null && !list.isEmpty()) {
+                List<Exercise> filtered = new ArrayList<>();
+                for (Exercise e : list) {
+                    if (e.poziomTrudnosciNum <= maxDifficulty && e.intensywnoscNum <= maxIntensity) {
+
+                        boolean isSafe = true;
+
+                        // Sprawdzanie przeciwwskazań
+                        if (e.przeciwwskazania != null && !e.przeciwwskazania.trim().isEmpty() && !e.przeciwwskazania.equalsIgnoreCase("brak")) {
+                            for (String condition : userConditions) {
+                                if (e.przeciwwskazania.toLowerCase().contains(condition.toLowerCase())) {
+                                    isSafe = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (isSafe) {
+                            filtered.add(e);
+                        }
+                    }
+                }
+                list = filtered;
+            }
+
+            List<Exercise> finalList = list;
             runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
-                if (list == null || list.isEmpty()) {
+                if (finalList == null || finalList.isEmpty()) {
                     tvEmpty.setVisibility(View.VISIBLE);
                     tvEmpty.setText(getString(R.string.no_exercises_for_category, finalCategory));
                 } else {
                     recyclerView.setVisibility(View.VISIBLE);
-                    adapter.update(list);
+                    adapter.update(finalList);
                 }
             });
         }).start();
@@ -78,7 +123,6 @@ public class RecommendationListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Adapter wewnętrzny do prostego wyświetlania ćwiczeń
     private static class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
         interface OnExerciseClick { void onClick(Exercise exercise); }
         private final OnExerciseClick clickListener;

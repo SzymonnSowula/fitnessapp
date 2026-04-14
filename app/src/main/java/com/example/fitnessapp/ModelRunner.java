@@ -74,7 +74,7 @@ public class ModelRunner {
             
             // Logowanie wszystkich wyjść dla debugowania
             for (int i = 0; i < result.size(); i++) {
-                Log.d(TAG, "Output " + i + " type info: " + result.get(i).getTypeInfo().toString());
+                Log.d(TAG, "Output " + i + " type info: " + result.get(i).getInfo().toString());
             }
 
             // Próbujemy znaleźć prawdopodobieństwa. 

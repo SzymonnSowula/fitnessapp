@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ModelRunner modelRunner;
     private AppDatabase db;
+    private volatile boolean dbReady = false;
 
     private TextView tvRecommendationTitle;
     private CardView cardRecommendation;
@@ -122,15 +123,14 @@ public class MainActivity extends AppCompatActivity {
             int count = db.exerciseDao().getCount();
             Log.d(TAG, "Aktualna liczba ćwiczeń w bazie: " + count);
 
-            // Zawsze odświeżamy bazę dla pewności (debug)
+            // Odświeżamy bazę – w jednej transakcji, żeby uniknąć okna z pustą bazą
             Log.d(TAG, "Odświeżam bazę ćwiczeń z CSV...");
-            db.exerciseDao().deleteAll();
             List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
             if (!exercises.isEmpty()) {
-                db.exerciseDao().insertAll(exercises);
+                db.exerciseDao().replaceAll(exercises);
                 int newCount = db.exerciseDao().getCount();
                 Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + newCount);
-                
+
                 // Statystyki kategorii
                 String[] categories = {"kardio", "mieszana", "mobilnosc", "postura", "rownowaga", "sila"};
                 for (String cat : categories) {
@@ -138,31 +138,76 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Kategoria '" + cat + "': " + catCount + " ćwiczeń");
                 }
 
+                dbReady = true;
                 runOnUiThread(() -> Toast.makeText(this, "Baza ćwiczeń gotowa (" + newCount + ")", Toast.LENGTH_SHORT).show());
             } else {
                 Log.e(TAG, "Nie zaimportowano żadnych ćwiczeń!");
+                // Nawet jak CSV puste, oznacz gotowość żeby nie blokować UI
+                dbReady = true;
                 runOnUiThread(() -> Toast.makeText(this, "Błąd importu bazy ćwiczeń!", Toast.LENGTH_LONG).show());
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Błąd bazy danych", e);
+        } catch (Throwable t) {
+            Log.e(TAG, "Błąd bazy danych", t);
+            dbReady = true; // Nie blokuj UI nawet przy błędzie
+        }
+    }
+
+    /**
+     * Mapowanie nastroju na parametry rekomendacji.
+     * Zwraca: [kategoria_fallback, maxDifficulty, maxIntensity, prefDifficulty, prefIntensity]
+     */
+    private String[] moodToParams(float energyLevel) {
+        if (energyLevel >= 0.7f) {
+            // Dobrze – pełna aktywność, trudniejsze ćwiczenia
+            return new String[]{"sila", "3.0", "3.0", "2.0", "2.0"};
+        } else if (energyLevel >= 0.4f) {
+            // Średnio – umiarkowane ćwiczenia
+            return new String[]{"mieszana", "2.0", "2.0", "1.5", "1.5"};
+        } else {
+            // Słabo – delikatne ćwiczenia, niska trudność
+            return new String[]{"mobilnosc", "1.0", "1.0", "1.0", "1.0"};
         }
     }
 
     private void generateRecommendation(float energyLevel, float difficultyPref) {
+        // Parametry nastroju – zawsze dostępne jako fallback
+        String[] params = moodToParams(energyLevel);
+        String fallbackCategory = params[0];
+        float maxDifficulty = Float.parseFloat(params[1]);
+        float maxIntensity = Float.parseFloat(params[2]);
+        float prefDifficulty = Float.parseFloat(params[3]);
+        float prefIntensity = Float.parseFloat(params[4]);
+
+        if (!dbReady) {
+            Toast.makeText(this, "Baza ćwiczeń się ładuje, spróbuj za chwilę...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(this, "Generuję...", Toast.LENGTH_SHORT).show();
+
         if (modelRunner == null) {
-            Log.e(TAG, "modelRunner is null");
-            Toast.makeText(this, "Model nie jest gotowy", Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "modelRunner is null – używam fallback kategorii");
+            openRecommendation(fallbackCategory, maxDifficulty, maxIntensity, prefDifficulty, prefIntensity);
             return;
         }
 
         try {
-            Toast.makeText(this, "Generuję...", Toast.LENGTH_SHORT).show();
-            
             float[] moodFeatures = new float[12];
-            
-            // Bardziej dynamiczne mapowanie nastroju (skala 1-3)
+
+            // --- POBIERANIE DANYCH Z ONBOARDINGU ---
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+            // Konwersja boolean (true/false) na float (1.0f / 0.0f) dla modelu ONNX
+            float canStand = prefs.getBoolean("can_stand", true) ? 1.0f : 0.0f;
+            float canExerciseFloor = prefs.getBoolean("can_exercise_floor", true) ? 1.0f : 0.0f;
+            float needsChair = prefs.getBoolean("needs_chair", false) ? 1.0f : 0.0f;
+            float canExerciseBed = prefs.getBoolean("can_exercise_bed", false) ? 1.0f : 0.0f;
+            float canExerciseSitting = prefs.getBoolean("can_exercise_sitting", false) ? 1.0f : 0.0f;
+            // ----------------------------------------
+
+            // Dynamiczne mapowanie nastroju na parametry intensywności
             float intens, diff, sile, mobil, kardio, post;
-            
+
             if (energyLevel < 0.3f) { // Bardzo słabo
                 intens = 1.0f; diff = 1.0f; sile = 1.0f; mobil = 2.0f; kardio = 1.0f; post = 2.0f;
             } else if (energyLevel < 0.6f) { // Średnio
@@ -171,60 +216,72 @@ public class MainActivity extends AppCompatActivity {
                 intens = 2.0f; diff = 2.0f; sile = 3.0f; mobil = 2.0f; kardio = 2.0f; post = 2.0f;
             }
 
+            // Pakowanie tablicy Features (kolejność musi zgadzać się z modelem Pythona!)
             moodFeatures[0] = sile;   // wplyw_na_sile
             moodFeatures[1] = mobil;  // wplyw_na_elastycznosc
             moodFeatures[2] = kardio; // wplyw_na_kardio
             moodFeatures[3] = post;   // wplyw_na_postawe
             moodFeatures[4] = intens; // intensywnosc_num
             moodFeatures[5] = diff;   // poziom_trudnosci_num
-            
-            moodFeatures[6] = 0.0f; // wspomagane_krzeslem_bin
-            moodFeatures[7] = 0.0f; // mozna_w_lozku_bin
-            moodFeatures[8] = 0.0f; // mozna_siedzac_bin
-            moodFeatures[9] = 1.0f; // wymaga_stania_bin
-            moodFeatures[10] = 0.0f; // wymaga_podlogi_bin
-            moodFeatures[11] = 0.0f; // zrodlo_enc
-            
+
+            // Zamiast wpisywać na sztywno, używamy preferencji użytkownika!
+            moodFeatures[6] = needsChair;         // wspomagane_krzeslem_bin
+            moodFeatures[7] = canExerciseBed;     // mozna_w_lozku_bin
+            moodFeatures[8] = canExerciseSitting; // mozna_siedzac_bin
+            moodFeatures[9] = canStand;           // wymaga_stania_bin
+            moodFeatures[10] = canExerciseFloor;  // wymaga_podlogi_bin
+            moodFeatures[11] = 0.0f;              // zrodlo_enc (zakładam, że zostaje 0)
+
+            final String finalFallbackCategory = fallbackCategory;
+            final float finalMaxDiff = maxDifficulty;
+            final float finalMaxIntens = maxIntensity;
+            final float finalPrefDiff = prefDifficulty;
+            final float finalPrefIntens = prefIntensity;
+
             new Thread(() -> {
                 try {
                     Log.d(TAG, "Wykonuję predict dla cech: " + java.util.Arrays.toString(moodFeatures));
                     float[] probs = modelRunner.predict(moodFeatures);
 
-                    if (probs == null || probs.length == 0) {
-                        Log.e(TAG, "Prawdopodobieństwa są puste");
-                        runOnUiThread(() -> Toast.makeText(this, "Model nie zwrócił wyników", Toast.LENGTH_SHORT).show());
-                        return;
+                    String recommendedCategory = finalFallbackCategory;
+
+                    if (probs != null && probs.length > 0) {
+                        List<String> classes = modelRunner.getClasses();
+                        int maxIdx = 0;
+                        for (int i = 1; i < probs.length; i++) {
+                            if (probs[i] > probs[maxIdx]) maxIdx = i;
+                        }
+                        if (classes != null && maxIdx < classes.size()) {
+                            recommendedCategory = classes.get(maxIdx);
+                        }
+                        Log.d(TAG, "Rekomendowana kategoria (model): " + recommendedCategory);
+                    } else {
+                        Log.w(TAG, "Model nie zwrócił wyników – używam fallback: " + finalFallbackCategory);
                     }
 
-                    List<String> classes = modelRunner.getClasses();
-                    int maxIdx = 0;
-                    for (int i = 1; i < probs.length; i++) {
-                        if (probs[i] > probs[maxIdx]) maxIdx = i;
-                    }
+                    String finalCategory = recommendedCategory;
+                    runOnUiThread(() -> openRecommendation(finalCategory, finalMaxDiff, finalMaxIntens, finalPrefDiff, finalPrefIntens));
 
-                    String recommendedCategory = (classes != null && maxIdx < classes.size()) 
-                        ? classes.get(maxIdx) 
-                        : "mieszana";
-
-                    Log.d(TAG, "Rekomendowana kategoria: " + recommendedCategory);
-
-                    // Otwórz nowy ekran z listą ćwiczeń dla wybranej kategorii
-                    runOnUiThread(() -> {
-                        Intent intent = new Intent(MainActivity.this, RecommendationListActivity.class);
-                        intent.putExtra("category", recommendedCategory);
-                        startActivity(intent);
-                    });
-
-                } catch (Exception e) {
-                    Log.e(TAG, "Błąd w wątku rekomendacji", e);
-                    runOnUiThread(() -> Toast.makeText(this, "Błąd: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                } catch (Throwable t) {
+                    Log.e(TAG, "Błąd modelu – fallback: " + finalFallbackCategory, t);
+                    runOnUiThread(() -> openRecommendation(finalFallbackCategory, finalMaxDiff, finalMaxIntens, finalPrefDiff, finalPrefIntens));
                 }
             }).start();
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Błąd podczas predict", e);
-            Toast.makeText(this, "Błąd: " + e.toString(), Toast.LENGTH_LONG).show();
+
+        } catch (Throwable t) {
+            Log.e(TAG, "Błąd podczas predict – fallback", t);
+            openRecommendation(fallbackCategory, maxDifficulty, maxIntensity, prefDifficulty, prefIntensity);
         }
+    }
+
+    private void openRecommendation(String category, float maxDifficulty, float maxIntensity, float prefDifficulty, float prefIntensity) {
+        Intent intent = new Intent(MainActivity.this, RecommendationListActivity.class);
+        intent.putExtra("category", category);
+        intent.putExtra("maxDifficulty", maxDifficulty);
+        intent.putExtra("maxIntensity", maxIntensity);
+        intent.putExtra("prefDifficulty", prefDifficulty);
+        intent.putExtra("prefIntensity", prefIntensity);
+        startActivity(intent);
     }
 
     private void displayRecommendation(String category, List<Exercise> exercises) {

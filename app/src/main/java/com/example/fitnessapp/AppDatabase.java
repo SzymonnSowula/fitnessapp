@@ -5,7 +5,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {Exercise.class}, version = 1)
+@Database(entities = {Exercise.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ExerciseDao exerciseDao();
 
@@ -17,7 +17,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "fitness_database")
-                            .allowMainThreadQueries() // Tylko dla uproszczenia w tej wersji, w produkcji użyj AsyncTask/Executor
+                            .allowMainThreadQueries()
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

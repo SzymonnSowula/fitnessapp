@@ -119,12 +119,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadExerciseDatabase() {
         int count = db.exerciseDao().getCount();
-        if (count == 0) {
-            Log.d(TAG, "Baza pusta, importuję z CSV...");
+        Log.d(TAG, "Aktualna liczba ćwiczeń w bazie: " + count);
+        
+        // Jeśli baza jest pusta LUB chcemy wymusić przeładowanie (np. po zmianie mapowania)
+        // Dla pewności w tej sesji przeładujemy bazę raz, jeśli mapa jest podejrzanie mała
+        if (count < 100) { 
+            Log.d(TAG, "Importuję/Aktualizuję bazę ćwiczeń z CSV...");
             List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
-            db.exerciseDao().insertAll(exercises);
-            Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń.");
-            Toast.makeText(this, "Baza ćwiczeń została zainicjalizowana (" + exercises.size() + ")", Toast.LENGTH_SHORT).show();
+            if (!exercises.isEmpty()) {
+                db.exerciseDao().insertAll(exercises);
+                count = db.exerciseDao().getCount();
+                Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + count);
+                Toast.makeText(this, "Baza ćwiczeń została zaktualizowana (" + count + ")", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Log.d(TAG, "Baza zawiera " + count + " ćwiczeń.");
         }
@@ -140,14 +147,21 @@ public class MainActivity extends AppCompatActivity {
         try {
             Toast.makeText(this, "Generuję...", Toast.LENGTH_SHORT).show();
             
-            // Symulujemy cechy użytkownika/kontekstu (12 cech zgodnie z metadata.json)
+            // 12 cech zgodnie z metadata.json
+            // features: [sila, elastycznosc, kardio, postawe, intensywnosc, trudnosc, krzeslo, lozko, siedzac, stania, podlogi, zrodlo]
             float[] moodFeatures = new float[12];
-            // 4. "intensywnosc_num"
-            // 5. "poziom_trudnosci_num"
-            moodFeatures[4] = energyLevel; // intensywnosc
-            moodFeatures[5] = difficultyPref; // trudnosc
             
-            Log.d(TAG, "Wykonuję predict dla cech: energy=" + energyLevel + ", intensity=" + intensityPref);
+            // Mapowanie nastroju na cechy wejściowe modelu
+            moodFeatures[4] = energyLevel;    // intensywnosc
+            moodFeatures[5] = difficultyPref; // poziom_trudnosci
+            
+            // Ustawiamy też wpływy w zależności od nastroju (uproszczone)
+            moodFeatures[2] = energyLevel;    // wplyw_na_kardio
+            moodFeatures[0] = energyLevel;    // wplyw_na_sile
+            moodFeatures[1] = 0.5f;           // wplyw_na_elastycznosc
+            moodFeatures[3] = 0.5f;           // wplyw_na_postawe
+            
+            Log.d(TAG, "Wykonuję predict dla cech: " + java.util.Arrays.toString(moodFeatures));
             float[] probs = modelRunner.predict(moodFeatures);
             
             if (probs == null || probs.length == 0) {

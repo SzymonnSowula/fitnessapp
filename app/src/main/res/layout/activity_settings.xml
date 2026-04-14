@@ -96,17 +96,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <Button
-            android:id="@+id/btn_logout_settings"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="@string/logout"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:backgroundTint="#F0F2F5"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            app:cornerRadius="12dp" />
+
     </LinearLayout>
 
     <View

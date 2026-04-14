@@ -61,7 +61,7 @@ public class OnboardingActivity extends AppCompatActivity {
             if (currentStep < dots.length - 1) {
                 viewPager.setCurrentItem(currentStep + 1);
             } else {
-                startActivity(new Intent(OnboardingActivity.this, LoginActivity.class));
+                startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
                 finish();
             }
         });

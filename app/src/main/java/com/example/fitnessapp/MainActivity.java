@@ -41,11 +41,5 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        // Wylogowanie
-        Button btnLogout = findViewById(R.id.btn_logout);
-        btnLogout.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
-        });
     }
 }

@@ -70,39 +70,58 @@ public class ModelRunner {
         float[][] input = new float[][]{features};
         try (OnnxTensor tensor = OnnxTensor.createTensor(env, input);
              OrtSession.Result result = session.run(Collections.singletonMap(inputName, tensor))) {
+            
+            // Pobieramy probabilities (zwykle drugi element wyniku)
             Object out = result.get(1).getValue();
             Log.d(TAG, "Wyjście modelu: " + out.getClass().getName());
+
             if (out instanceof float[][]) {
                 return ((float[][]) out)[0];
             } else if (out instanceof List) {
-                // Często skl2onnx zwraca List<Map<Long, Float>> lub List<Map<String, Float>>
-                List<Map<?, Float>> list = (List<Map<?, Float>>) out;
-                Map<?, Float> map = list.get(0);
-                float[] probs = new float[map.size()];
-                for (int i = 0; i < map.size(); i++) {
-                    // Próbujemy pobrać jako Long (domyślne dla etykiet liczbowych) lub String
-                    Object key = i;
-                    Float val = map.get((long) i);
-                    if (val == null) val = map.get(String.valueOf(i));
-                    // Jeśli klasy w ONNX to stringi ("kardio", "sila" itp.), mapa może mieć te stringi jako klucze
-                    // Ale zazwyczaj probabilities są indeksowane 0, 1, 2...
-                    if (val == null) {
-                        // Jeśli nadal null, spróbujmy iterować po mapie jeśli rozmiar się zgadza
-                        // To jest fallback dla nietypowych struktur
-                        int idx = 0;
-                        for (Float v : map.values()) {
-                            if (idx < probs.length) probs[idx++] = v;
-                        }
-                        return probs;
-                    }
-                    probs[i] = val;
+                // Kolekcja map (np. List<Map<Long, Float>>)
+                List<?> list = (List<?>) out;
+                if (list.isEmpty()) return new float[0];
+                Object firstItem = list.get(0);
+                if (firstItem instanceof Map) {
+                    return extractProbsFromMap((Map<?, ?>) firstItem);
                 }
-                return probs;
-            } else {
-                Log.e(TAG, "Unknown output type: " + out.getClass().getName());
-                return new float[0];
+            } else if (out instanceof Map) {
+                // Bezpośrednio mapa (np. OnnxMap)
+                return extractProbsFromMap((Map<?, ?>) out);
+            }
+            
+            Log.e(TAG, "Unknown output type: " + out.getClass().getName());
+            return new float[0];
+        }
+    }
+
+    private float[] extractProbsFromMap(Map<?, ?> map) {
+        float[] probs = new float[map.size()];
+        for (int i = 0; i < map.size(); i++) {
+            // Próbujemy różnych kluczy: Long, Integer, String
+            Object val = map.get((long) i);
+            if (val == null) val = map.get(i);
+            if (val == null) val = map.get(String.valueOf(i));
+            
+            if (val instanceof Float) {
+                probs[i] = (Float) val;
+            } else if (val instanceof Double) {
+                probs[i] = ((Double) val).floatValue();
+            } else if (i < map.size()) {
+                // Fallback: jeśli nie znaleźliśmy po kluczu, spróbujmy wziąć wartości w kolejności
+                // (może być ryzykowne, jeśli mapa nie zachowuje kolejności, ale lepsze niż 0.0)
+                int idx = 0;
+                for (Object v : map.values()) {
+                    if (idx == i) {
+                        if (v instanceof Float) probs[i] = (Float) v;
+                        else if (v instanceof Double) probs[i] = ((Double) v).floatValue();
+                        break;
+                    }
+                    idx++;
+                }
             }
         }
+        return probs;
     }
 
     public List<String> getClasses() {

@@ -21,7 +21,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class OnboardingActivity extends AppCompatActivity {
@@ -145,6 +152,31 @@ public class OnboardingActivity extends AppCompatActivity {
         editor.putString("goal", goal);
         editor.putStringSet("conditions", conditions);
         editor.apply();
+
+        // Dodatkowa synchronizacja z Firestore
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("onboardingCompleted", true);
+            updates.put("name", userName);
+            updates.put("can_stand", canStand);
+            updates.put("can_exercise_floor", canExerciseFloor);
+            updates.put("needs_chair", needsChair);
+            updates.put("can_exercise_bed", canExerciseBed);
+            updates.put("can_exercise_sitting", canExerciseSitting);
+            updates.put("intensity", intensity);
+            updates.put("difficulty", difficulty);
+            updates.put("goal", goal);
+            updates.put("conditions", new ArrayList<>(conditions));
+
+            FirebaseFirestore.getInstance().collection("users").document(user.getUid())
+                    .update(updates)
+                    .addOnFailureListener(e -> {
+                        // Błąd zapisu do Firestore nie powinien blokować użytkownika, 
+                        // bo mamy dane lokalnie, ale warto to zalogować
+                        android.util.Log.e("Onboarding", "Błąd synchronizacji Firestore: " + e.getMessage());
+                    });
+        }
 
         startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
         finish();

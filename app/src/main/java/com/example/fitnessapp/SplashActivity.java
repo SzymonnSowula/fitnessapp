@@ -164,7 +164,7 @@ public class SplashActivity extends AppCompatActivity {
                     
                     if (task.getException() != null && task.getException().getMessage() != null 
                         && task.getException().getMessage().contains("PERMISSION_DENIED")) {
-                        Toast.makeText(SplashActivity.this, "Sprawdź reguły (Rules) w Cloud Firestore.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SplashActivity.this, "BŁĄD UPRAWNIEŃ: Przejdź do Firebase Console -> Firestore -> Rules i ustaw: allow read, write: if true; (lub skonfiguruj dostęp dla zalogowanych).", Toast.LENGTH_LONG).show();
                     }
                 }
             });

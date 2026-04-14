@@ -1,6 +1,13 @@
 package com.example.fitnessapp;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "exercises")
 public class Exercise {
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+    
     public String name;
     public float wplywNaSileNum;
     public float wplywNaElastycznoscNum;

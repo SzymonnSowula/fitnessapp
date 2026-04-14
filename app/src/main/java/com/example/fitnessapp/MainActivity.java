@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_USER_NAME = "user_name";
 
     private ModelRunner modelRunner;
-    private List<Exercise> exerciseDatabase;
+    private AppDatabase db;
 
     private TextView tvRecommendationTitle;
     private CardView cardRecommendation;
@@ -62,14 +62,15 @@ public class MainActivity extends AppCompatActivity {
         EditText etChatInput = findViewById(R.id.et_chat_input);
         // W przyszłości tutaj dodamy obsługę wysyłania wiadomości do AI
 
-        // Inicjalizacja ModelRunner
+        // Inicjalizacja ModelRunner i Bazy
         modelRunner = new ModelRunner();
+        db = AppDatabase.getDatabase(this);
         try {
             modelRunner.init(this);
             loadExerciseDatabase();
         } catch (Exception e) {
-            Log.e(TAG, "Błąd inicjalizacji modelu", e);
-            Toast.makeText(this, "Błąd ładowania modelu rekomendacji", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Błąd inicjalizacji", e);
+            Toast.makeText(this, "Błąd ładowania systemu rekomendacji", Toast.LENGTH_SHORT).show();
         }
 
         // UI dla rekomendacji
@@ -117,39 +118,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadExerciseDatabase() {
-        exerciseDatabase = new ArrayList<>();
-        // Przykładowe dane (w realnej apce wczytywane z CSV/Bazy)
-        // Cechy: sila, elastycznosc, kardio, postawa, intensywnosc, trudnosc, krzeslo, lozko, siedzac, stania, podlogi, zrodlo
-        
-        Exercise e1 = new Exercise();
-        e1.name = "Spacer w miejscu";
-        e1.wplywNaKardioNum = 0.8f; e1.intensywnoscNum = 0.4f; e1.poziomTrudnosciNum = 0.2f; e1.wymagaStaniaBin = 1f; e1.category = "kardio";
-        exerciseDatabase.add(e1);
-
-        Exercise e2 = new Exercise();
-        e2.name = "Przysiady przy krześle";
-        e2.wplywNaSileNum = 0.9f; e2.intensywnoscNum = 0.6f; e2.poziomTrudnosciNum = 0.4f; e2.wspomaganeKrzeslemBin = 1f; e2.wymagaStaniaBin = 1f; e2.category = "sila";
-        exerciseDatabase.add(e2);
-
-        Exercise e3 = new Exercise();
-        e3.name = "Rozciąganie w łóżku";
-        e3.wplywNaElastycznoscNum = 0.7f; e3.intensywnoscNum = 0.2f; e3.poziomTrudnosciNum = 0.1f; e3.moznaWLozkuBin = 1f; e3.category = "mobilnosc";
-        exerciseDatabase.add(e3);
-
-        Exercise e4 = new Exercise();
-        e4.name = "Pajacyki (wolne)";
-        e4.wplywNaKardioNum = 0.9f; e4.intensywnoscNum = 0.7f; e4.poziomTrudnosciNum = 0.5f; e4.wymagaStaniaBin = 1f; e4.category = "kardio";
-        exerciseDatabase.add(e4);
-
-        Exercise e5 = new Exercise();
-        e5.name = "Unoszenie nóg siedząc";
-        e5.wplywNaSileNum = 0.6f; e5.intensywnoscNum = 0.3f; e5.poziomTrudnosciNum = 0.2f; e5.moznaSiedzacBin = 1f; e5.category = "sila";
-        exerciseDatabase.add(e5);
-        
-        Exercise e6 = new Exercise();
-        e6.name = "Głębokie oddychanie";
-        e6.wplywNaPostaweNum = 0.8f; e6.intensywnoscNum = 0.1f; e6.poziomTrudnosciNum = 0.1f; e6.moznaSiedzacBin = 1f; e6.category = "postura";
-        exerciseDatabase.add(e6);
+        if (db.exerciseDao().getCount() == 0) {
+            Log.d(TAG, "Baza pusta, importuję z CSV...");
+            List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
+            db.exerciseDao().insertAll(exercises);
+            Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń.");
+        } else {
+            Log.d(TAG, "Baza zawiera " + db.exerciseDao().getCount() + " ćwiczeń.");
+        }
     }
 
     private void generateRecommendation(float energyLevel, float intensityPref, float difficultyPref) {
@@ -217,13 +193,13 @@ public class MainActivity extends AppCompatActivity {
         tvRecommendedCategory.setText("Kategoria: " + categoryDisplay);
         
         StringBuilder exercisesText = new StringBuilder();
+        List<Exercise> exercises = db.exerciseDao().getByCategory(category);
+        
         int count = 0;
-        for (Exercise e : exerciseDatabase) {
-            if (e.category != null && e.category.equalsIgnoreCase(category)) {
-                exercisesText.append("• ").append(e.name).append("\n");
-                count++;
-            }
-            if (count >= 3) break;
+        for (Exercise e : exercises) {
+            exercisesText.append("• ").append(e.name).append("\n");
+            count++;
+            if (count >= 5) break;
         }
         
         if (exercisesText.length() == 0) {

@@ -48,4 +48,9 @@ dependencies {
     implementation libs.firebase.auth
     implementation libs.firebase.firestore
     implementation "com.microsoft.onnxruntime:onnxruntime-android:1.17.3"
+    
+    // Room
+    def room_version = "2.6.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 }

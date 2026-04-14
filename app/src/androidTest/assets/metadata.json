@@ -1,0 +1,33 @@
+{
+  "model_type": "RandomForestClassifier",
+  "input_name": "float_input",
+  "features": [
+    "wplyw_na_sile_num",
+    "wplyw_na_elastycznosc_num",
+    "wplyw_na_kardio_num",
+    "wplyw_na_postawe_num",
+    "intensywnosc_num",
+    "poziom_trudnosci_num",
+    "wspomagane_krzeslem_bin",
+    "mozna_w_lozku_bin",
+    "mozna_siedzac_bin",
+    "wymaga_stania_bin",
+    "wymaga_podlogi_bin",
+    "zrodlo_enc"
+  ],
+  "classes": [
+    "kardio",
+    "mieszana",
+    "mobilnosc",
+    "postura",
+    "rownowaga",
+    "sila"
+  ],
+  "random_state": 42,
+  "csv_source": "cwiczenia_seniorzy.csv",
+  "notes": {
+    "use_case": "cat_score for exercise recommendation",
+    "android_should_apply_rules": true,
+    "rules_source": "recommend() in rekomendator.py"
+  }
+}

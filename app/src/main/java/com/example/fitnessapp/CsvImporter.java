@@ -40,8 +40,8 @@ public class CsvImporter {
                 if (rawCategory.contains("sila") || rawCategory.contains("siła")) e.category = "sila";
                 else if (rawCategory.contains("kardio")) e.category = "kardio";
                 else if (rawCategory.contains("elastyczn") || rawCategory.contains("mobiln")) e.category = "mobilnosc";
-                else if (rawCategory.contains("rownowaga") || rawCategory.contains("równowaga")) e.category = "rownowaga";
-                else if (rawCategory.contains("postura") || rawCategory.contains("plecy") || rawCategory.contains("postawe") || rawCategory.contains("postawę") || rawCategory.contains("core")) e.category = "postura";
+                else if (rawCategory.contains("rownowaga") || rawCategory.contains("równowaga") || rawCategory.contains("balans")) e.category = "rownowaga";
+                else if (rawCategory.contains("postura") || rawCategory.contains("plecy") || rawCategory.contains("postawe") || rawCategory.contains("postawę") || rawCategory.contains("core") || rawCategory.contains("kregoslup") || rawCategory.contains("kręgosłup")) e.category = "postura";
                 else e.category = "mieszana";
 
                 // Poziom trudności (kolumna 4)
@@ -79,11 +79,11 @@ public class CsvImporter {
 
     private static float parseInfluence(String val) {
         val = val.toLowerCase();
-        if (val.contains("wysoki") || val.contains("wysoka") || val.contains("trudny")) return 1.0f;
-        if (val.contains("średni") || val.contains("średnia")) return 0.5f;
-        if (val.contains("niski") || val.contains("niska") || val.contains("łatwy")) return 0.2f;
-        if (val.contains("bardzo niska")) return 0.1f;
-        return 0.0f;
+        if (val.contains("wysoki") || val.contains("wysoka") || val.contains("trudny")) return 3.0f;
+        if (val.contains("średni") || val.contains("średnia") || val.contains("sredni")) return 2.0f;
+        if (val.contains("niski") || val.contains("niska") || val.contains("łatwy") || val.contains("latwy")) return 1.0f;
+        if (val.contains("bardzo niska")) return 1.0f;
+        return 1.0f;
     }
 
     private static float parseBinary(String val) {

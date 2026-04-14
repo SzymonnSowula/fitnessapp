@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
         tvRecommendedExercises = findViewById(R.id.tv_recommended_exercises);
 
         // Obsługa nastrojów
-        findViewById(R.id.card_mood_happy).setOnClickListener(v -> generateRecommendation(1.0f, 0.8f, 0.8f));
-        findViewById(R.id.card_mood_sad).setOnClickListener(v -> generateRecommendation(0.5f, 0.4f, 0.3f));
-        findViewById(R.id.card_mood_very_sad).setOnClickListener(v -> generateRecommendation(0.2f, 0.2f, 0.1f));
+        findViewById(R.id.card_mood_happy).setOnClickListener(v -> generateRecommendation(0.8f, 0.8f));
+        findViewById(R.id.card_mood_sad).setOnClickListener(v -> generateRecommendation(0.4f, 0.4f));
+        findViewById(R.id.card_mood_very_sad).setOnClickListener(v -> generateRecommendation(0.2f, 0.2f));
 
         // Nawigacja dolna
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -122,22 +122,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Aktualna liczba ćwiczeń w bazie: " + count);
         
         // Jeśli baza jest pusta LUB chcemy wymusić przeładowanie (np. po zmianie mapowania)
-        // Dla pewności w tej sesji przeładujemy bazę raz, jeśli mapa jest podejrzanie mała
-        if (count < 100) { 
-            Log.d(TAG, "Importuję/Aktualizuję bazę ćwiczeń z CSV...");
-            List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
-            if (!exercises.isEmpty()) {
-                db.exerciseDao().insertAll(exercises);
-                count = db.exerciseDao().getCount();
-                Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + count);
-                Toast.makeText(this, "Baza ćwiczeń została zaktualizowana (" + count + ")", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Log.d(TAG, "Baza zawiera " + count + " ćwiczeń.");
+        // Wymuszamy przeładowanie bazy przy każdym uruchomieniu w fazie debugowania, 
+        // aby upewnić się, że nowe mapowanie kategorii i wag zadziała.
+        Log.d(TAG, "Odświeżam bazę ćwiczeń z CSV...");
+        db.exerciseDao().deleteAll(); // Wyczyść starą bazę
+        List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
+        if (!exercises.isEmpty()) {
+            db.exerciseDao().insertAll(exercises);
+            count = db.exerciseDao().getCount();
+            Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + count);
+            Toast.makeText(this, "Baza ćwiczeń została odświeżona (" + count + ")", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void generateRecommendation(float energyLevel, float intensityPref, float difficultyPref) {
+    private void generateRecommendation(float energyLevel, float difficultyPref) {
         if (modelRunner == null) {
             Log.e(TAG, "modelRunner is null");
             Toast.makeText(this, "Model nie jest gotowy", Toast.LENGTH_SHORT).show();
@@ -147,19 +145,31 @@ public class MainActivity extends AppCompatActivity {
         try {
             Toast.makeText(this, "Generuję...", Toast.LENGTH_SHORT).show();
             
-            // 12 cech zgodnie z metadata.json
-            // features: [sila, elastycznosc, kardio, postawe, intensywnosc, trudnosc, krzeslo, lozko, siedzac, stania, podlogi, zrodlo]
+            // 12 cech zgodnie z metadata.json / rekomendator.py
+            // FEATURES = ["wplyw_na_sile_num", "wplyw_na_elastycznosc_num", "wplyw_na_kardio_num",
+            //             "wplyw_na_postawe_num", "intensywnosc_num", "poziom_trudnosci_num",
+            //             "wspomagane_krzeslem_bin", "mozna_w_lozku_bin", "mozna_siedzac_bin",
+            //             "wymaga_stania_bin", "wymaga_podlogi_bin", "zrodlo_enc"]
             float[] moodFeatures = new float[12];
             
             // Mapowanie nastroju na cechy wejściowe modelu
-            moodFeatures[4] = energyLevel;    // intensywnosc
-            moodFeatures[5] = difficultyPref; // poziom_trudnosci
+            // Seniorzy: 1=bardzo niska/łatwy, 2=niska/średni, 3=wysoka/trudny
+            float intens = energyLevel < 0.4f ? 1.0f : 2.0f;
+            float diff = difficultyPref < 0.4f ? 1.0f : 2.0f;
+
+            moodFeatures[0] = 2.0f; // wplyw_na_sile
+            moodFeatures[1] = 2.0f; // wplyw_na_elastycznosc
+            moodFeatures[2] = 2.0f; // wplyw_na_kardio
+            moodFeatures[3] = 2.0f; // wplyw_na_postawe
+            moodFeatures[4] = intens; // intensywnosc_num
+            moodFeatures[5] = diff;   // poziom_trudnosci_num
             
-            // Ustawiamy też wpływy w zależności od nastroju (uproszczone)
-            moodFeatures[2] = energyLevel;    // wplyw_na_kardio
-            moodFeatures[0] = energyLevel;    // wplyw_na_sile
-            moodFeatures[1] = 0.5f;           // wplyw_na_elastycznosc
-            moodFeatures[3] = 0.5f;           // wplyw_na_postawe
+            moodFeatures[6] = 0.0f; // wspomagane_krzeslem_bin
+            moodFeatures[7] = 0.0f; // mozna_w_lozku_bin
+            moodFeatures[8] = 1.0f; // mozna_siedzac_bin
+            moodFeatures[9] = 1.0f; // wymaga_stania_bin
+            moodFeatures[10] = 0.0f; // wymaga_podlogi_bin
+            moodFeatures[11] = 0.0f; // zrodlo_enc
             
             Log.d(TAG, "Wykonuję predict dla cech: " + java.util.Arrays.toString(moodFeatures));
             float[] probs = modelRunner.predict(moodFeatures);

@@ -37,7 +37,6 @@ public class SettingsActivity extends AppCompatActivity {
             return false;
         });
 
-<<<<<<< HEAD
         // Wylogowanie
         Button btnLogout = findViewById(R.id.btn_logout_settings);
         btnLogout.setOnClickListener(v -> {
@@ -47,8 +46,6 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(new Intent(SettingsActivity.this, SplashActivity.class));
             finishAffinity();
         });
-=======
->>>>>>> 2d2d0cc024b430d33800098146014eaf445487b9
 
         // Obsługa kliknięć w opcje (toast dla demonstracji)
         findViewById(R.id.tv_change_name).setOnClickListener(v -> 

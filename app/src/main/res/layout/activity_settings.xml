@@ -113,7 +113,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-<<<<<<< HEAD
         <Button
             android:id="@+id/btn_logout_settings"
             android:layout_width="match_parent"
@@ -126,9 +125,7 @@
             android:insetTop="0dp"
             android:insetBottom="0dp"
             app:cornerRadius="12dp" />
-=======
 
->>>>>>> 2d2d0cc024b430d33800098146014eaf445487b9
     </LinearLayout>
 
     <View

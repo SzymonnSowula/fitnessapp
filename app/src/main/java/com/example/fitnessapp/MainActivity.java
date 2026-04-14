@@ -130,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
                 db.exerciseDao().insertAll(exercises);
                 int newCount = db.exerciseDao().getCount();
                 Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + newCount);
+                
+                // Statystyki kategorii
+                String[] categories = {"kardio", "mieszana", "mobilnosc", "postura", "rownowaga", "sila"};
+                for (String cat : categories) {
+                    int catCount = db.exerciseDao().getByCategory(cat).size();
+                    Log.d(TAG, "Kategoria '" + cat + "': " + catCount + " ćwiczeń");
+                }
+
                 runOnUiThread(() -> Toast.makeText(this, "Baza ćwiczeń gotowa (" + newCount + ")", Toast.LENGTH_SHORT).show());
             } else {
                 Log.e(TAG, "Nie zaimportowano żadnych ćwiczeń!");
@@ -150,28 +158,29 @@ public class MainActivity extends AppCompatActivity {
         try {
             Toast.makeText(this, "Generuję...", Toast.LENGTH_SHORT).show();
             
-            // 12 cech zgodnie z metadata.json / rekomendator.py
-            // FEATURES = ["wplyw_na_sile_num", "wplyw_na_elastycznosc_num", "wplyw_na_kardio_num",
-            //             "wplyw_na_postawe_num", "intensywnosc_num", "poziom_trudnosci_num",
-            //             "wspomagane_krzeslem_bin", "mozna_w_lozku_bin", "mozna_siedzac_bin",
-            //             "wymaga_stania_bin", "wymaga_podlogi_bin", "zrodlo_enc"]
             float[] moodFeatures = new float[12];
             
-            // Mapowanie nastroju na cechy wejściowe modelu
-            // Seniorzy: 1=bardzo niska/łatwy, 2=niska/średni, 3=wysoka/trudny
-            float intens = energyLevel < 0.4f ? 1.0f : 2.0f;
-            float diff = difficultyPref < 0.4f ? 1.0f : 2.0f;
+            // Bardziej dynamiczne mapowanie nastroju (skala 1-3)
+            float intens, diff, sile, mobil, kardio, post;
+            
+            if (energyLevel < 0.3f) { // Bardzo słabo
+                intens = 1.0f; diff = 1.0f; sile = 1.0f; mobil = 2.0f; kardio = 1.0f; post = 2.0f;
+            } else if (energyLevel < 0.6f) { // Średnio
+                intens = 2.0f; diff = 1.0f; sile = 2.0f; mobil = 2.0f; kardio = 2.0f; post = 2.0f;
+            } else { // Dobrze
+                intens = 2.0f; diff = 2.0f; sile = 3.0f; mobil = 2.0f; kardio = 2.0f; post = 2.0f;
+            }
 
-            moodFeatures[0] = 2.0f; // wplyw_na_sile
-            moodFeatures[1] = 2.0f; // wplyw_na_elastycznosc
-            moodFeatures[2] = 2.0f; // wplyw_na_kardio
-            moodFeatures[3] = 2.0f; // wplyw_na_postawe
+            moodFeatures[0] = sile;   // wplyw_na_sile
+            moodFeatures[1] = mobil;  // wplyw_na_elastycznosc
+            moodFeatures[2] = kardio; // wplyw_na_kardio
+            moodFeatures[3] = post;   // wplyw_na_postawe
             moodFeatures[4] = intens; // intensywnosc_num
             moodFeatures[5] = diff;   // poziom_trudnosci_num
             
             moodFeatures[6] = 0.0f; // wspomagane_krzeslem_bin
             moodFeatures[7] = 0.0f; // mozna_w_lozku_bin
-            moodFeatures[8] = 1.0f; // mozna_siedzac_bin
+            moodFeatures[8] = 0.0f; // mozna_siedzac_bin
             moodFeatures[9] = 1.0f; // wymaga_stania_bin
             moodFeatures[10] = 0.0f; // wymaga_podlogi_bin
             moodFeatures[11] = 0.0f; // zrodlo_enc

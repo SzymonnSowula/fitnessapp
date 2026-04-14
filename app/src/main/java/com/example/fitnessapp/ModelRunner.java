@@ -73,8 +73,8 @@ public class ModelRunner {
             Log.d(TAG, "Liczba wyjść modelu: " + result.size());
             
             // Logowanie wszystkich wyjść dla debugowania
-            for (String outputName : session.getOutputNames()) {
-                Log.d(TAG, "Output name: " + outputName);
+            for (int i = 0; i < result.size(); i++) {
+                Log.d(TAG, "Output " + i + " type info: " + result.get(i).getTypeInfo().toString());
             }
 
             // Próbujemy znaleźć prawdopodobieństwa. 
@@ -85,7 +85,7 @@ public class ModelRunner {
             Object labelsObj = result.get(0).getValue();
             Object probsObj = result.size() > 1 ? result.get(1).getValue() : null;
 
-            Log.d(TAG, "Typ wyjścia 0 (labels): " + labelsObj.getClass().getName());
+            Log.d(TAG, "Typ wyjścia 0 (labels): " + (labelsObj != null ? labelsObj.getClass().getName() : "null"));
             if (probsObj != null) {
                 Log.d(TAG, "Typ wyjścia 1 (probs): " + probsObj.getClass().getName());
             }
@@ -93,16 +93,23 @@ public class ModelRunner {
             // 1. Próba wyciągnięcia prawdopodobieństw (najlepsza opcja)
             if (probsObj != null) {
                 float[] probs = processOutput(probsObj);
-                if (probs != null && probs.length > 0) return probs;
+                if (probs != null && probs.length > 0) {
+                    Log.d(TAG, "Sukces: pobrano prawdopodobieństwa z wyjścia 1");
+                    return probs;
+                }
             }
 
             // 2. Jeśli nie ma prawdopodobieństw lub są puste, spróbujmy z wyjścia 0 (może tam są?)
             float[] probsFrom0 = processOutput(labelsObj);
-            if (probsFrom0 != null && probsFrom0.length > 0 && probsFrom0.length == classes.size()) {
-                return probsFrom0;
+            if (probsFrom0 != null && probsFrom0.length > 0) {
+                if (probsFrom0.length == classes.size()) {
+                    Log.d(TAG, "Sukces: pobrano prawdopodobieństwa z wyjścia 0");
+                    return probsFrom0;
+                }
             }
 
             // 3. Fallback: Jeśli mamy tylko etykietę (prediction), stwórzmy "ostrą" dystrybucję (one-hot)
+            Log.d(TAG, "Fallback do etykiety (one-hot)");
             return createOneHotFromLabel(labelsObj);
         }
     }
@@ -110,6 +117,11 @@ public class ModelRunner {
     private float[] processOutput(Object out) {
         if (out instanceof float[][]) {
             return ((float[][]) out)[0];
+        } else if (out instanceof double[][]) {
+            double[] dProbs = ((double[][]) out)[0];
+            float[] fProbs = new float[dProbs.length];
+            for (int i = 0; i < dProbs.length; i++) fProbs[i] = (float) dProbs[i];
+            return fProbs;
         } else if (out instanceof List) {
             List<?> list = (List<?>) out;
             if (list.isEmpty()) return null;
@@ -124,22 +136,41 @@ public class ModelRunner {
     }
 
     private float[] createOneHotFromLabel(Object labelsObj) {
+        if (labelsObj == null) {
+            Log.w(TAG, "labelsObj jest null, zwracam domyślną pierwszą klasę");
+            float[] probs = new float[classes.size()];
+            if (probs.length > 0) probs[0] = 1.0f;
+            return probs;
+        }
+
         // Jeśli etykieta to np. long[1][1] lub String[1][1]
         String predictedLabel = "";
-        if (labelsObj instanceof long[][]) {
-            long labelIdx = ((long[][]) labelsObj)[0][0];
-            if (labelIdx >= 0 && labelIdx < classes.size()) {
-                predictedLabel = classes.get((int) labelIdx);
+        try {
+            if (labelsObj instanceof long[][]) {
+                long labelIdx = ((long[][]) labelsObj)[0][0];
+                if (labelIdx >= 0 && labelIdx < classes.size()) {
+                    predictedLabel = classes.get((int) labelIdx);
+                } else {
+                    predictedLabel = String.valueOf(labelIdx);
+                }
+            } else if (labelsObj instanceof String[][]) {
+                predictedLabel = ((String[][]) labelsObj)[0][0];
+            } else if (labelsObj instanceof long[]) {
+                predictedLabel = String.valueOf(((long[]) labelsObj)[0]);
+            } else if (labelsObj instanceof String[]) {
+                predictedLabel = ((String[]) labelsObj)[0];
+            } else if (labelsObj instanceof float[][]) {
+                predictedLabel = String.valueOf((int) ((float[][]) labelsObj)[0][0]);
+            } else if (labelsObj instanceof double[][]) {
+                predictedLabel = String.valueOf((int) ((double[][]) labelsObj)[0][0]);
             } else {
-                // Jeśli etykieta to numer klasy (np. 0, 1, 2)
-                predictedLabel = String.valueOf(labelIdx);
+                predictedLabel = labelsObj.toString();
+                // Usuwamy [] jeśli to jakaś inna tablica
+                predictedLabel = predictedLabel.replace("[", "").replace("]", "");
             }
-        } else if (labelsObj instanceof String[][]) {
-            predictedLabel = ((String[][]) labelsObj)[0][0];
-        } else if (labelsObj instanceof long[]) {
-            predictedLabel = String.valueOf(((long[]) labelsObj)[0]);
-        } else if (labelsObj instanceof String[]) {
-            predictedLabel = ((String[]) labelsObj)[0];
+        } catch (Exception e) {
+            Log.e(TAG, "Błąd rzutowania etykiety: " + e.getMessage());
+            predictedLabel = "unknown";
         }
 
         Log.d(TAG, "Przewidziana etykieta (fallback): " + predictedLabel);

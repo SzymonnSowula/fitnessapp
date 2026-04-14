@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         db = AppDatabase.getDatabase(this);
         try {
             modelRunner.init(this);
-            loadExerciseDatabase();
+            new Thread(this::loadExerciseDatabase).start();
         } catch (Exception e) {
             Log.e(TAG, "Błąd inicjalizacji", e);
             Toast.makeText(this, "Błąd ładowania systemu rekomendacji", Toast.LENGTH_SHORT).show();
@@ -118,20 +118,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadExerciseDatabase() {
-        int count = db.exerciseDao().getCount();
-        Log.d(TAG, "Aktualna liczba ćwiczeń w bazie: " + count);
-        
-        // Jeśli baza jest pusta LUB chcemy wymusić przeładowanie (np. po zmianie mapowania)
-        // Wymuszamy przeładowanie bazy przy każdym uruchomieniu w fazie debugowania, 
-        // aby upewnić się, że nowe mapowanie kategorii i wag zadziała.
-        Log.d(TAG, "Odświeżam bazę ćwiczeń z CSV...");
-        db.exerciseDao().deleteAll(); // Wyczyść starą bazę
-        List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
-        if (!exercises.isEmpty()) {
-            db.exerciseDao().insertAll(exercises);
-            count = db.exerciseDao().getCount();
-            Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + count);
-            Toast.makeText(this, "Baza ćwiczeń została odświeżona (" + count + ")", Toast.LENGTH_SHORT).show();
+        try {
+            int count = db.exerciseDao().getCount();
+            Log.d(TAG, "Aktualna liczba ćwiczeń w bazie: " + count);
+
+            // Zawsze odświeżamy bazę dla pewności (debug)
+            Log.d(TAG, "Odświeżam bazę ćwiczeń z CSV...");
+            db.exerciseDao().deleteAll();
+            List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
+            if (!exercises.isEmpty()) {
+                db.exerciseDao().insertAll(exercises);
+                int newCount = db.exerciseDao().getCount();
+                Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + newCount);
+                runOnUiThread(() -> Toast.makeText(this, "Baza ćwiczeń gotowa (" + newCount + ")", Toast.LENGTH_SHORT).show());
+            } else {
+                Log.e(TAG, "Nie zaimportowano żadnych ćwiczeń!");
+                runOnUiThread(() -> Toast.makeText(this, "Błąd importu bazy ćwiczeń!", Toast.LENGTH_LONG).show());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Błąd bazy danych", e);
         }
     }
 
@@ -171,39 +176,40 @@ public class MainActivity extends AppCompatActivity {
             moodFeatures[10] = 0.0f; // wymaga_podlogi_bin
             moodFeatures[11] = 0.0f; // zrodlo_enc
             
-            Log.d(TAG, "Wykonuję predict dla cech: " + java.util.Arrays.toString(moodFeatures));
-            float[] probs = modelRunner.predict(moodFeatures);
-            
-            if (probs == null || probs.length == 0) {
-                Log.e(TAG, "Prawdopodobieństwa są puste");
-                Toast.makeText(this, "Model nie zwrócił wyników", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            new Thread(() -> {
+                try {
+                    Log.d(TAG, "Wykonuję predict dla cech: " + java.util.Arrays.toString(moodFeatures));
+                    float[] probs = modelRunner.predict(moodFeatures);
 
-            Log.d(TAG, "Pobrane prawdopodobieństwa, długość: " + probs.length);
-            for (int i=0; i<probs.length; i++) Log.d(TAG, "Prob["+i+"] = " + probs[i]);
+                    if (probs == null || probs.length == 0) {
+                        Log.e(TAG, "Prawdopodobieństwa są puste");
+                        runOnUiThread(() -> Toast.makeText(this, "Model nie zwrócił wyników", Toast.LENGTH_SHORT).show());
+                        return;
+                    }
 
-            List<String> classes = modelRunner.getClasses();
-            if (classes == null || classes.isEmpty()) {
-                Log.e(TAG, "Lista klas jest pusta!");
-                Toast.makeText(this, "Błąd konfiguracji klas modelu", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            
-            int maxIdx = 0;
-            for (int i = 1; i < probs.length; i++) {
-                if (probs[i] > probs[maxIdx]) maxIdx = i;
-            }
-            
-            if (maxIdx < classes.size()) {
-                String recommendedCategory = classes.get(maxIdx);
-                Log.d(TAG, "Rekomendowana kategoria: " + recommendedCategory);
-                displayRecommendation(recommendedCategory);
-            } else {
-                Log.e(TAG, "Błąd indeksowania klas: maxIdx=" + maxIdx + ", classes size=" + classes.size());
-                // Fallback do pierwszej klasy jeśli coś poszło nie tak z długością
-                displayRecommendation(classes.get(0));
-            }
+                    List<String> classes = modelRunner.getClasses();
+                    int maxIdx = 0;
+                    for (int i = 1; i < probs.length; i++) {
+                        if (probs[i] > probs[maxIdx]) maxIdx = i;
+                    }
+
+                    String recommendedCategory = (classes != null && maxIdx < classes.size()) 
+                        ? classes.get(maxIdx) 
+                        : "mieszana";
+
+                    Log.d(TAG, "Rekomendowana kategoria: " + recommendedCategory);
+                    
+                    // Pobranie ćwiczeń z bazy w wątku tła
+                    List<Exercise> exercises = db.exerciseDao().getByCategory(recommendedCategory);
+                    Log.d(TAG, "Znaleziono " + exercises.size() + " ćwiczeń dla: " + recommendedCategory);
+
+                    runOnUiThread(() -> displayRecommendation(recommendedCategory, exercises));
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Błąd w wątku rekomendacji", e);
+                    runOnUiThread(() -> Toast.makeText(this, "Błąd: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                }
+            }).start();
             
         } catch (Exception e) {
             Log.e(TAG, "Błąd podczas predict", e);
@@ -211,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void displayRecommendation(String category) {
+    private void displayRecommendation(String category, List<Exercise> exercises) {
         tvRecommendationTitle.setVisibility(View.VISIBLE);
         cardRecommendation.setVisibility(View.VISIBLE);
         
@@ -219,9 +225,6 @@ public class MainActivity extends AppCompatActivity {
         tvRecommendedCategory.setText("Kategoria: " + categoryDisplay);
         
         StringBuilder exercisesText = new StringBuilder();
-        List<Exercise> exercises = db.exerciseDao().getByCategory(category);
-        Log.d(TAG, "Znaleziono " + exercises.size() + " ćwiczeń dla kategorii: " + category);
-        
         int count = 0;
         for (Exercise e : exercises) {
             exercisesText.append("• ").append(e.name).append("\n");
@@ -231,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
         
         if (exercisesText.length() == 0) {
             tvRecommendedExercises.setText("Nie znaleziono ćwiczeń w kategorii: " + categoryDisplay + ". Dzisiaj postaw na relaks.");
-            Log.w(TAG, "Brak ćwiczeń w bazie dla kategorii: " + category);
         } else {
             tvRecommendedExercises.setText(exercisesText.toString().trim());
         }

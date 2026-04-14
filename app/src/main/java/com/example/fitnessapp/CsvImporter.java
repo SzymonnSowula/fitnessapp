@@ -21,28 +21,37 @@ public class CsvImporter {
             
             // Skip header
             String headerLine = reader.readLine();
-            if (headerLine == null) return exercises;
+            if (headerLine == null) {
+                Log.e(TAG, "Plik CSV jest pusty!");
+                return exercises;
+            }
             
-            String[] headers = headerLine.split(",");
+            Log.d(TAG, "Nagłówki CSV: " + headerLine);
             
             while ((line = reader.readLine()) != null) {
-                // Prosty parser CSV (nie obsługuje przecinków wewnątrz cudzysłowów, ale w tym pliku nie widać ich w kluczowych polach)
+                // Prosty parser CSV
                 String[] columns = line.split(",");
-                if (columns.length < 25) continue;
+                if (columns.length < 25) {
+                    Log.w(TAG, "Pominięto wiersz (zbyt mało kolumn: " + columns.length + "): " + line);
+                    continue;
+                }
                 
                 Exercise e = new Exercise();
-                e.name = columns[0]; // nazwa_cwiczenia
+                e.name = columns[0];
                 
-                // Mapowanie kategorii (kolumna 3 - kategoria)
-                // W pliku są kategorie typu "równowaga_chód", "siła", "elastyczność"
-                // Model ONNX spodziewa się: "kardio", "mieszana", "mobilnosc", "postura", "rownowaga", "sila"
                 String rawCategory = columns[3].toLowerCase();
+                // Mapowanie nastroju na kategorie modelu
                 if (rawCategory.contains("sila") || rawCategory.contains("siła")) e.category = "sila";
                 else if (rawCategory.contains("kardio")) e.category = "kardio";
                 else if (rawCategory.contains("elastyczn") || rawCategory.contains("mobiln")) e.category = "mobilnosc";
                 else if (rawCategory.contains("rownowaga") || rawCategory.contains("równowaga") || rawCategory.contains("balans")) e.category = "rownowaga";
                 else if (rawCategory.contains("postura") || rawCategory.contains("plecy") || rawCategory.contains("postawe") || rawCategory.contains("postawę") || rawCategory.contains("core") || rawCategory.contains("kregoslup") || rawCategory.contains("kręgosłup")) e.category = "postura";
                 else e.category = "mieszana";
+                
+                // Logujmy co 50-te ćwiczenie dla debugu
+                if (exercises.size() % 50 == 0) {
+                    Log.d(TAG, "Mapowanie: " + columns[0] + " -> " + e.category);
+                }
 
                 // Poziom trudności (kolumna 4)
                 e.poziomTrudnosciNum = parseInfluence(columns[4]);

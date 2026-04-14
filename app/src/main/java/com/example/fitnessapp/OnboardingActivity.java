@@ -75,7 +75,12 @@ public class OnboardingActivity extends AppCompatActivity {
             if (currentStep < dots.length - 1) {
                 viewPager.setCurrentItem(currentStep + 1);
             } else {
+<<<<<<< HEAD
                 completeOnboarding();
+=======
+                startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
+                finish();
+>>>>>>> 2d2d0cc024b430d33800098146014eaf445487b9
             }
         });
     }

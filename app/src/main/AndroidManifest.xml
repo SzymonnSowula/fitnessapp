@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity
+<<<<<<< HEAD
             android:name=".OnboardingActivity"
             android:exported="false" />
         <activity
@@ -32,6 +33,8 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+=======
+>>>>>>> 2d2d0cc024b430d33800098146014eaf445487b9
             android:name=".MainActivity"
             android:exported="false" />
         <activity

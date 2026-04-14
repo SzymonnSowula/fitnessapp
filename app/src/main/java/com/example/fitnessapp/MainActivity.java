@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
+<<<<<<< HEAD
         // Wylogowanie - teraz przekierowuje do SplashActivity (która zainicjuje nowe anonimowe konto)
         Button btnLogout = findViewById(R.id.btn_logout);
         if (btnLogout != null) {
@@ -84,5 +85,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, SplashActivity.class));
             finish();
         }
+=======
+>>>>>>> 2d2d0cc024b430d33800098146014eaf445487b9
     }
 }

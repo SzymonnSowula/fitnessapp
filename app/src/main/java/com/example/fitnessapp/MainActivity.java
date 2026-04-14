@@ -118,13 +118,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadExerciseDatabase() {
-        if (db.exerciseDao().getCount() == 0) {
+        int count = db.exerciseDao().getCount();
+        if (count == 0) {
             Log.d(TAG, "Baza pusta, importuję z CSV...");
             List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
             db.exerciseDao().insertAll(exercises);
             Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń.");
+            Toast.makeText(this, "Baza ćwiczeń została zainicjalizowana (" + exercises.size() + ")", Toast.LENGTH_SHORT).show();
         } else {
-            Log.d(TAG, "Baza zawiera " + db.exerciseDao().getCount() + " ćwiczeń.");
+            Log.d(TAG, "Baza zawiera " + count + " ćwiczeń.");
         }
     }
 
@@ -194,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         
         StringBuilder exercisesText = new StringBuilder();
         List<Exercise> exercises = db.exerciseDao().getByCategory(category);
+        Log.d(TAG, "Znaleziono " + exercises.size() + " ćwiczeń dla kategorii: " + category);
         
         int count = 0;
         for (Exercise e : exercises) {
@@ -203,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
         }
         
         if (exercisesText.length() == 0) {
-            tvRecommendedExercises.setText("Dzisiaj postaw na relaks i lekkie rozciąganie.");
+            tvRecommendedExercises.setText("Nie znaleziono ćwiczeń w kategorii: " + categoryDisplay + ". Dzisiaj postaw na relaks.");
+            Log.w(TAG, "Brak ćwiczeń w bazie dla kategorii: " + category);
         } else {
             tvRecommendedExercises.setText(exercisesText.toString().trim());
         }

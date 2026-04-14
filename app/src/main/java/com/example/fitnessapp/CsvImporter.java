@@ -41,7 +41,7 @@ public class CsvImporter {
                 else if (rawCategory.contains("kardio")) e.category = "kardio";
                 else if (rawCategory.contains("elastyczn") || rawCategory.contains("mobiln")) e.category = "mobilnosc";
                 else if (rawCategory.contains("rownowaga") || rawCategory.contains("równowaga")) e.category = "rownowaga";
-                else if (rawCategory.contains("postura") || rawCategory.contains("plecy")) e.category = "postura";
+                else if (rawCategory.contains("postura") || rawCategory.contains("plecy") || rawCategory.contains("postawe") || rawCategory.contains("postawę")) e.category = "postura";
                 else e.category = "mieszana";
 
                 // Poziom trudności (kolumna 4)

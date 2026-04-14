@@ -61,8 +61,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 findViewById(R.id.dot1),
                 findViewById(R.id.dot2),
                 findViewById(R.id.dot3),
-                findViewById(R.id.dot4),
-                findViewById(R.id.dot5)
+                findViewById(R.id.dot4)
         };
 
         OnboardingAdapter adapter = new OnboardingAdapter();
@@ -109,10 +108,6 @@ public class OnboardingActivity extends AppCompatActivity {
                 canExerciseSitting = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q5)).isChecked();
                 break;
             case 2:
-                intensity = ((RadioButton) holder.itemView.findViewById(R.id.rb_intensity_1)).isChecked() ? 1 : 2;
-                difficulty = ((RadioButton) holder.itemView.findViewById(R.id.rb_difficulty_1)).isChecked() ? 1 : 2;
-                break;
-            case 3:
                 int checkedGoalId = ((RadioGroup) holder.itemView.findViewById(R.id.rg_goal)).getCheckedRadioButtonId();
                 if (checkedGoalId == R.id.rb_goal_strength) goal = "siła";
                 else if (checkedGoalId == R.id.rb_goal_balance) goal = "równowaga";
@@ -121,7 +116,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 else if (checkedGoalId == R.id.rb_goal_posture) goal = "postura";
                 else if (checkedGoalId == R.id.rb_goal_mixed) goal = "mieszana";
                 break;
-            case 4:
+            case 3:
                 conditions.clear();
                 ViewGroup container = holder.itemView.findViewById(R.id.conditions_container);
                 for (int i = 0; i < container.getChildCount(); i++) {
@@ -147,8 +142,6 @@ public class OnboardingActivity extends AppCompatActivity {
         editor.putBoolean("needs_chair", needsChair);
         editor.putBoolean("can_exercise_bed", canExerciseBed);
         editor.putBoolean("can_exercise_sitting", canExerciseSitting);
-        editor.putInt("intensity", intensity);
-        editor.putInt("difficulty", difficulty);
         editor.putString("goal", goal);
         editor.putStringSet("conditions", conditions);
         editor.apply();
@@ -164,8 +157,6 @@ public class OnboardingActivity extends AppCompatActivity {
             updates.put("needs_chair", needsChair);
             updates.put("can_exercise_bed", canExerciseBed);
             updates.put("can_exercise_sitting", canExerciseSitting);
-            updates.put("intensity", intensity);
-            updates.put("difficulty", difficulty);
             updates.put("goal", goal);
             updates.put("conditions", new ArrayList<>(conditions));
 
@@ -203,7 +194,6 @@ public class OnboardingActivity extends AppCompatActivity {
         private final int[] layouts = {
                 R.layout.item_onboarding_step1,
                 R.layout.item_onboarding_step2,
-                R.layout.item_onboarding_step3,
                 R.layout.item_onboarding_step4,
                 R.layout.item_onboarding_step5
         };
@@ -218,7 +208,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull OnboardingViewHolder holder, int position) {
-            if (position == 4) {
+            if (position == 3) {
                 CheckBox cbNoConditions = holder.itemView.findViewById(R.id.cb_no_conditions);
                 ViewGroup container = holder.itemView.findViewById(R.id.conditions_container);
                 cbNoConditions.setOnCheckedChangeListener((buttonView, isChecked) -> {

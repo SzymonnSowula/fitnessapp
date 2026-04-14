@@ -207,12 +207,13 @@ public class MainActivity extends AppCompatActivity {
                         : "mieszana";
 
                     Log.d(TAG, "Rekomendowana kategoria: " + recommendedCategory);
-                    
-                    // Pobranie ćwiczeń z bazy w wątku tła
-                    List<Exercise> exercises = db.exerciseDao().getByCategory(recommendedCategory);
-                    Log.d(TAG, "Znaleziono " + exercises.size() + " ćwiczeń dla: " + recommendedCategory);
 
-                    runOnUiThread(() -> displayRecommendation(recommendedCategory, exercises));
+                    // Otwórz nowy ekran z listą ćwiczeń dla wybranej kategorii
+                    runOnUiThread(() -> {
+                        Intent intent = new Intent(MainActivity.this, RecommendationListActivity.class);
+                        intent.putExtra("category", recommendedCategory);
+                        startActivity(intent);
+                    });
 
                 } catch (Exception e) {
                     Log.e(TAG, "Błąd w wątku rekomendacji", e);

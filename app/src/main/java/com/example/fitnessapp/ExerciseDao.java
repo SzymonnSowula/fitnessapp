@@ -18,6 +18,9 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE category = :category COLLATE NOCASE")
     List<Exercise> getByCategory(String category);
 
+    @Query("SELECT * FROM exercises WHERE id = :id")
+    Exercise getById(int id);
+
     @Query("DELETE FROM exercises")
     void deleteAll();
 

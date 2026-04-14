@@ -69,7 +69,7 @@
     <string name="cond_recovery">Rekonwalescencja (po operacji)</string>
     <string name="cond_long_lying">Długotrwałe leżenie / zakrzepica</string>
     <string name="cond_instability">Niestabilność / poważna niestabilność</string>
-
+    
     <string name="welcome_personalized">Witaj %s!</string>
     <string name="finish">Zakończ</string>
     <string name="next">Dalej</string>
@@ -94,4 +94,17 @@
     <string name="nav_start">Start</string>
     <string name="nav_assistant">Asystent</string>
     <string name="nav_settings">Ustawienia</string>
+
+    <!-- New for recommendations & details -->
+    <string name="recommendations_title">Rekomendacje</string>
+    <string name="no_exercises_for_category">Nie znaleziono ćwiczeń w kategorii: %1$s</string>
+    <string name="exercise_subtitle_fmt">Kategoria: %1$s • Trudność: %2$d • Intensywność: %3$d</string>
+    <string name="exercise_details_title">Szczegóły ćwiczenia</string>
+    <string name="exercise_category_fmt">Kategoria: %1$s</string>
+    <string name="exercise_difficulty_fmt">Poziom trudności: %1$d</string>
+    <string name="exercise_intensity_fmt">Intensywność: %1$d</string>
+    <string name="exercise_flags_fmt">Krzesło: %1$s • W łóżku: %2$s • Siedząc: %3$s • Stanie: %4$s • Podłoga: %5$s</string>
+    <string name="exercise_impacts_fmt">Siła: %1$d • Elastyczność: %2$d • Kardio: %3$d • Postawa: %4$d</string>
+    <string name="yes">tak</string>
+    <string name="no">nie</string>
 </resources>

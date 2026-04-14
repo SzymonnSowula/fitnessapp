@@ -71,9 +71,21 @@ public class ModelRunner {
         try (OnnxTensor tensor = OnnxTensor.createTensor(env, input);
              OrtSession.Result result = session.run(Collections.singletonMap(inputName, tensor))) {
             
-            // Pobieramy probabilities (zwykle drugi element wyniku)
-            Object out = result.get(1).getValue();
-            Log.d(TAG, "Wyjście modelu: " + out.getClass().getName());
+            Log.d(TAG, "Liczba wyjść modelu: " + result.size());
+            for (int i = 0; i < result.size(); i++) {
+                Log.d(TAG, "Wyjście [" + i + "] typ: " + result.get(i).getValue().getClass().getName());
+            }
+
+            // Próbujemy znaleźć prawdopodobieństwa. 
+            // W modelach scikit-learn zwykle 0 to label, a 1 to probabilities.
+            Object out;
+            if (result.size() > 1) {
+                out = result.get(1).getValue();
+            } else {
+                out = result.get(0).getValue();
+            }
+            
+            Log.d(TAG, "Wybrane wyjście modelu: " + out.getClass().getName());
 
             if (out instanceof float[][]) {
                 return ((float[][]) out)[0];

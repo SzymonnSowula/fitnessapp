@@ -155,15 +155,17 @@ public class MainActivity extends AppCompatActivity {
     private void generateRecommendation(float energyLevel, float intensityPref, float difficultyPref) {
         if (modelRunner == null) {
             Log.e(TAG, "modelRunner is null");
+            Toast.makeText(this, "Model nie jest gotowy", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
+            Toast.makeText(this, "Generuję...", Toast.LENGTH_SHORT).show();
+            
             // Symulujemy cechy użytkownika/kontekstu (12 cech zgodnie z metadata.json)
             float[] moodFeatures = new float[12];
             // 4. "intensywnosc_num"
             // 5. "poziom_trudnosci_num"
-            // Indeksy od 0 do 11.
             moodFeatures[4] = energyLevel; // intensywnosc
             moodFeatures[5] = difficultyPref; // trudnosc
             
@@ -172,27 +174,38 @@ public class MainActivity extends AppCompatActivity {
             
             if (probs == null || probs.length == 0) {
                 Log.e(TAG, "Prawdopodobieństwa są puste");
+                Toast.makeText(this, "Model nie zwrócił wyników", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            Log.d(TAG, "Pobrane prawdopodobieństwa, długość: " + probs.length);
+            for (int i=0; i<probs.length; i++) Log.d(TAG, "Prob["+i+"] = " + probs[i]);
+
             List<String> classes = modelRunner.getClasses();
+            if (classes == null || classes.isEmpty()) {
+                Log.e(TAG, "Lista klas jest pusta!");
+                Toast.makeText(this, "Błąd konfiguracji klas modelu", Toast.LENGTH_SHORT).show();
+                return;
+            }
             
             int maxIdx = 0;
             for (int i = 1; i < probs.length; i++) {
                 if (probs[i] > probs[maxIdx]) maxIdx = i;
             }
             
-            if (classes != null && maxIdx < classes.size()) {
+            if (maxIdx < classes.size()) {
                 String recommendedCategory = classes.get(maxIdx);
                 Log.d(TAG, "Rekomendowana kategoria: " + recommendedCategory);
                 displayRecommendation(recommendedCategory);
             } else {
-                Log.e(TAG, "Błąd indeksowania klas: maxIdx=" + maxIdx + ", classes size=" + (classes != null ? classes.size() : "null"));
+                Log.e(TAG, "Błąd indeksowania klas: maxIdx=" + maxIdx + ", classes size=" + classes.size());
+                // Fallback do pierwszej klasy jeśli coś poszło nie tak z długością
+                displayRecommendation(classes.get(0));
             }
             
         } catch (Exception e) {
             Log.e(TAG, "Błąd podczas predict", e);
-            Toast.makeText(this, "Błąd generowania rekomendacji: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Błąd: " + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

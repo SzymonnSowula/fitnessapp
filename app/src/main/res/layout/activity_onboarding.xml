@@ -46,6 +46,22 @@
             android:layout_margin="4dp"
             android:background="@drawable/bg_button_primary"
             android:backgroundTint="@color/gray_dot" />
+
+        <View
+            android:id="@+id/dot4"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/bg_button_primary"
+            android:backgroundTint="@color/gray_dot" />
+
+        <View
+            android:id="@+id/dot5"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/bg_button_primary"
+            android:backgroundTint="@color/gray_dot" />
     </LinearLayout>
 
     <Button

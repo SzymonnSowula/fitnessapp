@@ -41,6 +41,8 @@ public class SettingsActivity extends AppCompatActivity {
         Button btnLogout = findViewById(R.id.btn_logout_settings);
         btnLogout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
+            // Czyścimy też lokalny onboarding przy wylogowaniu, aby umożliwić ponowny flow (zgodnie z logout w MainActivity)
+            getSharedPreferences("FitnessAppPrefs", MODE_PRIVATE).edit().clear().apply();
             startActivity(new Intent(SettingsActivity.this, SplashActivity.class));
             finishAffinity();
         });

@@ -22,6 +22,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private static final String PREFS_NAME = "FitnessAppPrefs";
     private static final String KEY_DEVICE_GUID = "deviceGuid";
+    private static final String KEY_ONBOARDING_COMPLETED = "onboarding_completed";
     private static final String TAG = "SplashActivity";
 
     private FirebaseAuth mAuth;
@@ -32,8 +33,19 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        // Dodatkowe sprawdzenie SharedPreferences dla onboardingu (wymóg lokalnego zapisu)
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean onboardingCompletedLocal = prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false);
+        
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+
+        // Jeśli onboarding lokalny jest ukończony, idziemy do MainActivity (chyba że użytkownik nie jest zalogowany)
+        if (onboardingCompletedLocal && mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            finish();
+            return;
+        }
 
         // Dodajemy logowanie stanu na wypadek gdyby Firebase "wisiał"
         Log.d(TAG, "onCreate: Initializing Firebase Auth...");
@@ -66,8 +78,12 @@ public class SplashActivity extends AppCompatActivity {
                     Toast.makeText(SplashActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     // Dodajmy informację dla użytkownika, że musi skonfigurować Firebase
                     if (task.getException() != null && task.getException().getMessage() != null 
-                        && task.getException().getMessage().contains("configuration")) {
-                        Toast.makeText(SplashActivity.this, "Sprawdź plik google-services.json w projekcie.", Toast.LENGTH_LONG).show();
+                        && (task.getException().getMessage().contains("configuration") || task.getException().getMessage().contains("google-services.json"))) {
+                        Toast.makeText(SplashActivity.this, "UWAGA: Brakuje pliku google-services.json w folderze app/ lub projekt Firebase nie jest skonfigurowany.", Toast.LENGTH_LONG).show();
+                    }
+                    if (task.getException() != null && task.getException().getMessage() != null 
+                        && task.getException().getMessage().contains("anonymous auth")) {
+                        Toast.makeText(SplashActivity.this, "Włącz 'Logowanie anonimowe' w Firebase Console -> Authentication -> Sign-in method.", Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -105,8 +121,12 @@ public class SplashActivity extends AppCompatActivity {
             })
             .addOnFailureListener(e -> {
                 Log.w(TAG, "initializeNewUser: failure", e);
-                String errorMsg = "Błąd inicjalizacji: " + e.getMessage();
+                String errorMsg = "Błąd inicjalizacji Firestore: " + e.getMessage();
                 Toast.makeText(SplashActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                
+                if (e.getMessage() != null && e.getMessage().contains("PERMISSION_DENIED")) {
+                    Toast.makeText(SplashActivity.this, "Sprawdź reguły (Rules) w Cloud Firestore: zezwól na odczyt/zapis.", Toast.LENGTH_LONG).show();
+                }
             });
     }
 
@@ -118,8 +138,12 @@ public class SplashActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "fetchUserData: Document exists");
-                        Boolean onboardingCompleted = document.getBoolean("onboardingCompleted");
-                        if (onboardingCompleted != null && onboardingCompleted) {
+                        
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                        boolean onboardingCompletedLocal = prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false);
+                        Boolean onboardingCompletedRemote = document.getBoolean("onboardingCompleted");
+                        
+                        if (onboardingCompletedLocal || (onboardingCompletedRemote != null && onboardingCompletedRemote)) {
                             Log.d(TAG, "fetchUserData: Navigating to MainActivity");
                             startActivity(new Intent(SplashActivity.this, MainActivity.class));
                         } else {
@@ -135,8 +159,13 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 } else {
                     Log.w(TAG, "fetchUserData: failure", task.getException());
-                    String errorMsg = "Błąd pobierania danych: " + (task.getException() != null ? task.getException().getMessage() : "Nieznany");
+                    String errorMsg = "Błąd pobierania danych z Firestore: " + (task.getException() != null ? task.getException().getMessage() : "Nieznany");
                     Toast.makeText(SplashActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                    
+                    if (task.getException() != null && task.getException().getMessage() != null 
+                        && task.getException().getMessage().contains("PERMISSION_DENIED")) {
+                        Toast.makeText(SplashActivity.this, "Sprawdź reguły (Rules) w Cloud Firestore.", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
     }

@@ -12,10 +12,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import android.content.SharedPreferences;
+import android.widget.TextView;
+
 public class MainActivity extends AppCompatActivity {
 
     // 1. Deklaracja zmiennej autoryzacji
     private FirebaseAuth mAuth;
+    private static final String PREFS_NAME = "FitnessAppPrefs";
+    private static final String KEY_USER_NAME = "user_name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
         // 2. Inicjalizacja Firebase (musi być przed jakimkolwiek użyciem mAuth!)
         mAuth = FirebaseAuth.getInstance();
+
+        // Spersonalizowane powitanie
+        TextView tvWelcome = findViewById(R.id.tv_welcome_message);
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String name = prefs.getString(KEY_USER_NAME, "");
+        if (!name.isEmpty()) {
+            tvWelcome.setText(getString(R.string.welcome_personalized, name) + "\nJak się dzisiaj czujesz?");
+        }
 
         // Obsługa czatu
         EditText etChatInput = findViewById(R.id.et_chat_input);
@@ -54,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         if (btnLogout != null) {
             btnLogout.setOnClickListener(v -> {
                 mAuth.signOut();
+                // Czyścimy lokalny onboarding przy wylogowaniu
+                getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit().clear().apply();
                 startActivity(new Intent(MainActivity.this, SplashActivity.class));
                 finishAffinity();
             });

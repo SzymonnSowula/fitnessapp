@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/conditions_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:text="@string/onboarding_step_5_title"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cb_no_conditions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/onboarding_no_conditions"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_back"
+            android:textStyle="bold" />
+        <CheckBox android:id="@+id/cb_low_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_low_back_pain" />
+        <CheckBox android:id="@+id/cb_upper_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_upper_back_pain" />
+        <CheckBox android:id="@+id/cb_spine_stiffness" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_spine_stiffness" />
+        <CheckBox android:id="@+id/cb_bad_posture" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_bad_posture" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_balance"
+            android:textStyle="bold" />
+        <CheckBox android:id="@+id/cb_fall_prevention" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_fall_prevention" />
+        <CheckBox android:id="@+id/cb_balance_issues" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_balance_issues" />
+        <CheckBox android:id="@+id/cb_balance_disorders" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_balance_disorders" />
+        <CheckBox android:id="@+id/cb_dizziness" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_dizziness" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_joints"
+            android:textStyle="bold" />
+        <CheckBox android:id="@+id/cb_arthritis" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_arthritis" />
+        <CheckBox android:id="@+id/cb_knee_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_knee_pain" />
+        <CheckBox android:id="@+id/cb_osteoporosis" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_osteoporosis" />
+        <CheckBox android:id="@+id/cb_hip_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_hip_pain" />
+        <CheckBox android:id="@+id/cb_ankle_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_ankle_pain" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_muscles"
+            android:textStyle="bold" />
+        <CheckBox android:id="@+id/cb_weak_legs" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_legs" />
+        <CheckBox android:id="@+id/cb_weak_hips" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_hips" />
+        <CheckBox android:id="@+id/cb_weak_glutes" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_glutes" />
+        <CheckBox android:id="@+id/cb_weak_calves" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_calves" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_upper"
+            android:textStyle="bold" />
+        <CheckBox android:id="@+id/cb_weak_arms" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_arms" />
+        <CheckBox android:id="@+id/cb_neck_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_neck_pain" />
+        <CheckBox android:id="@+id/cb_weak_back" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_core"
+            android:textStyle="bold" />
+        <CheckBox android:id="@+id/cb_weak_core" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_core" />
+        <CheckBox android:id="@+id/cb_weak_fitness" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_weak_fitness" />
+        <CheckBox android:id="@+id/cb_limited_mobility" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_limited_mobility" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_special"
+            android:textStyle="bold" />
+        <CheckBox android:id="@+id/cb_recovery" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_recovery" />
+        <CheckBox android:id="@+id/cb_long_lying" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_long_lying" />
+        <CheckBox android:id="@+id/cb_instability" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/cond_instability" />
+
+    </LinearLayout>
+</ScrollView>

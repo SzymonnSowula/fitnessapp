@@ -14,24 +14,32 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import android.content.SharedPreferences;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import java.util.HashSet;
+import java.util.Set;
 
 public class OnboardingActivity extends AppCompatActivity {
 
     private int currentStep = 0;
-
     private ViewPager2 viewPager;
     private View[] dots;
     private Button btnNext;
 
-    private final int[] bgColors = {R.color.blue_primary, R.color.purple_bg, R.color.orange_bg};
-    private final int[] icons = {R.drawable.ic_onboarding_1, R.drawable.ic_onboarding_2, R.drawable.ic_onboarding_3};
-    private final int[] titles = {R.string.onboarding_1_title, R.string.onboarding_2_title, R.string.onboarding_3_title};
-    private final int[] descs = {R.string.onboarding_1_desc, R.string.onboarding_2_desc, R.string.onboarding_3_desc};
+    private static final String PREFS_NAME = "FitnessAppPrefs";
+    private static final String KEY_ONBOARDING_COMPLETED = "onboarding_completed";
+    private static final String KEY_USER_NAME = "user_name";
+
+    // Pamięć tymczasowa na dane podczas onboardingu
+    private String userName = "";
+    private boolean canStand = false, canExerciseFloor = false, needsChair = false, canExerciseBed = false, canExerciseSitting = false;
+    private int intensity = 1, difficulty = 1;
+    private String goal = "siła";
+    private Set<String> conditions = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +52,26 @@ public class OnboardingActivity extends AppCompatActivity {
         dots = new View[]{
                 findViewById(R.id.dot1),
                 findViewById(R.id.dot2),
-                findViewById(R.id.dot3)
+                findViewById(R.id.dot3),
+                findViewById(R.id.dot4),
+                findViewById(R.id.dot5)
         };
 
         OnboardingAdapter adapter = new OnboardingAdapter();
         viewPager.setAdapter(adapter);
-        viewPager.setUserInputEnabled(true);
+        viewPager.setUserInputEnabled(false); // Blokujemy swipe, aby wymusić stepper
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 currentStep = position;
-                updateStep();
+                updateStepUI();
             }
         });
 
         btnNext.setOnClickListener(v -> {
+            saveCurrentStepData();
             if (currentStep < dots.length - 1) {
                 viewPager.setCurrentItem(currentStep + 1);
             } else {
@@ -69,23 +80,74 @@ public class OnboardingActivity extends AppCompatActivity {
         });
     }
 
-    private void completeOnboarding() {
-        String uid = FirebaseAuth.getInstance().getUid();
-        if (uid != null) {
-            FirebaseFirestore.getInstance().collection("users").document(uid)
-                .update("onboardingCompleted", true)
-                .addOnCompleteListener(task -> {
-                    startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
-                    finish();
-                });
-        } else {
-            // Failsafe
-            startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
-            finish();
+    private void saveCurrentStepData() {
+        OnboardingAdapter.OnboardingViewHolder holder = (OnboardingAdapter.OnboardingViewHolder) 
+                ((RecyclerView) viewPager.getChildAt(0)).findViewHolderForAdapterPosition(currentStep);
+        
+        if (holder == null) return;
+
+        switch (currentStep) {
+            case 0:
+                EditText etName = holder.itemView.findViewById(R.id.et_name);
+                if (etName != null) userName = etName.getText().toString().trim();
+                break;
+            case 1:
+                canStand = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q1)).isChecked();
+                canExerciseFloor = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q2)).isChecked();
+                needsChair = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q3)).isChecked();
+                canExerciseBed = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q4)).isChecked();
+                canExerciseSitting = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q5)).isChecked();
+                break;
+            case 2:
+                intensity = ((RadioButton) holder.itemView.findViewById(R.id.rb_intensity_1)).isChecked() ? 1 : 2;
+                difficulty = ((RadioButton) holder.itemView.findViewById(R.id.rb_difficulty_1)).isChecked() ? 1 : 2;
+                break;
+            case 3:
+                int checkedGoalId = ((RadioGroup) holder.itemView.findViewById(R.id.rg_goal)).getCheckedRadioButtonId();
+                if (checkedGoalId == R.id.rb_goal_strength) goal = "siła";
+                else if (checkedGoalId == R.id.rb_goal_balance) goal = "równowaga";
+                else if (checkedGoalId == R.id.rb_goal_mobility) goal = "mobilność";
+                else if (checkedGoalId == R.id.rb_goal_cardio) goal = "kardio";
+                else if (checkedGoalId == R.id.rb_goal_posture) goal = "postura";
+                else if (checkedGoalId == R.id.rb_goal_mixed) goal = "mieszana";
+                break;
+            case 4:
+                conditions.clear();
+                ViewGroup container = holder.itemView.findViewById(R.id.conditions_container);
+                for (int i = 0; i < container.getChildCount(); i++) {
+                    View child = container.getChildAt(i);
+                    if (child instanceof CheckBox) {
+                        CheckBox cb = (CheckBox) child;
+                        if (cb.isChecked() && cb.getId() != R.id.cb_no_conditions) {
+                            conditions.add(cb.getText().toString());
+                        }
+                    }
+                }
+                break;
         }
     }
 
-    private void updateStep() {
+    private void completeOnboarding() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(KEY_ONBOARDING_COMPLETED, true);
+        editor.putString(KEY_USER_NAME, userName);
+        editor.putBoolean("can_stand", canStand);
+        editor.putBoolean("can_exercise_floor", canExerciseFloor);
+        editor.putBoolean("needs_chair", needsChair);
+        editor.putBoolean("can_exercise_bed", canExerciseBed);
+        editor.putBoolean("can_exercise_sitting", canExerciseSitting);
+        editor.putInt("intensity", intensity);
+        editor.putInt("difficulty", difficulty);
+        editor.putString("goal", goal);
+        editor.putStringSet("conditions", conditions);
+        editor.apply();
+
+        startActivity(new Intent(OnboardingActivity.this, MainActivity.class));
+        finish();
+    }
+
+    private void updateStepUI() {
         int activeDotColor = ContextCompat.getColor(this, R.color.blue_primary);
         int inactiveDotColor = ContextCompat.getColor(this, R.color.gray_dot);
 
@@ -95,7 +157,7 @@ public class OnboardingActivity extends AppCompatActivity {
         }
 
         if (currentStep == dots.length - 1) {
-            btnNext.setText(R.string.start_now);
+            btnNext.setText(R.string.finish);
         } else {
             btnNext.setText(R.string.next);
         }
@@ -103,43 +165,61 @@ public class OnboardingActivity extends AppCompatActivity {
 
     private class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.OnboardingViewHolder> {
 
+        private final int[] layouts = {
+                R.layout.item_onboarding_step1,
+                R.layout.item_onboarding_step2,
+                R.layout.item_onboarding_step3,
+                R.layout.item_onboarding_step4,
+                R.layout.item_onboarding_step5
+        };
+
         @NonNull
         @Override
         public OnboardingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new OnboardingViewHolder(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_onboarding, parent, false)
+                    LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false)
             );
         }
 
         @Override
         public void onBindViewHolder(@NonNull OnboardingViewHolder holder, int position) {
-            holder.bind(position);
+            if (position == 4) {
+                CheckBox cbNoConditions = holder.itemView.findViewById(R.id.cb_no_conditions);
+                ViewGroup container = holder.itemView.findViewById(R.id.conditions_container);
+                cbNoConditions.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        for (int i = 0; i < container.getChildCount(); i++) {
+                            View child = container.getChildAt(i);
+                            if (child instanceof CheckBox && child.getId() != R.id.cb_no_conditions) {
+                                ((CheckBox) child).setChecked(false);
+                            }
+                        }
+                    }
+                });
+                for (int i = 0; i < container.getChildCount(); i++) {
+                    View child = container.getChildAt(i);
+                    if (child instanceof CheckBox && child.getId() != R.id.cb_no_conditions) {
+                        ((CheckBox) child).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                            if (isChecked) cbNoConditions.setChecked(false);
+                        });
+                    }
+                }
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return layouts[position];
         }
 
         @Override
         public int getItemCount() {
-            return titles.length;
+            return layouts.length;
         }
 
         class OnboardingViewHolder extends RecyclerView.ViewHolder {
-            private final FrameLayout iconContainer;
-            private final ImageView onboardingIcon;
-            private final TextView onboardingTitle;
-            private final TextView onboardingDesc;
-
             public OnboardingViewHolder(@NonNull View itemView) {
                 super(itemView);
-                iconContainer = itemView.findViewById(R.id.icon_container);
-                onboardingIcon = itemView.findViewById(R.id.onboarding_icon);
-                onboardingTitle = itemView.findViewById(R.id.onboarding_title);
-                onboardingDesc = itemView.findViewById(R.id.onboarding_desc);
-            }
-
-            public void bind(int position) {
-                iconContainer.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(itemView.getContext(), bgColors[position])));
-                onboardingIcon.setImageResource(icons[position]);
-                onboardingTitle.setText(titles[position]);
-                onboardingDesc.setText(descs[position]);
             }
         }
     }

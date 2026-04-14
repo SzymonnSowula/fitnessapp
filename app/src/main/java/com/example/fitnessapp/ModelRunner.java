@@ -70,20 +70,32 @@ public class ModelRunner {
         float[][] input = new float[][]{features};
         try (OnnxTensor tensor = OnnxTensor.createTensor(env, input);
              OrtSession.Result result = session.run(Collections.singletonMap(inputName, tensor))) {
-
-            // W modelach scikit-learn wyjście 1 to zazwyczaj lista map (prawdopodobieństwa)
-            // lub tablica float[][] w zależności od wersji skl2onnx i typu modelu.
-            // Sprawdzamy co mamy w result.get(1)
             Object out = result.get(1).getValue();
+            Log.d(TAG, "Wyjście modelu: " + out.getClass().getName());
             if (out instanceof float[][]) {
                 return ((float[][]) out)[0];
             } else if (out instanceof List) {
-                // Często skl2onnx zwraca List<Map<Long, Float>> dla klasyfikacji
-                List<Map<Long, Float>> list = (List<Map<Long, Float>>) out;
-                Map<Long, Float> map = list.get(0);
+                // Często skl2onnx zwraca List<Map<Long, Float>> lub List<Map<String, Float>>
+                List<Map<?, Float>> list = (List<Map<?, Float>>) out;
+                Map<?, Float> map = list.get(0);
                 float[] probs = new float[map.size()];
                 for (int i = 0; i < map.size(); i++) {
-                    probs[i] = map.get((long) i);
+                    // Próbujemy pobrać jako Long (domyślne dla etykiet liczbowych) lub String
+                    Object key = i;
+                    Float val = map.get((long) i);
+                    if (val == null) val = map.get(String.valueOf(i));
+                    // Jeśli klasy w ONNX to stringi ("kardio", "sila" itp.), mapa może mieć te stringi jako klucze
+                    // Ale zazwyczaj probabilities są indeksowane 0, 1, 2...
+                    if (val == null) {
+                        // Jeśli nadal null, spróbujmy iterować po mapie jeśli rozmiar się zgadza
+                        // To jest fallback dla nietypowych struktur
+                        int idx = 0;
+                        for (Float v : map.values()) {
+                            if (idx < probs.length) probs[idx++] = v;
+                        }
+                        return probs;
+                    }
+                    probs[i] = val;
                 }
                 return probs;
             } else {

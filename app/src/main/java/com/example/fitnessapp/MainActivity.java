@@ -153,31 +153,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void generateRecommendation(float energyLevel, float intensityPref, float difficultyPref) {
-        if (modelRunner == null) return;
+        if (modelRunner == null) {
+            Log.e(TAG, "modelRunner is null");
+            return;
+        }
 
         try {
-            // Symulujemy cechy użytkownika/kontekstu
+            // Symulujemy cechy użytkownika/kontekstu (12 cech zgodnie z metadata.json)
             float[] moodFeatures = new float[12];
+            // 4. "intensywnosc_num"
+            // 5. "poziom_trudnosci_num"
+            // Indeksy od 0 do 11.
             moodFeatures[4] = energyLevel; // intensywnosc
             moodFeatures[5] = difficultyPref; // trudnosc
-            // ... reszta zerowa dla uproszczenia
             
+            Log.d(TAG, "Wykonuję predict dla cech: energy=" + energyLevel + ", intensity=" + intensityPref);
             float[] probs = modelRunner.predict(moodFeatures);
+            
+            if (probs == null || probs.length == 0) {
+                Log.e(TAG, "Prawdopodobieństwa są puste");
+                return;
+            }
+
             List<String> classes = modelRunner.getClasses();
             
             int maxIdx = 0;
-            for (int i = 1; i < (probs != null ? probs.length : 0); i++) {
+            for (int i = 1; i < probs.length; i++) {
                 if (probs[i] > probs[maxIdx]) maxIdx = i;
             }
             
             if (classes != null && maxIdx < classes.size()) {
                 String recommendedCategory = classes.get(maxIdx);
+                Log.d(TAG, "Rekomendowana kategoria: " + recommendedCategory);
                 displayRecommendation(recommendedCategory);
+            } else {
+                Log.e(TAG, "Błąd indeksowania klas: maxIdx=" + maxIdx + ", classes size=" + (classes != null ? classes.size() : "null"));
             }
             
         } catch (Exception e) {
             Log.e(TAG, "Błąd podczas predict", e);
-            Toast.makeText(this, "Błąd generowania rekomendacji", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Błąd generowania rekomendacji: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

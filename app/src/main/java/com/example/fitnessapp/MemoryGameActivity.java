@@ -166,15 +166,15 @@ public class MemoryGameActivity extends AppCompatActivity {
         @Override
         public CardViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             CardView cardView = new CardView(parent.getContext());
-            int margin = 8;
+            int margin = 10;
             GridLayoutManager.LayoutParams params = new GridLayoutManager.LayoutParams(
                     GridLayoutManager.LayoutParams.MATCH_PARENT,
-                    300
+                    320
             );
             params.setMargins(margin, margin, margin, margin);
             cardView.setLayoutParams(params);
-            cardView.setRadius(12f);
-            cardView.setCardElevation(4f);
+            cardView.setRadius(16f);
+            cardView.setCardElevation(6f);
             cardView.setCardBackgroundColor(0xFFE0E0E0);
             return new CardViewHolder(cardView);
         }
@@ -202,7 +202,7 @@ public class MemoryGameActivity extends AppCompatActivity {
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT));
                 ivCard.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                ivCard.setPadding(24, 24, 24, 24);
+                ivCard.setPadding(32, 32, 32, 32);
                 itemView.addView(ivCard);
             }
 

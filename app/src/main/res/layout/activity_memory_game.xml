@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +15,9 @@
 
         <ImageView
             android:id="@+id/btn_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="12dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="14dp"
             android:src="@drawable/ic_back"
             app:tint="@color/black" />
 
@@ -28,7 +28,7 @@
             android:gravity="center"
             android:text="Memory"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textColor="@color/purple_icon"
-            android:textSize="20sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -46,28 +46,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="Ruchy: 0"
         android:textColor="@color/gray_text"
-        android:textSize="14sp" />
+        android:textSize="18sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cards"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:clipToPadding="false"
-        android:padding="8dp" />
+        android:padding="12dp" />
 
     <Button
         android:id="@+id/btn_restart"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/purple_icon"
         android:text="Zacznij od nowa"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

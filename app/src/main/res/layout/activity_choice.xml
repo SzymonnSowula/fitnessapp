@@ -5,74 +5,74 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="24dp"
     android:gravity="center">
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:src="@drawable/ic_assistant_logo"
         app:tint="@color/blue_primary" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="48dp"
         android:gravity="center"
         android:text="Co chcesz poćwiczyć?"
         android:textColor="@color/black"
-        android:textSize="28sp"
+        android:textSize="34sp"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="Wybierz jedną z opcji"
         android:textColor="@color/gray_text"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="56dp"
         android:orientation="vertical"
         android:gravity="center">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_body"
-            android:layout_width="280dp"
-            android:layout_height="140dp"
+            android:layout_width="320dp"
+            android:layout_height="160dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp"
             app:cardBackgroundColor="@color/green_bg"
             app:strokeColor="@color/green_border"
-            app:strokeWidth="2dp">
+            app:strokeWidth="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:padding="20dp">
+                android:padding="24dp">
 
                 <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:src="@drawable/ic_heart"
                     app:tint="@color/green_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:text="Ciało"
                     android:textColor="@color/black"
-                    android:textSize="24sp"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -80,44 +80,44 @@
                     android:layout_height="wrap_content"
                     android:text="Ćwiczenia fizyczne"
                     android:textColor="@color/gray_text"
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_mind"
-            android:layout_width="280dp"
-            android:layout_height="140dp"
-            android:layout_marginTop="24dp"
+            android:layout_width="320dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="32dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp"
             app:cardBackgroundColor="@color/purple_bg"
-            app:strokeColor="@color/purple_icon"
-            app:strokeWidth="2dp">
+            app:strokeColor="@color/purple_border"
+            app:strokeWidth="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:padding="20dp">
+                android:padding="24dp">
 
                 <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:src="@drawable/ic_brain"
                     app:tint="@color/purple_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:text="Umysł"
                     android:textColor="@color/black"
-                    android:textSize="24sp"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:text="Gry i łamigłówki"
                     android:textColor="@color/gray_text"
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

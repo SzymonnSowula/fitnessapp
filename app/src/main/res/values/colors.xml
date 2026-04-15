@@ -2,20 +2,22 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="blue_primary">#1A5DFF</color>
-    <color name="gray_text">#6C727F</color>
+    <color name="blue_primary">#2563EB</color>
+    <color name="blue_primary_dark">#1D4ED8</color>
+    <color name="gray_text">#4B5563</color>
     <color name="gray_dot">#D1D5DB</color>
-    <color name="green_bg">#E6F9F1</color>
-    <color name="green_icon">#10B981</color>
-    <color name="purple_bg">#F5F3FF</color>
-    <color name="purple_icon">#8B5CF6</color>
-    <color name="orange_bg">#FFF7ED</color>
-    <color name="orange_icon">#F97316</color>
-    <color name="light_gray_bg">#F3F4F6</color>
+    <color name="green_bg">#D1FAE5</color>
+    <color name="green_icon">#059669</color>
     <color name="green_border">#10B981</color>
+    <color name="purple_bg">#EDE9FE</color>
+    <color name="purple_icon">#7C3AED</color>
+    <color name="purple_border">#8B5CF6</color>
+    <color name="orange_bg">#FFEDD5</color>
+    <color name="orange_icon">#EA580C</color>
     <color name="orange_border">#F97316</color>
-    <color name="light_blue_bg">#F0F4FF</color>
-    <color name="red_bg">#FFF1F1</color>
+    <color name="light_gray_bg">#F3F4F6</color>
+    <color name="light_blue_bg">#DBEAFE</color>
+    <color name="red_bg">#FEE2E2</color>
     <color name="red_icon">#DC2626</color>
-    <color name="red_border">#DC2626</color>
+    <color name="red_border">#EF4444</color>
 </resources>

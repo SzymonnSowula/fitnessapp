@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Jeśli onboarding lokalny jest ukończony, idziemy do MainActivity (chyba że użytkownik nie jest zalogowany)
         if (onboardingCompletedLocal && mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, ChoiceActivity.class));
             finish();
             return;
         }
@@ -145,7 +145,7 @@ public class SplashActivity extends AppCompatActivity {
                         
                         if (onboardingCompletedLocal || (onboardingCompletedRemote != null && onboardingCompletedRemote)) {
                             Log.d(TAG, "fetchUserData: Navigating to MainActivity");
-                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                            startActivity(new Intent(SplashActivity.this, ChoiceActivity.class));
                         } else {
                             Log.d(TAG, "fetchUserData: Navigating to OnboardingActivity");
                             startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));

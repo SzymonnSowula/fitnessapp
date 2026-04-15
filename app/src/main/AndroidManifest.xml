@@ -36,6 +36,18 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".ChoiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MindGamesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MemoryGameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Game2048Activity"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity

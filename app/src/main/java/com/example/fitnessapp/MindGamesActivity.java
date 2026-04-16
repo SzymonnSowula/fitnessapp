@@ -12,15 +12,22 @@ public class MindGamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mind_games);
 
-        CardView cardMemory = findViewById(R.id.card_memory);
-        CardView card2048 = findViewById(R.id.card_2048);
-
-        cardMemory.setOnClickListener(v -> {
-            startActivity(new Intent(MindGamesActivity.this, MemoryGameActivity.class));
+        // Easy - go to EasyGamesActivity
+        CardView cardEasy = findViewById(R.id.card_mood_easy);
+        cardEasy.setOnClickListener(v -> {
+            startActivity(new Intent(MindGamesActivity.this, EasyGamesActivity.class));
         });
 
-        card2048.setOnClickListener(v -> {
-            startActivity(new Intent(MindGamesActivity.this, Game2048Activity.class));
+        // Medium - go to MediumGamesActivity
+        CardView cardMedium = findViewById(R.id.card_mood_medium);
+        cardMedium.setOnClickListener(v -> {
+            startActivity(new Intent(MindGamesActivity.this, MediumGamesActivity.class));
+        });
+
+        // Hard - go to HardGamesActivity
+        CardView cardHard = findViewById(R.id.card_mood_hard);
+        cardHard.setOnClickListener(v -> {
+            startActivity(new Intent(MindGamesActivity.this, HardGamesActivity.class));
         });
     }
 }

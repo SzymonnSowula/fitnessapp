@@ -3,6 +3,7 @@ package com.example.fitnessapp;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +18,7 @@ import java.util.List;
 public class MemoryGameActivity extends AppCompatActivity {
 
     private RecyclerView rvCards;
-    private TextView tvScore, tvMoves;
+    private TextView tvScore, tvMoves, tvTitle;
     private int score = 0;
     private int moves = 0;
     private CardAdapter adapter;
@@ -29,7 +30,9 @@ public class MemoryGameActivity extends AppCompatActivity {
             R.drawable.ic_heart,
             R.drawable.ic_mood_very_sad,
             R.drawable.ic_profile,
-            R.drawable.ic_settings
+            R.drawable.ic_settings,
+            R.drawable.ic_brain,
+            R.drawable.ic_home
     };
 
     @Override
@@ -40,30 +43,60 @@ public class MemoryGameActivity extends AppCompatActivity {
         rvCards = findViewById(R.id.rv_cards);
         tvScore = findViewById(R.id.tv_score);
         tvMoves = findViewById(R.id.tv_moves);
+        tvTitle = findViewById(R.id.tv_title);
+
+        // Get grid size from intent
+        int columns = getIntent().getIntExtra("EXTRA_COLUMNS", 4);
+        int rows = getIntent().getIntExtra("EXTRA_ROWS", 4);
+        int totalCards = columns * rows;
+        int pairs = totalCards / 2;
+
+        // Update title
+        tvTitle.setText("Memory " + columns + "x" + rows);
+
         tvScore.setText("0");
         tvMoves.setText("Ruchy: 0");
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_restart).setOnClickListener(v -> restartGame());
+        findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(columns, rows));
 
-        setupGame();
+        setupGame(columns, rows);
     }
 
-    private void setupGame() {
+    private void setupGame(int columns, int rows) {
         score = 0;
         moves = 0;
         tvScore.setText("0");
         tvMoves.setText("Ruchy: 0");
         isLocked = false;
 
-        List<Integer> cards = new ArrayList<>();
-        for (int img : cardImages) {
-            cards.add(img);
-            cards.add(img);
-        }
-        Collections.shuffle(cards);
+        int totalCards = columns * rows;
+        int pairs = totalCards / 2;
 
-        adapter = new CardAdapter(cards, new CardAdapter.OnCardClickListener() {
+        // Select enough images for pairs
+        List<Integer> selectedImages = new ArrayList<>();
+        for (int i = 0; i < pairs && i < cardImages.length; i++) {
+            selectedImages.add(cardImages[i]);
+            selectedImages.add(cardImages[i]);
+        }
+
+        // If we need more pairs than available images, duplicate with different approach
+        while (selectedImages.size() < totalCards) {
+            // Add variations by adding same images again but they'll be treated as different pairs
+            int extraIndex = (selectedImages.size() / 2) % cardImages.length;
+            selectedImages.add(cardImages[extraIndex]);
+            selectedImages.add(cardImages[extraIndex]);
+        }
+
+        Collections.shuffle(selectedImages);
+
+        // If we have too many, trim
+        while (selectedImages.size() > totalCards) {
+            selectedImages.remove(selectedImages.size() - 1);
+        }
+
+        final int finalColumns = columns;
+        adapter = new CardAdapter(selectedImages, new CardAdapter.OnCardClickListener() {
             @Override
             public void onCardClick(int position) {
                 if (!isLocked && !adapter.isCardFlipped(position) && !adapter.isCardRemoved(position)) {
@@ -73,7 +106,7 @@ public class MemoryGameActivity extends AppCompatActivity {
             }
         });
 
-        rvCards.setLayoutManager(new GridLayoutManager(this, 3));
+        rvCards.setLayoutManager(new GridLayoutManager(this, columns));
         rvCards.setAdapter(adapter);
     }
 
@@ -103,10 +136,6 @@ public class MemoryGameActivity extends AppCompatActivity {
                 }, 800);
             }
         }
-    }
-
-    private void restartGame() {
-        setupGame();
     }
 
     private static class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
@@ -166,10 +195,10 @@ public class MemoryGameActivity extends AppCompatActivity {
         @Override
         public CardViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             CardView cardView = new CardView(parent.getContext());
-            int margin = 10;
+            int margin = 6;
             GridLayoutManager.LayoutParams params = new GridLayoutManager.LayoutParams(
                     GridLayoutManager.LayoutParams.MATCH_PARENT,
-                    320
+                    200
             );
             params.setMargins(margin, margin, margin, margin);
             cardView.setLayoutParams(params);
@@ -202,7 +231,7 @@ public class MemoryGameActivity extends AppCompatActivity {
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT));
                 ivCard.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                ivCard.setPadding(32, 32, 32, 32);
+                ivCard.setPadding(24, 24, 24, 24);
                 itemView.addView(ivCard);
             }
 

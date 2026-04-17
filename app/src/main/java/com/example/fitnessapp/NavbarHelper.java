@@ -17,18 +17,18 @@ public class NavbarHelper {
 
         if (homeTab != null) {
             homeTab.setOnClickListener(v -> {
-                if (!(activity instanceof MainActivity)) {
-                    activity.startActivity(new Intent(activity, MainActivity.class));
-                    activity.finish();
+                if (!(activity instanceof ChoiceActivity)) {
+                    activity.startActivity(new Intent(activity, ChoiceActivity.class));
+                    if (!(activity instanceof MainActivity)) activity.finish();
                 }
             });
         }
 
         if (planTab != null) {
             planTab.setOnClickListener(v -> {
-                if (!(activity instanceof ChoiceActivity)) {
-                    activity.startActivity(new Intent(activity, ChoiceActivity.class));
-                    if (!(activity instanceof MainActivity)) activity.finish();
+                if (!(activity instanceof MainActivity)) {
+                    activity.startActivity(new Intent(activity, MainActivity.class));
+                    activity.finish();
                 }
             });
         }
@@ -51,11 +51,11 @@ public class NavbarHelper {
         int activeBg = Color.parseColor("#DBEAFE");
         int inactiveBg = Color.TRANSPARENT;
 
-        if (activity instanceof MainActivity) {
+        if (activity instanceof ChoiceActivity) {
             setTabActive(activity, R.id.nav_home_indicator, R.id.nav_home_icon, R.id.nav_home_text, activeColor, activeBg);
             setTabInactive(activity, R.id.nav_plan_indicator, R.id.nav_plan_icon, R.id.nav_plan_text, inactiveColor, inactiveBg);
             setTabInactive(activity, R.id.nav_settings_indicator, R.id.nav_settings_icon, R.id.nav_settings_text, inactiveColor, inactiveBg);
-        } else if (activity instanceof ChoiceActivity) {
+        } else if (activity instanceof MainActivity) {
             setTabInactive(activity, R.id.nav_home_indicator, R.id.nav_home_icon, R.id.nav_home_text, inactiveColor, inactiveBg);
             setTabActive(activity, R.id.nav_plan_indicator, R.id.nav_plan_icon, R.id.nav_plan_text, activeColor, activeBg);
             setTabInactive(activity, R.id.nav_settings_indicator, R.id.nav_settings_icon, R.id.nav_settings_text, inactiveColor, inactiveBg);

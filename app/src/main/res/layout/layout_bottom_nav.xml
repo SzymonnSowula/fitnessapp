@@ -15,7 +15,7 @@
         android:paddingBottom="20dp"
         android:gravity="center_vertical">
 
-        <!-- Home Tab -->
+        <!-- Home Tab (ChoiceActivity) -->
         <LinearLayout
             android:id="@+id/nav_home"
             android:layout_width="0dp"
@@ -33,7 +33,7 @@
                 android:layout_height="56dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="?android:attr/colorBackground">
+                app:cardBackgroundColor="@android:color/transparent">
                 <ImageView
                     android:id="@+id/nav_home_icon"
                     android:layout_width="32dp"
@@ -51,7 +51,7 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Plan Tab -->
+        <!-- Exercises Tab (MainActivity) -->
         <LinearLayout
             android:id="@+id/nav_plan"
             android:layout_width="0dp"
@@ -62,26 +62,27 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?android:attr/selectableItemBackground">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/nav_plan_indicator"
                 android:layout_width="80dp"
                 android:layout_height="56dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="?android:attr/colorBackground">
+                app:cardBackgroundColor="@android:color/transparent">
                 <ImageView
                     android:id="@+id/nav_plan_icon"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_plan"
+                    android:src="@drawable/ic_dumbbell"
                     app:tint="#64748B" />
             </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/nav_plan_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Plan"
+                android:text="ćwiczenia"
                 android:textColor="#64748B"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -97,13 +98,14 @@
             android:clickable="true"
             android:focusable="true"
             android:background="?android:attr/selectableItemBackground">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/nav_settings_indicator"
                 android:layout_width="80dp"
                 android:layout_height="56dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="?android:attr/colorBackground">
+                app:cardBackgroundColor="@android:color/transparent">
                 <ImageView
                     android:id="@+id/nav_settings_icon"
                     android:layout_width="32dp"

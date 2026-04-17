@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import com.google.android.material.card.MaterialCardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -25,14 +25,14 @@ public class MemoryGameActivity extends AppCompatActivity {
     private boolean isLocked = false;
 
     private final int[] cardImages = {
-            R.drawable.ic_mood_happy,
-            R.drawable.ic_mood_sad,
             R.drawable.ic_heart,
-            R.drawable.ic_mood_very_sad,
+            R.drawable.ic_brain,
+            R.drawable.ic_home,
             R.drawable.ic_profile,
             R.drawable.ic_settings,
-            R.drawable.ic_brain,
-            R.drawable.ic_home
+            R.drawable.ic_onboarding_1,
+            R.drawable.ic_onboarding_2,
+            R.drawable.ic_onboarding_3
     };
 
     @Override
@@ -55,10 +55,14 @@ public class MemoryGameActivity extends AppCompatActivity {
         tvTitle.setText("Memory " + columns + "x" + rows);
 
         tvScore.setText("0");
-        tvMoves.setText("Ruchy: 0");
+        tvMoves.setText("0");
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(columns, rows));
+
+        tvScore = findViewById(R.id.tv_score);
+        tvMoves = findViewById(R.id.tv_moves);
+        tvTitle = findViewById(R.id.tv_title);
 
         setupGame(columns, rows);
     }
@@ -66,8 +70,8 @@ public class MemoryGameActivity extends AppCompatActivity {
     private void setupGame(int columns, int rows) {
         score = 0;
         moves = 0;
-        tvScore.setText("0");
-        tvMoves.setText("Ruchy: 0");
+        if (tvScore != null) tvScore.setText("0");
+        if (tvMoves != null) tvMoves.setText("0");
         isLocked = false;
 
         int totalCards = columns * rows;
@@ -82,7 +86,7 @@ public class MemoryGameActivity extends AppCompatActivity {
 
         // If we need more pairs than available images, duplicate with different approach
         while (selectedImages.size() < totalCards) {
-            // Add variations by adding same images again but they'll be treated as different pairs
+            // Add variations by adding same images again they'll be treated as different pairs
             int extraIndex = (selectedImages.size() / 2) % cardImages.length;
             selectedImages.add(cardImages[extraIndex]);
             selectedImages.add(cardImages[extraIndex]);
@@ -96,12 +100,26 @@ public class MemoryGameActivity extends AppCompatActivity {
         }
 
         final int finalColumns = columns;
-        adapter = new CardAdapter(selectedImages, new CardAdapter.OnCardClickListener() {
+        adapter = new CardAdapter(selectedImages, rows, new CardAdapter.OnCardClickListener() {
             @Override
             public void onCardClick(int position) {
                 if (!isLocked && !adapter.isCardFlipped(position) && !adapter.isCardRemoved(position)) {
                     adapter.flipCard(position);
                     checkMatch();
+                }
+            }
+        });
+
+        // Calculate height to fit all rows on screen without scrolling
+        rvCards.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                int containerHeight = v.getHeight() - v.getPaddingTop() - v.getPaddingBottom();
+                if (containerHeight > 0) {
+                    int newItemHeight = containerHeight / rows;
+                    if (adapter.getItemHeight() != newItemHeight) {
+                        adapter.updateItemHeight(containerHeight);
+                    }
                 }
             }
         });
@@ -115,7 +133,7 @@ public class MemoryGameActivity extends AppCompatActivity {
         if (flipped.size() == 2) {
             isLocked = true;
             moves++;
-            tvMoves.setText("Ruchy: " + moves);
+            if (tvMoves != null) tvMoves.setText(String.valueOf(moves));
 
             int pos1 = flipped.get(0);
             int pos2 = flipped.get(1);
@@ -140,17 +158,29 @@ public class MemoryGameActivity extends AppCompatActivity {
 
     private static class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
         private final List<Integer> cards;
+        private final int rows;
         private final List<Integer> flippedPositions = new ArrayList<>();
         private final List<Integer> removedPositions = new ArrayList<>();
         private final OnCardClickListener listener;
+        private int itemHeight = 0;
 
         interface OnCardClickListener {
             void onCardClick(int position);
         }
 
-        CardAdapter(List<Integer> cards, OnCardClickListener listener) {
+        CardAdapter(List<Integer> cards, int rows, OnCardClickListener listener) {
             this.cards = cards;
+            this.rows = rows;
             this.listener = listener;
+        }
+
+        public int getItemHeight() {
+            return itemHeight;
+        }
+
+        void updateItemHeight(int containerHeight) {
+            this.itemHeight = containerHeight / rows;
+            notifyDataSetChanged();
         }
 
         boolean isCardFlipped(int position) {
@@ -194,24 +224,41 @@ public class MemoryGameActivity extends AppCompatActivity {
 
         @Override
         public CardViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
-            CardView cardView = new CardView(parent.getContext());
-            int margin = 6;
+            MaterialCardView cardView = new MaterialCardView(parent.getContext());
+            
+            float density = parent.getContext().getResources().getDisplayMetrics().density;
+            int marginPx = (int) (6 * density); // Slightly smaller margin to save space
+            
+            int displayHeight = itemHeight > 0 ? (itemHeight - (marginPx * 2)) : ViewGroup.LayoutParams.WRAP_CONTENT;
+            
             GridLayoutManager.LayoutParams params = new GridLayoutManager.LayoutParams(
                     GridLayoutManager.LayoutParams.MATCH_PARENT,
-                    200
+                    displayHeight
             );
-            params.setMargins(margin, margin, margin, margin);
+            params.setMargins(marginPx, marginPx, marginPx, marginPx);
             cardView.setLayoutParams(params);
-            cardView.setRadius(16f);
-            cardView.setCardElevation(6f);
-            cardView.setCardBackgroundColor(0xFFE0E0E0);
+            cardView.setRadius(32f * density); // Adaptive radius
+            cardView.setCardElevation(2f * density);
+            cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
             return new CardViewHolder(cardView);
         }
 
         @Override
         public void onBindViewHolder(CardViewHolder holder, int position) {
-            boolean isFlipped = isCardFlipped(position) || isCardRemoved(position);
-            holder.bind(cards.get(position), isFlipped, () -> listener.onCardClick(position));
+            if (itemHeight > 0) {
+                ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+                float density = holder.itemView.getContext().getResources().getDisplayMetrics().density;
+                int marginPx = (int) (4 * density); // Consistent margin
+                int calculatedHeight = itemHeight - (marginPx * 2);
+                if (params.height != calculatedHeight) {
+                    params.height = calculatedHeight;
+                    holder.itemView.setLayoutParams(params);
+                }
+            }
+            
+            boolean isFlipped = isCardFlipped(position);
+            boolean isRemoved = isCardRemoved(position);
+            holder.bind(cards.get(position), isFlipped, isRemoved, () -> listener.onCardClick(position));
         }
 
         @Override
@@ -220,10 +267,10 @@ public class MemoryGameActivity extends AppCompatActivity {
         }
 
         static class CardViewHolder extends RecyclerView.ViewHolder {
-            private final CardView cardView;
+            private final MaterialCardView cardView;
             private final ImageView ivCard;
 
-            CardViewHolder(CardView itemView) {
+            CardViewHolder(MaterialCardView itemView) {
                 super(itemView);
                 this.cardView = itemView;
                 ivCard = new ImageView(itemView.getContext());
@@ -231,17 +278,35 @@ public class MemoryGameActivity extends AppCompatActivity {
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT));
                 ivCard.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                ivCard.setPadding(24, 24, 24, 24);
                 itemView.addView(ivCard);
             }
 
-            void bind(int imageRes, boolean isFlipped, Runnable onClick) {
-                if (isFlipped) {
+            void bind(int imageRes, boolean isFlipped, boolean isRemoved, Runnable onClick) {
+                // Adjust padding based on card size to ensure icons are visible but not too large
+                int height = cardView.getLayoutParams().height;
+                int p = height / 5; // Reduced padding to ensure icon visibility on flatter cards
+                if (p < 12) p = 12;
+                if (p > 48) p = 48;
+                ivCard.setPadding(p, p, p, p);
+
+                if (isRemoved) {
+                    ivCard.setVisibility(View.INVISIBLE);
+                    cardView.setVisibility(View.INVISIBLE);
+                } else if (isFlipped) {
+                    ivCard.setVisibility(View.VISIBLE);
                     ivCard.setImageResource(imageRes);
-                    cardView.setCardBackgroundColor(0xFFF0F4FF);
+                    ivCard.setColorFilter(0xFFFFFFFF); // White icon on dark blue background
+                    cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFF004A99)); // Dark blue for active/flipped
+                    cardView.setStrokeWidth(0);
                 } else {
-                    ivCard.setImageResource(android.R.drawable.ic_menu_help);
-                    cardView.setCardBackgroundColor(0xFFE0E0E0);
+                    ivCard.setVisibility(View.VISIBLE);
+                    // Use a question mark icon if available, otherwise fallback
+                    ivCard.setImageResource(R.drawable.ic_onboarding_3);
+                    ivCard.setColorFilter(0xFF004A99); // Dark blue icon on white background
+                    cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
+                    // Add stroke/border
+                    cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
+                    cardView.setStrokeWidth(6);
                 }
                 cardView.setOnClickListener(v -> onClick.run());
             }

@@ -17,24 +17,23 @@ public class ColorTapActivity extends AppCompatActivity {
     public static final int DIFFICULTY_MEDIUM = 1;
     public static final int DIFFICULTY_HARD = 2;
 
-    private LinearLayout containerCircles;
-    private TextView tvScore, tvLevel, tvResult, tvInstruction;
+    private View containerGrid;
+    private TextView tvScore, tvLevel, tvResult, tvInstruction, tvTitle;
+    private LinearLayout indicatorContainer;
     private int score = 0;
     private int level = 1;
     private int difficulty = DIFFICULTY_EASY;
 
-    // Store sequence as INDICES (0,1,2,3) not color values
     private List<Integer> colorSequence = new ArrayList<>();
     private List<Integer> userSequence = new ArrayList<>();
     private List<CardView> colorCards = new ArrayList<>();
     private boolean isShowingSequence = false;
 
-    // Colors for the game (index 0=blue, 1=green, 2=orange, 3=purple)
     private final int[] colors = {
-            0xFF2563EB, // blue
-            0xFF059669, // green
-            0xFFEA580C, // orange
-            0xFF7C3AED  // purple
+            0xFF004A99, // blue
+            0xFF057A32, // green
+            0xFF994A00, // orange
+            0xFF6355B2  // purple
     };
 
     @Override
@@ -42,177 +41,135 @@ public class ColorTapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_tap);
 
-        containerCircles = findViewById(R.id.container_circles);
+        containerGrid = findViewById(R.id.container_grid);
         tvScore = findViewById(R.id.tv_score);
         tvLevel = findViewById(R.id.tv_level);
-        tvResult = findViewById(R.id.tv_result);
         tvInstruction = findViewById(R.id.tv_instruction);
+        tvTitle = findViewById(R.id.tv_title);
+        indicatorContainer = findViewById(R.id.indicator_container);
 
-        // Get difficulty from intent
         difficulty = getIntent().getIntExtra(EXTRA_DIFFICULTY, DIFFICULTY_EASY);
 
-        // Set title based on difficulty
-        String[] titles = {"Łatwe - Kolory", "Średnie - Kolory", "Trudne - Kolory"};
-        ((TextView) findViewById(R.id.tv_title)).setText(titles[difficulty]);
+        tvScore.setText("Wynik: 0");
+        tvLevel.setText("Poziom 1");
 
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        findViewById(R.id.btn_back_game).setOnClickListener(v -> finish());
         findViewById(R.id.btn_restart).setOnClickListener(v -> restartGame());
 
+        setupTiles();
         startLevel();
+    }
+
+    private void setupTiles() {
+        colorCards.clear();
+        colorCards.add(findViewById(R.id.tile_1));
+        colorCards.add(findViewById(R.id.tile_2));
+        colorCards.add(findViewById(R.id.tile_3));
+        colorCards.add(findViewById(R.id.tile_4));
+
+        for (int i = 0; i < colorCards.size(); i++) {
+            final int index = i;
+            colorCards.get(i).setOnClickListener(v -> {
+                if (!isShowingSequence) {
+                    onColorTapped(index);
+                }
+            });
+        }
     }
 
     private void startLevel() {
         userSequence.clear();
-        isShowingSequence = true; // Block input during sequence showing
-        tvResult.setVisibility(View.INVISIBLE);
-        tvInstruction.setText("Patrz uważnie...");
+        isShowingSequence = true;
+        tvTitle.setText("Patrz!");
+        tvInstruction.setText("Zapamiętaj sekwencję...");
+        updateIndicators();
 
-        // Generate sequence based on difficulty
-        int minLength, maxLength, delay;
+        int minLength = 2, maxLength = 4, delay = 1000;
         switch (difficulty) {
-            case DIFFICULTY_EASY:
-                minLength = 2;
-                maxLength = 3;
-                delay = 1200;
-                break;
-            case DIFFICULTY_MEDIUM:
-                minLength = 3;
-                maxLength = 4;
-                delay = 900;
-                break;
-            case DIFFICULTY_HARD:
-            default:
-                minLength = 4;
-                maxLength = 6;
-                delay = 600;
-                break;
+            case DIFFICULTY_EASY: minLength = 2; maxLength = 4; delay = 1200; break;
+            case DIFFICULTY_MEDIUM: minLength = 3; maxLength = 6; delay = 900; break;
+            case DIFFICULTY_HARD: minLength = 4; maxLength = 8; delay = 700; break;
         }
 
-        // Level progression: increase sequence length
         int sequenceLength = Math.min(minLength + level - 1, maxLength);
-
-        // Build the sequence immediately so it's ready before input is allowed
         colorSequence.clear();
         for (int i = 0; i < sequenceLength; i++) {
-            int randomIndex = (int) (Math.random() * colors.length);
-            colorSequence.add(randomIndex);
+            colorSequence.add((int) (Math.random() * colors.length));
         }
 
-        setupColorCircles();
         showSequence(delay);
-    }
-
-    private void setupColorCircles() {
-        containerCircles.removeAllViews();
-        colorCards.clear();
-
-        int circleSize = 140;
-        int margin = 20;
-
-        // Create 2x2 grid of colored circles
-        for (int row = 0; row < 2; row++) {
-            LinearLayout rowLayout = new LinearLayout(this);
-            rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ));
-            rowLayout.setGravity(android.view.Gravity.CENTER);
-
-            for (int col = 0; col < 2; col++) {
-                final int colorIndex = row * 2 + col;
-
-                CardView cardView = new CardView(this);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(circleSize, circleSize);
-                params.setMargins(margin, margin, margin, margin);
-                cardView.setLayoutParams(params);
-                cardView.setRadius(70f);
-                cardView.setCardElevation(6f);
-                cardView.setCardBackgroundColor(colors[colorIndex]);
-                cardView.setClickable(true);
-                cardView.setFocusable(true);
-
-                // Click listener passes the COLOR INDEX
-                final int index = colorIndex;
-                cardView.setOnClickListener(v -> {
-                    if (!isShowingSequence) {
-                        onColorTapped(index);
-                    }
-                });
-
-                colorCards.add(cardView);
-                rowLayout.addView(cardView);
-            }
-            containerCircles.addView(rowLayout);
-        }
     }
 
     private void showSequence(int delayMs) {
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             int currentIndex = 0;
-
             @Override
             public void run() {
                 if (currentIndex < colorSequence.size()) {
-                    int colorIndexToShow = colorSequence.get(currentIndex);
-                    flashColor(colorIndexToShow);
+                    flashColor(colorSequence.get(currentIndex));
                     currentIndex++;
                     handler.postDelayed(this, delayMs);
                 } else {
-                    // Sequence done showing - allow input
                     isShowingSequence = false;
+                    tvTitle.setText("Dobrze!");
                     tvInstruction.setText("Powtórz sekwencję!");
                 }
             }
         };
-        handler.postDelayed(runnable, 500);
+        handler.postDelayed(runnable, 800);
     }
 
-    private void flashColor(int colorIndex) {
-        if (colorIndex < 0 || colorIndex >= colorCards.size()) return;
-
-        CardView card = colorCards.get(colorIndex);
-        int originalColor = colors[colorIndex];
-        card.setCardBackgroundColor(0xFFFFFFFF);
-
-        new Handler().postDelayed(() -> card.setCardBackgroundColor(originalColor), 400);
+    private void flashColor(int index) {
+        CardView card = colorCards.get(index);
+        card.setAlpha(0.4f);
+        new Handler().postDelayed(() -> card.setAlpha(1.0f), 400);
     }
 
-    private void onColorTapped(int colorIndex) {
-        userSequence.add(colorIndex);
-
-        // Flash the tapped color
-        CardView card = colorCards.get(colorIndex);
-        int originalColor = colors[colorIndex];
-        card.setCardBackgroundColor(0xFFFFFFFF);
-        new Handler().postDelayed(() -> card.setCardBackgroundColor(originalColor), 200);
+    private void onColorTapped(int index) {
+        userSequence.add(index);
+        flashColor(index);
+        updateIndicators();
 
         int checkIndex = userSequence.size() - 1;
-
-        // Check if correct
         if (userSequence.get(checkIndex) != colorSequence.get(checkIndex)) {
-            // Wrong!
-            isShowingSequence = true; // Block further input
-            tvResult.setText("Błąd! Spróbuj ponownie.");
-            tvResult.setTextColor(getColor(R.color.red_icon));
-            tvResult.setVisibility(View.VISIBLE);
-
-            new Handler().postDelayed(() -> startLevel(), 1500);
+            isShowingSequence = true;
+            tvTitle.setText("Ups!");
+            tvInstruction.setText("Spróbuj jeszcze raz.");
+            new Handler().postDelayed(this::startLevel, 1500);
             return;
         }
 
-        // Check if sequence complete
         if (userSequence.size() == colorSequence.size()) {
-            isShowingSequence = true; // Block further input
-            score += colorSequence.size() * 10;
+            isShowingSequence = true;
+            score += colorSequence.size() * 50;
             level++;
             tvScore.setText("Wynik: " + score);
-            tvLevel.setText("Poziom: " + level);
-            tvResult.setText("Dobrze!");
-            tvResult.setTextColor(getColor(R.color.green_icon));
-            tvResult.setVisibility(View.VISIBLE);
+            tvLevel.setText("Poziom " + level);
+            tvTitle.setText("Świetnie!");
+            new Handler().postDelayed(this::startLevel, 1500);
+        }
+    }
 
-            new Handler().postDelayed(() -> startLevel(), 1500);
+    private void updateIndicators() {
+        indicatorContainer.removeAllViews();
+        int total = colorSequence.size();
+        int current = userSequence.size();
+        for (int i = 0; i < total; i++) {
+            View view = new View(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    (int)(32 * getResources().getDisplayMetrics().density),
+                    (int)(8 * getResources().getDisplayMetrics().density)
+            );
+            params.setMargins(8, 0, 8, 0);
+            view.setLayoutParams(params);
+            if (i < current) {
+                view.setBackgroundResource(R.drawable.bg_indicator_active);
+                view.getBackground().setTint(0xFF057A32);
+            } else {
+                view.setBackgroundResource(R.drawable.bg_indicator_inactive);
+            }
+            indicatorContainer.addView(view);
         }
     }
 
@@ -220,7 +177,7 @@ public class ColorTapActivity extends AppCompatActivity {
         score = 0;
         level = 1;
         tvScore.setText("Wynik: 0");
-        tvLevel.setText("Poziom: 1");
+        tvLevel.setText("Poziom 1");
         startLevel();
     }
 }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_conditions"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/conditions_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Twoje schorzenia"
+                android:textColor="#004A99"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="Zaktualizuj swoje problemy zdrowotne, aby lepiej dopasować ćwiczenia."
+                android:textColor="#64748B"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/cb_no_conditions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_checkbox_onboarding"
+                android:button="@null"
+                android:padding="20dp"
+                android:text="Brak schorzeń"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Group: Back -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="PLECY I KRĘGOSŁUP"
+                android:textColor="#64748B"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+            <CheckBox android:id="@+id/cb_low_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Ból dolnego odcinka pleców" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_upper_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Ból górnego odcinka pleców" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_spine_stiffness" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Sztywność kręgosłupa" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_bad_posture" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Wady postawy" android:textSize="18sp" android:textColor="@color/black" />
+
+            <!-- Group: Balance -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="RÓWNOWAGA"
+                android:textColor="#64748B"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+            <CheckBox android:id="@+id/cb_fall_prevention" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Profilaktyka upadków" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_balance_issues" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Problemy z utrzymaniem równowagi" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_balance_disorders" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Zaburzenia błędnika" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_dizziness" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Zawroty głowy" android:textSize="18sp" android:textColor="@color/black" />
+
+            <!-- Group: Joints -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="STAWY I KOŚCI"
+                android:textColor="#64748B"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+            <CheckBox android:id="@+id/cb_arthritis" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Choroba zwyrodnieniowa stawów" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_knee_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Ból kolan" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_osteoporosis" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Osteoporoza" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_hip_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Ból bioder" android:textSize="18sp" android:textColor="@color/black" />
+            <CheckBox android:id="@+id/cb_ankle_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="Ból stawu skokowego" android:textSize="18sp" android:textColor="@color/black" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_save_conditions"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_margin="24dp"
+        android:backgroundTint="#004A99"
+        android:text="ZAPISZ ZMIANY"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

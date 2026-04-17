@@ -28,11 +28,11 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private int currentIndex = 0;
 
     private TextView tvProgress;
+    private TextView tvPercentage;
     private ProgressBar progressExercise;
-    private TextView tvExerciseCategory;
     private TextView tvExerciseName;
-    private TextView tvDifficulty;
-    private TextView tvIntensity;
+    private TextView tvDifficultyIcons;
+    private TextView tvDifficultyText;
     private TextView tvDescription;
     private TextView tvContraindicationsLabel;
     private TextView tvContraindications;
@@ -44,12 +44,12 @@ public class SingleExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_exercise);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Ćwiczenia");
-        }
-
         initViews();
+        
+        // Hide standard ActionBar if exists since we have custom header
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         int moodType = getIntent().getIntExtra(EXTRA_MOOD_TYPE, MOOD_SAD);
 
@@ -99,8 +99,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                 currentIndex++;
                 showExercise(currentIndex);
             } else {
-                Toast.makeText(this, "To już ostatnie ćwiczenie!", Toast.LENGTH_SHORT).show();
-                btnNext.setEnabled(false);
+                finish(); // Finish training
             }
         });
 
@@ -124,11 +123,11 @@ public class SingleExerciseActivity extends AppCompatActivity {
 
     private void initViews() {
         tvProgress = findViewById(R.id.tv_progress);
+        tvPercentage = findViewById(R.id.tv_percentage);
         progressExercise = findViewById(R.id.progress_exercise);
-        tvExerciseCategory = findViewById(R.id.tv_exercise_category);
         tvExerciseName = findViewById(R.id.tv_exercise_name);
-        tvDifficulty = findViewById(R.id.tv_difficulty);
-        tvIntensity = findViewById(R.id.tv_intensity);
+        tvDifficultyIcons = findViewById(R.id.tv_difficulty_icons);
+        tvDifficultyText = findViewById(R.id.tv_difficulty_text);
         tvDescription = findViewById(R.id.tv_description);
         tvContraindicationsLabel = findViewById(R.id.tv_contraindications_label);
         tvContraindications = findViewById(R.id.tv_contraindications);
@@ -139,16 +138,25 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private void showExercise(int index) {
         Exercise e = exercises.get(index);
 
-        tvProgress.setText(String.format("Ćwiczenie %d z %d", index + 1, exercises.size()));
-        progressExercise.setMax(exercises.size());
-        progressExercise.setProgress(index + 1);
+        int currentNum = index + 1;
+        int totalNum = exercises.size();
+        int progress = (int) (((float) currentNum / totalNum) * 100);
 
-        String categoryDisplay = e.category != null ? e.category.toUpperCase() : "INNE";
-        tvExerciseCategory.setText(categoryDisplay);
+        tvProgress.setText(String.format("ĆWICZENIE %d Z %d", currentNum, totalNum));
+        tvPercentage.setText(String.format("%d%%", progress));
+        progressExercise.setProgress(progress);
 
         tvExerciseName.setText(e.name);
-        tvDifficulty.setText(getStars((int) e.poziomTrudnosciNum));
-        tvIntensity.setText(getStars((int) e.intensywnoscNum));
+        
+        // Map numerical difficulty to stars and text
+        int diff = (int) e.poziomTrudnosciNum;
+        tvDifficultyIcons.setText(getDifficultyIcons(diff));
+        tvDifficultyText.setText(getDifficultyText(diff));
+        
+        // Styling based on difficulty
+        int diffColor = getDifficultyColor(diff);
+        tvDifficultyIcons.setTextColor(diffColor);
+        tvDifficultyText.setTextColor(diffColor);
 
         String desc = e.opis != null && !e.opis.trim().isEmpty() ? e.opis : "Brak opisu dla tego ćwiczenia.";
         tvDescription.setText(desc);
@@ -163,23 +171,34 @@ public class SingleExerciseActivity extends AppCompatActivity {
             tvContraindications.setVisibility(View.GONE);
         }
 
-        // Aktualizuj przycisk
+        // Update button
         if (index >= exercises.size() - 1) {
-            btnNext.setText("Ostatnie ćwiczenie");
-            btnNext.setEnabled(true);
+            btnNext.setText("ZAKOŃCZ TRENING");
+            btnFinish.setVisibility(View.GONE);
         } else {
-            btnNext.setText("Następne ćwiczenie");
-            btnNext.setEnabled(true);
+            btnNext.setText("NASTĘPNE ĆWICZENIE");
+            btnFinish.setVisibility(View.VISIBLE);
         }
     }
 
-    private String getStars(int value) {
-        if (value <= 0) return "☆☆☆☆☆";
+    private String getDifficultyIcons(int value) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 5; i++) {
-            sb.append(i < value ? "★" : "☆");
+            sb.append(i < value ? "⤢ " : "⤢ "); // Using the same icon but can change style via color
         }
-        return sb.toString();
+        return sb.toString().trim();
+    }
+
+    private String getDifficultyText(int value) {
+        if (value <= 2) return "Łatwe";
+        if (value <= 3) return "Średnie";
+        return "Trudne";
+    }
+
+    private int getDifficultyColor(int value) {
+        if (value <= 2) return 0xFF057A32; // Green
+        if (value <= 3) return 0xFF994A00; // Orange
+        return 0xFFEF4444; // Red
     }
 
     @Override

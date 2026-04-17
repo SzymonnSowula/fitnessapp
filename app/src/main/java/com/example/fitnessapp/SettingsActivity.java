@@ -31,9 +31,9 @@ public class SettingsActivity extends AppCompatActivity {
         // Obsługa kliknięć w opcje
         findViewById(R.id.tv_change_name).setOnClickListener(v -> 
             Toast.makeText(this, "Funkcja zmiany imienia będzie dostępna wkrótce", Toast.LENGTH_SHORT).show());
-        findViewById(R.id.tv_change_password).setOnClickListener(v -> 
-            Toast.makeText(this, "Funkcja zmiany hasła będzie dostępna wkrótce", Toast.LENGTH_SHORT).show());
-        findViewById(R.id.tv_notification_settings).setOnClickListener(v -> 
-            Toast.makeText(this, "Ustawienia powiadomień będą dostępne wkrótce", Toast.LENGTH_SHORT).show());
+        
+        findViewById(R.id.tv_edit_conditions).setOnClickListener(v -> {
+            startActivity(new Intent(SettingsActivity.this, EditConditionsActivity.class));
+        });
     }
 }

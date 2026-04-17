@@ -48,6 +48,9 @@
             android:name=".Game2048Activity"
             android:exported="false" />
         <activity
+            android:name=".EditConditionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity

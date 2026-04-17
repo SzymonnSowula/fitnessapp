@@ -61,33 +61,14 @@
                         android:background="#E2E8F0" />
 
                     <TextView
-                        android:id="@+id/tv_change_password"
+                        android:id="@+id/tv_edit_conditions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
                         android:padding="24dp"
-                        android:text="Zmień hasło"
-                        android:textColor="#0F172A"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="24dp"
-                        android:background="#E2E8F0" />
-
-                    <TextView
-                        android:id="@+id/tv_notification_settings"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:padding="24dp"
-                        android:text="Powiadomienia"
+                        android:text="Moje schorzenia"
                         android:textColor="#0F172A"
                         android:textSize="22sp"
                         android:textStyle="bold" />

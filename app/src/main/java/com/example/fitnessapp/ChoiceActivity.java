@@ -12,11 +12,15 @@ public class ChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
 
+        // Inicjalizacja Navbar
+        NavbarHelper.initNavbar(this);
+
         CardView cardBody = findViewById(R.id.card_body);
         CardView cardMind = findViewById(R.id.card_mind);
 
         cardBody.setOnClickListener(v -> {
-            startActivity(new Intent(ChoiceActivity.this, MainActivity.class));
+            // "Ciało" przekierowuje do głównej listy rekomendacji (można zmienić na konkretną akcję)
+            startActivity(new Intent(ChoiceActivity.this, RecommendationListActivity.class));
         });
 
         cardMind.setOnClickListener(v -> {

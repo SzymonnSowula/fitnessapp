@@ -18,7 +18,8 @@
         android:id="@+id/dots_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/btn_next"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,47 +27,50 @@
 
         <View
             android:id="@+id/dot1"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_button_primary" />
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_indicator_active" />
 
         <View
             android:id="@+id/dot2"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_button_primary"
-            android:backgroundTint="@color/gray_dot" />
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_indicator_inactive" />
 
         <View
             android:id="@+id/dot3"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_button_primary"
-            android:backgroundTint="@color/gray_dot" />
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_indicator_inactive" />
 
         <View
             android:id="@+id/dot4"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_button_primary"
-            android:backgroundTint="@color/gray_dot" />
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_indicator_inactive" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_margin="24dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/bg_button_primary"
+        android:drawableEnd="@drawable/ic_chevron_right"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent" />
 

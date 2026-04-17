@@ -12,6 +12,8 @@ public class MindGamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mind_games);
 
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
         // Easy - go to EasyGamesActivity
         CardView cardEasy = findViewById(R.id.card_mood_easy);
         cardEasy.setOnClickListener(v -> {

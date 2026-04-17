@@ -51,13 +51,6 @@
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".RecommendationListActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".ExerciseDetailActivity"
-            android:parentActivityName=".RecommendationListActivity" />
-        <activity
             android:name=".SingleExerciseActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />

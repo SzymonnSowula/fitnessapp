@@ -19,8 +19,8 @@ public class ChoiceActivity extends AppCompatActivity {
         CardView cardMind = findViewById(R.id.card_mind);
 
         cardBody.setOnClickListener(v -> {
-            // "Ciało" przekierowuje do głównej listy rekomendacji (można zmienić na konkretną akcję)
-            startActivity(new Intent(ChoiceActivity.this, RecommendationListActivity.class));
+            // Przenosi do wyboru "Jak się dzisiaj czujesz?" (MainActivity)
+            startActivity(new Intent(ChoiceActivity.this, MainActivity.class));
         });
 
         cardMind.setOnClickListener(v -> {

@@ -16,21 +16,22 @@ public class MindGamesActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // Memory - Start with easiest level
-        CardView cardMemory = findViewById(R.id.card_memory);
+        // Memory - Go to level selection
+        CardView cardMemory = findViewById(R.id.card_memory_selection);
         cardMemory.setOnClickListener(v -> {
-            Intent intent = new Intent(MindGamesActivity.this, MemoryGameActivity.class);
-            intent.putExtra("EXTRA_COLUMNS", 2);
-            intent.putExtra("EXTRA_ROWS", 3);
-            startActivity(intent);
+            startActivity(new Intent(MindGamesActivity.this, EasyGamesActivity.class));
         });
 
-        // Kolory - Start with easiest level
-        CardView cardColors = findViewById(R.id.card_colors);
+        // Kolory - Go to level selection
+        CardView cardColors = findViewById(R.id.card_colors_selection);
         cardColors.setOnClickListener(v -> {
-            Intent intent = new Intent(MindGamesActivity.this, ColorTapActivity.class);
-            intent.putExtra(ColorTapActivity.EXTRA_DIFFICULTY, ColorTapActivity.DIFFICULTY_EASY);
-            startActivity(intent);
+            startActivity(new Intent(MindGamesActivity.this, ColorTapActivity.class));
+        });
+
+        // Liquid Sort
+        CardView cardLiquid = findViewById(R.id.card_liquid_selection);
+        cardLiquid.setOnClickListener(v -> {
+            startActivity(new Intent(MindGamesActivity.this, LiquidSortActivity.class));
         });
     }
 }

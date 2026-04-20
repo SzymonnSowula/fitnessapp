@@ -335,19 +335,21 @@ public class MemoryGameActivity extends AppCompatActivity {
                 if (isRemoved) {
                     ivCard.setVisibility(View.INVISIBLE);
                     cardView.setVisibility(View.INVISIBLE);
-                } else if (isFlipped) {
-                    ivCard.setVisibility(View.VISIBLE);
-                    ivCard.setImageResource(imageRes);
-                    ivCard.setColorFilter(0xFFFFFFFF);
-                    cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
-                    cardView.setStrokeWidth(0);
                 } else {
+                    cardView.setVisibility(View.VISIBLE);
                     ivCard.setVisibility(View.VISIBLE);
-                    ivCard.setImageResource(R.drawable.ic_onboarding_3);
-                    ivCard.setColorFilter(0xFF004A99);
-                    cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
-                    cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
-                    cardView.setStrokeWidth(6);
+                    if (isFlipped) {
+                        ivCard.setImageResource(imageRes);
+                        ivCard.setColorFilter(0xFFFFFFFF);
+                        cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
+                        cardView.setStrokeWidth(0);
+                    } else {
+                        ivCard.setImageResource(R.drawable.ic_onboarding_3);
+                        ivCard.setColorFilter(0xFF004A99);
+                        cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
+                        cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
+                        cardView.setStrokeWidth(6);
+                    }
                 }
                 cardView.setOnClickListener(v -> onClick.run());
             }

@@ -66,7 +66,7 @@
 
         <!-- Memory -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_memory"
+            android:id="@+id/card_memory_selection"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -116,7 +116,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ćwicz pamięć"
+                        android:text="Wybierz poziom"
                         android:textColor="#64748B"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -126,11 +126,11 @@
 
         <!-- Kolory -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_colors"
+            android:id="@+id/card_colors_selection"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             app:cardCornerRadius="36dp"
             app:cardElevation="10dp"
             android:clickable="true"
@@ -176,7 +176,67 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ćwicz refleks"
+                        android:text="Wybierz poziom"
+                        android:textColor="#64748B"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Przelewanie Płynów -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_liquid_selection"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="36dp"
+            app:cardElevation="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <FrameLayout
+                    android:layout_width="110dp"
+                    android:layout_height="110dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_indicator_active"
+                        android:backgroundTint="#DBEAFE" />
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_plan"
+                        app:tint="#2563EB" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Płyny"
+                        android:textColor="#0F172A"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sortuj kolory"
                         android:textColor="#64748B"
                         android:textSize="24sp"
                         android:textStyle="bold" />

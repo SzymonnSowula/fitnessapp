@@ -46,14 +46,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Wybierz poziom trudności"
+                android:text="Wybierz grę"
                 android:textColor="#334155"
                 android:textSize="22sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Difficulty Selection -->
+    <!-- Game Selection -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -64,9 +64,9 @@
         app:layout_constraintTop_toBottomOf="@id/header_container"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_container">
 
-        <!-- Łatwy -->
+        <!-- Memory -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_mood_easy"
+            android:id="@+id/card_memory"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -75,6 +75,7 @@
             app:cardElevation="10dp"
             android:clickable="true"
             android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
@@ -85,16 +86,76 @@
                 android:padding="24dp">
 
                 <FrameLayout
-                    android:layout_width="100dp"
-                    android:layout_height="100dp">
+                    android:layout_width="110dp"
+                    android:layout_height="110dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_indicator_active"
+                        android:backgroundTint="#EDE9FE" />
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_brain"
+                        app:tint="#7C3AED" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Memory"
+                        android:textColor="#0F172A"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ćwicz pamięć"
+                        android:textColor="#64748B"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Kolory -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_colors"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="36dp"
+            app:cardElevation="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <FrameLayout
+                    android:layout_width="110dp"
+                    android:layout_height="110dp">
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_indicator_active"
                         android:backgroundTint="#DCFCE7" />
                     <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_mood_happy"
                         app:tint="#059669" />
@@ -108,134 +169,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Poziom Łatwy"
+                        android:text="Kolory"
                         android:textColor="#0F172A"
-                        android:textSize="34sp"
+                        android:textSize="40sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Spokojny trening"
+                        android:text="Ćwicz refleks"
                         android:textColor="#64748B"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Średni -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_mood_medium"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="36dp"
-            app:cardElevation="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="24dp">
-
-                <FrameLayout
-                    android:layout_width="100dp"
-                    android:layout_height="100dp">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_indicator_active"
-                        android:backgroundTint="#FFEDD5" />
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_brain"
-                        app:tint="#EA580C" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Poziom Średni"
-                        android:textColor="#0F172A"
-                        android:textSize="34sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dla rozgrzanego umysłu"
-                        android:textColor="#64748B"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Trudny -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_mood_hard"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="36dp"
-            app:cardElevation="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="24dp">
-
-                <FrameLayout
-                    android:layout_width="100dp"
-                    android:layout_height="100dp">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_indicator_active"
-                        android:backgroundTint="#EDE9FE" />
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_mood_very_sad"
-                        app:tint="#7C3AED" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Poziom Trudny"
-                        android:textColor="#0F172A"
-                        android:textSize="34sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Prawdziwe wyzwanie"
-                        android:textColor="#64748B"
-                        android:textSize="22sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>

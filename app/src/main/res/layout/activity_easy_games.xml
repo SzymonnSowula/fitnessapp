@@ -108,7 +108,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Memory 2x3"
+                        android:text="Memory"
                         android:textColor="#0F172A"
                         android:textSize="34sp"
                         android:textStyle="bold" />
@@ -167,7 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Memory 3x4"
+                        android:text="Memory"
                         android:textColor="#0F172A"
                         android:textSize="34sp"
                         android:textStyle="bold" />

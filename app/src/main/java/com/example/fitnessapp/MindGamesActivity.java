@@ -16,22 +16,21 @@ public class MindGamesActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // Easy - go to EasyGamesActivity
-        CardView cardEasy = findViewById(R.id.card_mood_easy);
-        cardEasy.setOnClickListener(v -> {
-            startActivity(new Intent(MindGamesActivity.this, EasyGamesActivity.class));
+        // Memory - Start with easiest level
+        CardView cardMemory = findViewById(R.id.card_memory);
+        cardMemory.setOnClickListener(v -> {
+            Intent intent = new Intent(MindGamesActivity.this, MemoryGameActivity.class);
+            intent.putExtra("EXTRA_COLUMNS", 2);
+            intent.putExtra("EXTRA_ROWS", 3);
+            startActivity(intent);
         });
 
-        // Medium - go to MediumGamesActivity
-        CardView cardMedium = findViewById(R.id.card_mood_medium);
-        cardMedium.setOnClickListener(v -> {
-            startActivity(new Intent(MindGamesActivity.this, MediumGamesActivity.class));
-        });
-
-        // Hard - go to HardGamesActivity
-        CardView cardHard = findViewById(R.id.card_mood_hard);
-        cardHard.setOnClickListener(v -> {
-            startActivity(new Intent(MindGamesActivity.this, HardGamesActivity.class));
+        // Kolory - Start with easiest level
+        CardView cardColors = findViewById(R.id.card_colors);
+        cardColors.setOnClickListener(v -> {
+            Intent intent = new Intent(MindGamesActivity.this, ColorTapActivity.class);
+            intent.putExtra(ColorTapActivity.EXTRA_DIFFICULTY, ColorTapActivity.DIFFICULTY_EASY);
+            startActivity(intent);
         });
     }
 }

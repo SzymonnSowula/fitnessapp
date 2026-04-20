@@ -26,7 +26,7 @@ public class MediumGamesActivity extends AppCompatActivity {
         });
 
         // Memory 4x4 - 8 pairs
-        CardView cardMemory4x4 = findViewById(R.id.card_memory_4x4);
+        CardView cardMemory4x4 = findViewById(R.id.card_memory_4x4_medium);
         cardMemory4x4.setOnClickListener(v -> {
             Intent intent = new Intent(MediumGamesActivity.this, MemoryGameActivity.class);
             intent.putExtra("EXTRA_COLUMNS", 4);

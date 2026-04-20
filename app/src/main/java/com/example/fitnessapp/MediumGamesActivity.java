@@ -12,6 +12,8 @@ public class MediumGamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medium_games);
 
+        NavbarHelper.initNavbar(this);
+
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         // Memory 2x4 - 4 pairs

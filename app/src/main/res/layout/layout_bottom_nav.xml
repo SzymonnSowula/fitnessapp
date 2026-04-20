@@ -3,17 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_nav_container"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    app:cardCornerRadius="32dp"
+    android:layout_height="210dp"
+    app:cardCornerRadius="50dp"
     app:cardElevation="16dp"
-    android:layout_marginBottom="-20dp">
+    android:layout_marginBottom="-35dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingBottom="20dp"
-        android:gravity="center_vertical">
+        android:paddingBottom="35dp"
+        android:paddingHorizontal="4dp"
+        android:gravity="bottom">
 
         <!-- Home Tab (ChoiceActivity) -->
         <LinearLayout
@@ -29,15 +30,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/nav_home_indicator"
-                android:layout_width="80dp"
-                android:layout_height="56dp"
-                app:cardCornerRadius="16dp"
+                android:layout_width="120dp"
+                android:layout_height="85dp"
+                app:cardCornerRadius="30dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@android:color/transparent">
                 <ImageView
                     android:id="@+id/nav_home_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_home"
                     app:tint="#64748B" />
@@ -48,7 +49,11 @@
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textColor="#64748B"
-                android:textSize="14sp" />
+                android:textStyle="bold"
+                android:textSize="21sp"
+                android:maxLines="1"
+                android:ellipsize="none"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
         <!-- Exercises Tab (MainActivity) -->
@@ -65,15 +70,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/nav_plan_indicator"
-                android:layout_width="80dp"
-                android:layout_height="56dp"
-                app:cardCornerRadius="16dp"
+                android:layout_width="120dp"
+                android:layout_height="85dp"
+                app:cardCornerRadius="30dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@android:color/transparent">
                 <ImageView
                     android:id="@+id/nav_plan_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_dumbbell"
                     app:tint="#64748B" />
@@ -84,7 +89,11 @@
                 android:layout_height="wrap_content"
                 android:text="ćwiczenia"
                 android:textColor="#64748B"
-                android:textSize="14sp" />
+                android:textStyle="bold"
+                android:textSize="21sp"
+                android:maxLines="1"
+                android:ellipsize="none"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
         <!-- Settings Tab -->
@@ -101,15 +110,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/nav_settings_indicator"
-                android:layout_width="80dp"
-                android:layout_height="56dp"
-                app:cardCornerRadius="16dp"
+                android:layout_width="120dp"
+                android:layout_height="85dp"
+                app:cardCornerRadius="30dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@android:color/transparent">
                 <ImageView
                     android:id="@+id/nav_settings_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_settings"
                     app:tint="#64748B" />
@@ -120,7 +129,11 @@
                 android:layout_height="wrap_content"
                 android:text="Ustawienia"
                 android:textColor="#64748B"
-                android:textSize="14sp" />
+                android:textStyle="bold"
+                android:textSize="21sp"
+                android:maxLines="1"
+                android:ellipsize="none"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -12,6 +12,8 @@ public class HardGamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hard_games);
 
+        NavbarHelper.initNavbar(this);
+
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         // Memory 4x4 - 8 pairs

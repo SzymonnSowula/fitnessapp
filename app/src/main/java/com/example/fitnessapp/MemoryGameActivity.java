@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -35,6 +34,8 @@ public class MemoryGameActivity extends AppCompatActivity {
             R.drawable.ic_onboarding_3
     };
 
+    private int currentColumns, currentRows;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,60 +47,41 @@ public class MemoryGameActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.tv_title);
 
         // Get grid size from intent
-        int columns = getIntent().getIntExtra("EXTRA_COLUMNS", 4);
-        int rows = getIntent().getIntExtra("EXTRA_ROWS", 4);
-        int totalCards = columns * rows;
-        int pairs = totalCards / 2;
-
-        // Update title
-        tvTitle.setText("Memory " + columns + "x" + rows);
-
-        tvScore.setText("0");
-        tvMoves.setText("0");
+        currentColumns = getIntent().getIntExtra("EXTRA_COLUMNS", 4);
+        currentRows = getIntent().getIntExtra("EXTRA_ROWS", 4);
+        
+        setupGame(currentColumns, currentRows);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(columns, rows));
-
-        tvScore = findViewById(R.id.tv_score);
-        tvMoves = findViewById(R.id.tv_moves);
-        tvTitle = findViewById(R.id.tv_title);
-
-        setupGame(columns, rows);
+        findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(currentColumns, currentRows));
     }
 
     private void setupGame(int columns, int rows) {
+        currentColumns = columns;
+        currentRows = rows;
+        
+        // Ensure even number of cards for memory pairs
+        int totalCards = columns * rows;
+        if (totalCards % 2 != 0) totalCards--;
+        int pairs = totalCards / 2;
+
         score = 0;
         moves = 0;
         if (tvScore != null) tvScore.setText("0");
         if (tvMoves != null) tvMoves.setText("0");
+        if (tvTitle != null) tvTitle.setText("Memory " + columns + "x" + rows);
         isLocked = false;
 
-        int totalCards = columns * rows;
-        int pairs = totalCards / 2;
-
-        // Select enough images for pairs
         List<Integer> selectedImages = new ArrayList<>();
-        for (int i = 0; i < pairs && i < cardImages.length; i++) {
-            selectedImages.add(cardImages[i]);
-            selectedImages.add(cardImages[i]);
-        }
-
-        // If we need more pairs than available images, duplicate with different approach
-        while (selectedImages.size() < totalCards) {
-            // Add variations by adding same images again they'll be treated as different pairs
-            int extraIndex = (selectedImages.size() / 2) % cardImages.length;
-            selectedImages.add(cardImages[extraIndex]);
-            selectedImages.add(cardImages[extraIndex]);
+        // Add exactly 'pairs' pairs of images
+        for (int i = 0; i < pairs; i++) {
+            int img = cardImages[i % cardImages.length];
+            selectedImages.add(img);
+            selectedImages.add(img);
         }
 
         Collections.shuffle(selectedImages);
 
-        // If we have too many, trim
-        while (selectedImages.size() > totalCards) {
-            selectedImages.remove(selectedImages.size() - 1);
-        }
-
-        final int finalColumns = columns;
         adapter = new CardAdapter(selectedImages, rows, new CardAdapter.OnCardClickListener() {
             @Override
             public void onCardClick(int position) {
@@ -143,8 +125,8 @@ public class MemoryGameActivity extends AppCompatActivity {
                 tvScore.setText(String.valueOf(score));
                 adapter.removeCards(pos1, pos2);
 
-                if (adapter.getItemCount() == 0) {
-                    Toast.makeText(this, "Gratulacje! Wynik: " + score, Toast.LENGTH_LONG).show();
+                if (adapter.isAllRemoved()) {
+                    showWinDialog();
                 }
                 isLocked = false;
             } else {
@@ -154,6 +136,68 @@ public class MemoryGameActivity extends AppCompatActivity {
                 }, 800);
             }
         }
+    }
+
+    private void showWinDialog() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_game_win, null);
+        builder.setView(dialogView);
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        TextView tvMsg = dialogView.findViewById(R.id.tv_win_message);
+        com.google.android.material.button.MaterialButton btnAction = dialogView.findViewById(R.id.btn_win_action);
+        com.google.android.material.button.MaterialButton btnRestart = dialogView.findViewById(R.id.btn_win_restart);
+        com.google.android.material.button.MaterialButton btnExit = dialogView.findViewById(R.id.btn_win_exit);
+
+        boolean canIncrease = false;
+        int nextCols = currentColumns;
+        int nextRows = currentRows;
+
+        if (currentColumns == 2 && currentRows == 3) {
+            nextCols = 3; nextRows = 4; canIncrease = true;
+        } else if (currentColumns == 3 && currentRows == 4) {
+            nextCols = 2; nextRows = 4; canIncrease = true;
+        } else if (currentColumns == 2 && currentRows == 4) {
+            nextCols = 4; nextRows = 4; canIncrease = true;
+        } else if (currentColumns == 4 && currentRows == 4) {
+            nextCols = 4; nextRows = 5; canIncrease = true;
+        }
+
+        if (canIncrease) {
+            tvMsg.setText("BRAWO!!!!\nCzy chcesz zwiększyć poziom trudności?");
+            btnAction.setText("Zwiększ poziom");
+            btnRestart.setVisibility(View.VISIBLE);
+            int finalNextCols = nextCols;
+            int finalNextRows = nextRows;
+            btnAction.setOnClickListener(v -> {
+                dialog.dismiss();
+                setupGame(finalNextCols, finalNextRows);
+            });
+        } else {
+            tvMsg.setText("BRAWO!!!!\nUkończyłeś najtrudniejszy poziom!");
+            btnAction.setText("Zagraj jeszcze raz");
+            btnRestart.setVisibility(View.GONE);
+            btnAction.setOnClickListener(v -> {
+                dialog.dismiss();
+                setupGame(currentColumns, currentRows);
+            });
+        }
+
+        btnRestart.setOnClickListener(v -> {
+            dialog.dismiss();
+            setupGame(currentColumns, currentRows);
+        });
+
+        btnExit.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish();
+        });
+
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     private static class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
@@ -168,7 +212,7 @@ public class MemoryGameActivity extends AppCompatActivity {
             void onCardClick(int position);
         }
 
-        CardAdapter(List<Integer> cards, int rows, OnCardClickListener listener) {
+        public CardAdapter(List<Integer> cards, int rows, OnCardClickListener listener) {
             this.cards = cards;
             this.rows = rows;
             this.listener = listener;
@@ -222,22 +266,23 @@ public class MemoryGameActivity extends AppCompatActivity {
             return cards.get(position);
         }
 
+        boolean isAllRemoved() {
+            return removedPositions.size() == cards.size();
+        }
+
         @Override
         public CardViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             MaterialCardView cardView = new MaterialCardView(parent.getContext());
-            
             float density = parent.getContext().getResources().getDisplayMetrics().density;
-            int marginPx = (int) (6 * density); // Slightly smaller margin to save space
-            
+            int marginPx = (int) (6 * density);
             int displayHeight = itemHeight > 0 ? (itemHeight - (marginPx * 2)) : ViewGroup.LayoutParams.WRAP_CONTENT;
-            
             GridLayoutManager.LayoutParams params = new GridLayoutManager.LayoutParams(
                     GridLayoutManager.LayoutParams.MATCH_PARENT,
                     displayHeight
             );
             params.setMargins(marginPx, marginPx, marginPx, marginPx);
             cardView.setLayoutParams(params);
-            cardView.setRadius(32f * density); // Adaptive radius
+            cardView.setRadius(32f * density);
             cardView.setCardElevation(2f * density);
             cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
             return new CardViewHolder(cardView);
@@ -248,14 +293,13 @@ public class MemoryGameActivity extends AppCompatActivity {
             if (itemHeight > 0) {
                 ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
                 float density = holder.itemView.getContext().getResources().getDisplayMetrics().density;
-                int marginPx = (int) (4 * density); // Consistent margin
+                int marginPx = (int) (4 * density);
                 int calculatedHeight = itemHeight - (marginPx * 2);
                 if (params.height != calculatedHeight) {
                     params.height = calculatedHeight;
                     holder.itemView.setLayoutParams(params);
                 }
             }
-            
             boolean isFlipped = isCardFlipped(position);
             boolean isRemoved = isCardRemoved(position);
             holder.bind(cards.get(position), isFlipped, isRemoved, () -> listener.onCardClick(position));
@@ -282,9 +326,8 @@ public class MemoryGameActivity extends AppCompatActivity {
             }
 
             void bind(int imageRes, boolean isFlipped, boolean isRemoved, Runnable onClick) {
-                // Adjust padding based on card size to ensure icons are visible but not too large
                 int height = cardView.getLayoutParams().height;
-                int p = height / 5; // Reduced padding to ensure icon visibility on flatter cards
+                int p = height / 5;
                 if (p < 12) p = 12;
                 if (p > 48) p = 48;
                 ivCard.setPadding(p, p, p, p);
@@ -295,16 +338,14 @@ public class MemoryGameActivity extends AppCompatActivity {
                 } else if (isFlipped) {
                     ivCard.setVisibility(View.VISIBLE);
                     ivCard.setImageResource(imageRes);
-                    ivCard.setColorFilter(0xFFFFFFFF); // White icon on dark blue background
-                    cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFF004A99)); // Dark blue for active/flipped
+                    ivCard.setColorFilter(0xFFFFFFFF);
+                    cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
                     cardView.setStrokeWidth(0);
                 } else {
                     ivCard.setVisibility(View.VISIBLE);
-                    // Use a question mark icon if available, otherwise fallback
                     ivCard.setImageResource(R.drawable.ic_onboarding_3);
-                    ivCard.setColorFilter(0xFF004A99); // Dark blue icon on white background
+                    ivCard.setColorFilter(0xFF004A99);
                     cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
-                    // Add stroke/border
                     cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
                     cardView.setStrokeWidth(6);
                 }

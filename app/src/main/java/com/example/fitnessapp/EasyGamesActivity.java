@@ -14,6 +14,8 @@ public class EasyGamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easy_games);
 
+        NavbarHelper.initNavbar(this);
+
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         // Memory 2x3 - 3 pairs

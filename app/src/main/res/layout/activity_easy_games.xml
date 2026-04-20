@@ -1,94 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:background="#F8FAFC">
 
     <!-- Header -->
     <LinearLayout
+        android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:layout_marginTop="20dp">
+        android:orientation="horizontal"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="48dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:padding="14dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_back"
-            app:tint="@color/black" />
+            app:tint="#004A99"
+            android:scaleType="fitCenter"
+            android:padding="12dp" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Łatwe"
-            android:textColor="@color/black"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Łatwe gry"
+                android:textColor="#004A99"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Spokojny trening"
+                android:textColor="#334155"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Game List -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginTop="24dp"
-        android:gravity="center_horizontal">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/header_container"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_container">
 
         <!-- Memory 2x3 -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_memory_2x3"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="36dp"
+            app:cardElevation="10dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/purple_bg"
-            app:strokeColor="@color/purple_border"
-            app:strokeWidth="2dp">
+            android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:padding="24dp">
 
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_brain"
-                    app:tint="@color/purple_icon" />
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_indicator_active"
+                        android:backgroundTint="#EDE9FE" />
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_brain"
+                        app:tint="#7C3AED" />
+                </FrameLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:orientation="vertical">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Memory 2x3"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textColor="#0F172A"
+                        android:textSize="34sp"
                         android:textStyle="bold" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3 pary - bardzo łatwe"
-                        android:textColor="@color/gray_text"
-                        android:textSize="14sp" />
+                        android:textColor="#64748B"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -97,104 +127,127 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/card_memory_3x4"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="36dp"
+            app:cardElevation="10dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/orange_bg"
-            app:strokeColor="@color/orange_border"
-            app:strokeWidth="2dp">
+            android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:padding="24dp">
 
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_brain"
-                    app:tint="@color/orange_icon" />
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_indicator_active"
+                        android:backgroundTint="#FFEDD5" />
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_brain"
+                        app:tint="#EA580C" />
+                </FrameLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:orientation="vertical">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Memory 3x4"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textColor="#0F172A"
+                        android:textSize="34sp"
                         android:textStyle="bold" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="6 pary - łatwe"
-                        android:textColor="@color/gray_text"
-                        android:textSize="14sp" />
+                        android:text="6 par - łatwe"
+                        android:textColor="#64748B"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Kolory Latwe -->
+        <!-- Kolory -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_colors_easy"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="36dp"
+            app:cardElevation="10dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/green_bg"
-            app:strokeColor="@color/green_border"
-            app:strokeWidth="2dp">
+            android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:padding="24dp">
 
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_mood_happy"
-                    app:tint="@color/green_icon" />
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_indicator_active"
+                        android:backgroundTint="#DCFCE7" />
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mood_happy"
+                        app:tint="#059669" />
+                </FrameLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:orientation="vertical">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Kolory"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textColor="#0F172A"
+                        android:textSize="34sp"
                         android:textStyle="bold" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Zapamiętaj 2-3 kolory (wolne)"
-                        android:textColor="@color/gray_text"
-                        android:textSize="14sp" />
+                        android:text="Wolne tempo"
+                        android:textColor="#64748B"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
-</LinearLayout>
+    <include
+        android:id="@+id/bottom_nav_container"
+        layout="@layout/layout_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

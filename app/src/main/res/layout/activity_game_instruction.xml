@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:background="#F8FAFC">
+
+ <!-- Top Bar with Back Button -->
+ <ImageButton
+ android:id="@+id/btn_back"
+ android:layout_width="64dp"
+ android:layout_height="64dp"
+ android:layout_margin="16dp"
+ android:background="?android:attr/selectableItemBackgroundBorderless"
+ android:src="@drawable/ic_back"
+ app:tint="#004A99"
+ android:scaleType="fitCenter"
+ android:padding="12dp"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintTop_toTopOf="parent" />
+
+ <!-- Game Icon -->
+ <ImageView
+ android:id="@+id/iv_game_icon"
+ android:layout_width="120dp"
+ android:layout_height="120dp"
+ android:layout_marginTop="24dp"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintEnd_toEndOf="parent"
+ app:layout_constraintTop_toBottomOf="@id/btn_back" />
+
+ <!-- Game Title -->
+ <TextView
+ android:id="@+id/tv_game_title"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_marginTop="16dp"
+ android:textColor="#004A99"
+ android:textSize="48sp"
+ android:textStyle="bold"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintEnd_toEndOf="parent"
+ app:layout_constraintTop_toBottomOf="@id/iv_game_icon" />
+
+ <!-- Instruction Card -->
+ <androidx.cardview.widget.CardView
+ android:id="@+id/card_instruction"
+ android:layout_width="0dp"
+ android:layout_height="wrap_content"
+ android:layout_marginHorizontal="24dp"
+ android:layout_marginTop="32dp"
+ app:cardCornerRadius="24dp"
+ app:cardElevation="4dp"
+ app:cardBackgroundColor="#FFFFFF"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintEnd_toEndOf="parent"
+ app:layout_constraintTop_toBottomOf="@id/tv_game_title">
+
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:orientation="vertical"
+ android:padding="24dp">
+
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="INSTRUKCJA"
+ android:textColor="#004A99"
+ android:textSize="22sp"
+ android:textStyle="bold"
+ android:letterSpacing="0.08" />
+
+ <View
+ android:layout_width="match_parent"
+ android:layout_height="2dp"
+ android:layout_marginVertical="12dp"
+ android:background="#E2E8F0" />
+
+ <TextView
+ android:id="@+id/tv_instruction_text"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:textColor="#1E293B"
+ android:textSize="22sp"
+ android:textStyle="bold"
+ android:lineSpacingExtra="8dp" />
+
+ </LinearLayout>
+ </androidx.cardview.widget.CardView>
+
+ <!-- Start Button -->
+ <Button
+ android:id="@+id/btn_start"
+ android:layout_width="0dp"
+ android:layout_height="88dp"
+ android:layout_marginHorizontal="24dp"
+ android:layout_marginBottom="24dp"
+ android:backgroundTint="#057A32"
+ android:text="ROZPOCZNIJ GRĘ"
+ android:textAllCaps="true"
+ android:textColor="@color/white"
+ android:textSize="28sp"
+ android:fontFamily="sans-serif-medium"
+ android:textStyle="bold"
+ app:icon="@drawable/ic_play"
+ app:iconGravity="textStart"
+ app:iconTint="@color/white"
+ app:iconPadding="16dp"
+ app:cornerRadius="20dp"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintEnd_toEndOf="parent"
+ app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -163,10 +163,16 @@ public class ColorTapActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 800);
     }
 
-    private void flashColor(int index) {
+private void flashColor(int index) {
         CardView card = colorCards.get(index);
-        card.setAlpha(0.4f);
-        new Handler().postDelayed(() -> card.setAlpha(1.0f), 400);
+        // First: flash with neon green overlay
+        card.setCardBackgroundColor(0xFF39FF14); // Neon green flash
+        card.setAlpha(1.0f);
+        new Handler().postDelayed(() -> {
+            // Then return to original color
+            card.setCardBackgroundColor(colors[index]);
+            card.setAlpha(1.0f);
+        }, 400);
     }
 
     private void onColorTapped(int index) {

@@ -1,239 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F8FAFC">
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:background="#F8FAFC">
 
-    <!-- Header: Level and Score -->
-    <LinearLayout
-        android:id="@+id/header_stats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="32dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+ <!-- Header: Level and Score -->
+ <LinearLayout
+ android:id="@+id/header_stats"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:paddingHorizontal="24dp"
+ android:paddingTop="32dp"
+ android:orientation="horizontal"
+ app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_level"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Poziom 1"
-            android:textColor="#004A99"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+ <TextView
+ android:id="@+id/tv_level"
+ android:layout_width="0dp"
+ android:layout_height="wrap_content"
+ android:layout_weight="1"
+ android:text="Poziom 1"
+ android:textColor="#004A99"
+ android:textSize="28sp"
+ android:textStyle="bold" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#DBEAFE">
-            <TextView
-                android:id="@+id/tv_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:text="Wynik: 0"
-                android:textColor="#004A99"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+ <androidx.cardview.widget.CardView
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ app:cardCornerRadius="20dp"
+ app:cardElevation="0dp"
+ app:cardBackgroundColor="#DBEAFE">
+ <TextView
+ android:id="@+id/tv_score"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:paddingHorizontal="16dp"
+ android:paddingVertical="8dp"
+ android:text="Wynik: 0"
+ android:textColor="#004A99"
+ android:textSize="28sp"
+ android:textStyle="bold" />
+ </androidx.cardview.widget.CardView>
+ </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Dobrze!"
-        android:textColor="#1E293B"
-        android:textSize="44sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_stats" />
+ <TextView
+ android:id="@+id/tv_title"
+ android:layout_width="0dp"
+ android:layout_height="wrap_content"
+ android:layout_marginStart="24dp"
+ android:layout_marginEnd="24dp"
+ android:layout_marginTop="16dp"
+ android:text="Dobrze!"
+ android:textColor="#1E293B"
+ android:textSize="44sp"
+ android:textStyle="bold"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintEnd_toEndOf="parent"
+ app:layout_constraintTop_toBottomOf="@id/header_stats" />
 
-    <TextView
-        android:id="@+id/tv_instruction"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="4dp"
-        android:text="Powtórz sekwencję!"
-        android:textColor="#475569"
-        android:textSize="26sp"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+ <TextView
+ android:id="@+id/tv_instruction"
+ android:layout_width="0dp"
+ android:layout_height="wrap_content"
+ android:layout_marginStart="24dp"
+ android:layout_marginEnd="24dp"
+ android:layout_marginTop="4dp"
+ android:text="Powtórz sekwencję!"
+ android:textColor="#475569"
+ android:textSize="26sp"
+ android:fontFamily="sans-serif-medium"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintEnd_toEndOf="parent"
+ app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-    <!-- Game Grid using Nested LinearLayouts for 2x2 -->
-    <LinearLayout
-        android:id="@+id/container_grid"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tv_instruction"
-        app:layout_constraintBottom_toTopOf="@id/indicator_container">
+ <!-- Game Grid using Nested LinearLayouts for 2x2 -->
+ <LinearLayout
+ android:id="@+id/container_grid"
+ android:layout_width="match_parent"
+ android:layout_height="0dp"
+ android:layout_margin="16dp"
+ android:orientation="vertical"
+ app:layout_constraintTop_toBottomOf="@id/tv_instruction"
+ app:layout_constraintBottom_toTopOf="@id/indicator_container">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="0dp"
+ android:layout_weight="1"
+ android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/tile_1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="32dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#004A99">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_onboarding_2"
-                    app:tint="#FFFFFF33" />
-            </androidx.cardview.widget.CardView>
+ <androidx.cardview.widget.CardView
+ android:id="@+id/tile_1"
+ android:layout_width="0dp"
+ android:layout_height="match_parent"
+ android:layout_weight="1"
+ android:layout_margin="12dp"
+ app:cardCornerRadius="32dp"
+ app:cardElevation="4dp"
+ app:cardBackgroundColor="#004A99">
+ <ImageView
+ android:layout_width="48dp"
+ android:layout_height="48dp"
+ android:layout_gravity="center"
+ android:src="@drawable/ic_onboarding_2"
+ app:tint="#FFFFFF33" />
+ </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/tile_2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="32dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#057A32">
-                 <View
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/bg_indicator_active"
-                    android:backgroundTint="#FFFFFF33" />
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+ <androidx.cardview.widget.CardView
+ android:id="@+id/tile_2"
+ android:layout_width="0dp"
+ android:layout_height="match_parent"
+ android:layout_weight="1"
+ android:layout_margin="12dp"
+ app:cardCornerRadius="32dp"
+ app:cardElevation="4dp"
+ app:cardBackgroundColor="#057A32">
+ <View
+ android:layout_width="48dp"
+ android:layout_height="48dp"
+ android:layout_gravity="center"
+ android:background="@drawable/bg_indicator_active"
+ android:backgroundTint="#FFFFFF33" />
+ </androidx.cardview.widget.CardView>
+ </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+ <LinearLayout
+ android:layout_width="match_parent"
+ android:layout_height="0dp"
+ android:layout_weight="1"
+ android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/tile_3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="32dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#994A00">
-                <View
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/bg_checkbox_onboarding"
-                    android:backgroundTint="#FFFFFF33" />
-            </androidx.cardview.widget.CardView>
+ <androidx.cardview.widget.CardView
+ android:id="@+id/tile_3"
+ android:layout_width="0dp"
+ android:layout_height="match_parent"
+ android:layout_weight="1"
+ android:layout_margin="12dp"
+ app:cardCornerRadius="32dp"
+ app:cardElevation="4dp"
+ app:cardBackgroundColor="#994A00">
+ <View
+ android:layout_width="48dp"
+ android:layout_height="48dp"
+ android:layout_gravity="center"
+ android:background="@drawable/bg_checkbox_onboarding"
+ android:backgroundTint="#FFFFFF33" />
+ </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/tile_4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="32dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#6355B2">
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_onboarding_1"
-                    app:tint="#FFFFFF33" />
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </LinearLayout>
+ <androidx.cardview.widget.CardView
+ android:id="@+id/tile_4"
+ android:layout_width="0dp"
+ android:layout_height="match_parent"
+ android:layout_weight="1"
+ android:layout_margin="12dp"
+ app:cardCornerRadius="32dp"
+ app:cardElevation="4dp"
+ app:cardBackgroundColor="#6355B2">
+ <ImageView
+ android:layout_width="48dp"
+ android:layout_height="48dp"
+ android:layout_gravity="center"
+ android:src="@drawable/ic_onboarding_1"
+ app:tint="#FFFFFF33" />
+ </androidx.cardview.widget.CardView>
+ </LinearLayout>
+ </LinearLayout>
 
-    <!-- Step Indicators -->
-    <LinearLayout
-        android:id="@+id/indicator_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_back_game">
+ <!-- Step Indicators -->
+ <LinearLayout
+ android:id="@+id/indicator_container"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:gravity="center"
+ android:orientation="horizontal"
+ android:layout_marginBottom="32dp"
+ app:layout_constraintBottom_toTopOf="@id/btn_back_game">
 
-        <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_active" android:backgroundTint="#057A32" />
-        <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_active" android:backgroundTint="#057A32" />
-        <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_inactive" />
-        <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_inactive" />
-    </LinearLayout>
+ <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_active" android:backgroundTint="#057A32" />
+ <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_active" android:backgroundTint="#057A32" />
+ <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_inactive" />
+ <View android:layout_width="32dp" android:layout_height="8dp" android:layout_margin="4dp" android:background="@drawable/bg_indicator_inactive" />
+ </LinearLayout>
 
-    <!-- Bottom Buttons -->
-    <Button
-        android:id="@+id/btn_back_game"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="#057A32"
-        android:text="Wstecz"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="28sp"
-        android:fontFamily="sans-serif-medium"
-        android:textStyle="bold"
-        app:icon="@drawable/ic_back"
-        app:iconGravity="textStart"
-        app:iconTint="@color/white"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_restart" />
+ <!-- Bottom Buttons -->
+ <Button
+ android:id="@+id/btn_back_game"
+ android:layout_width="match_parent"
+ android:layout_height="80dp"
+ android:layout_marginHorizontal="24dp"
+ android:layout_marginBottom="12dp"
+ android:backgroundTint="#057A32"
+ android:text="Wstecz"
+ android:textAllCaps="false"
+ android:textColor="@color/white"
+ android:textSize="28sp"
+ android:fontFamily="sans-serif-medium"
+ android:textStyle="bold"
+ app:icon="@drawable/ic_back"
+ app:iconGravity="textStart"
+ app:iconTint="@color/white"
+ app:cornerRadius="16dp"
+ app:layout_constraintBottom_toTopOf="@id/btn_restart" />
 
-    <Button
-        android:id="@+id/btn_restart"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="#004A99"
-        android:text="Zagraj ponownie"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="28sp"
-        android:fontFamily="sans-serif-medium"
-        android:textStyle="bold"
-        app:icon="@drawable/ic_chat"
-        app:iconGravity="textStart"
-        app:iconTint="@color/white"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+ <Button
+ android:id="@+id/btn_restart"
+ android:layout_width="match_parent"
+ android:layout_height="80dp"
+ android:layout_marginHorizontal="24dp"
+ android:layout_marginBottom="24dp"
+ android:backgroundTint="#004A99"
+ android:text="Zagraj ponownie"
+ android:textAllCaps="false"
+ android:textColor="@color/white"
+ android:textSize="28sp"
+ android:fontFamily="sans-serif-medium"
+ android:textStyle="bold"
+ app:icon="@drawable/ic_chat"
+ app:iconGravity="textStart"
+ app:iconTint="@color/white"
+ app:cornerRadius="16dp"
+ app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_mic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="Nagrywanie głosu"
-        android:src="@drawable/ic_mic"
-        app:backgroundTint="#004A99"
-        app:tint="#FFFFFF"
-        app:fabSize="normal"
-        app:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+ <com.google.android.material.floatingactionbutton.FloatingActionButton
+ android:id="@+id/fab_mic"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_margin="16dp"
+ android:contentDescription="Nagrywanie głosu"
+ android:src="@drawable/ic_mic"
+ app:backgroundTint="#004A99"
+ app:tint="#FFFFFF"
+ app:fabSize="normal"
+ app:elevation="8dp"
+ app:layout_constraintBottom_toBottomOf="parent"
+ app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

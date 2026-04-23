@@ -80,10 +80,13 @@
         <activity
             android:name=".HardGamesActivity"
             android:exported="false" />
-        <activity
-            android:name=".LiquidSortActivity"
-            android:exported="false" />
+<activity
+ android:name=".LiquidSortActivity"
+ android:exported="false" />
+ <activity
+ android:name=".GameInstructionActivity"
+ android:exported="false" />
 
-    </application>
+</application>
 
 </manifest>

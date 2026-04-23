@@ -278,20 +278,23 @@ public class LiquidSortActivity extends AppCompatActivity {
         }
     }
 
-    public static class TubeView extends View {
+public static class TubeView extends View {
         Stack<Integer> colors = new Stack<>();
         private float selectionOffset = 0;
         private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private Paint glowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private RectF rect = new RectF();
         private RectF bottomRect = new RectF();
         private android.graphics.Path tubePath = new android.graphics.Path();
         private boolean isCompleted = false;
+        private boolean isSelected = false;
 
         public TubeView(android.content.Context context) {
             super(context);
         }
 
-        public void animateSelection(boolean selected) {
+public void animateSelection(boolean selected) {
+            isSelected = selected;
             float target = selected ? -60f : 0f;
             android.animation.ObjectAnimator animator = android.animation.ObjectAnimator.ofFloat(this, "selectionY", selectionOffset, target);
             animator.setDuration(250);
@@ -309,7 +312,7 @@ public class LiquidSortActivity extends AppCompatActivity {
             invalidate();
         }
 
-        @Override
+@Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             float w = getWidth();
@@ -324,6 +327,30 @@ public class LiquidSortActivity extends AppCompatActivity {
 
             canvas.save();
             canvas.translate(0, selectionOffset);
+
+            // Draw neon glow effect when selected
+            if (isSelected) {
+                glowPaint.reset();
+                glowPaint.setAntiAlias(true);
+                glowPaint.setStyle(Paint.Style.STROKE);
+                glowPaint.setStrokeWidth(20f);
+                glowPaint.setColor(0xFF00FF00); // Neon green
+                glowPaint.setAlpha(180);
+
+                android.graphics.Path glowPath = new android.graphics.Path();
+                glowPath.moveTo(left, topBound);
+                glowPath.lineTo(left, bottomBound - tubeWidth / 2);
+                rect.set(left, bottomBound - tubeWidth, right, bottomBound);
+                glowPath.arcTo(rect, 180, -180, false);
+                glowPath.lineTo(right, topBound);
+                canvas.drawPath(glowPath, glowPaint);
+
+                // Second glow layer for stronger effect
+                glowPaint.setStrokeWidth(12f);
+                glowPaint.setColor(0xFF39FF14); // Neon green #39FF14
+                glowPaint.setAlpha(220);
+                canvas.drawPath(glowPath, glowPaint);
+            }
 
             paint.setStyle(Paint.Style.FILL);
             float innerPadding = 12;

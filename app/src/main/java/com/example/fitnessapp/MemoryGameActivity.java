@@ -6,10 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +26,7 @@ public class MemoryGameActivity extends AppCompatActivity {
     private int moves = 0;
     private CardAdapter adapter;
     private boolean isLocked = false;
+    private VoiceNavigator voiceNavigator;
 
     private final int[] cardImages = {
             R.drawable.ic_heart,
@@ -41,26 +46,63 @@ public class MemoryGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_game);
 
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+
+        FloatingActionButton fabMic = findViewById(R.id.fab_mic);
+        voiceNavigator.setup();
+
         rvCards = findViewById(R.id.rv_cards);
         tvScore = findViewById(R.id.tv_score);
         tvMoves = findViewById(R.id.tv_moves);
         tvTitle = findViewById(R.id.tv_title);
 
-        // Get grid size from intent
         currentColumns = getIntent().getIntExtra("EXTRA_COLUMNS", 4);
         currentRows = getIntent().getIntExtra("EXTRA_ROWS", 4);
-        
+
         setupGame(currentColumns, currentRows);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(currentColumns, currentRows));
+
+        voiceNavigator.speakDelayed("Gra Memory. Znajdź pary jednakowych kart.", 500);
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "new_game":
+            case "restart":
+            case "reset":
+                setupGame(currentColumns, currentRows);
+                voiceNavigator.speak("Nowa gra.");
+                break;
+            case "back":
+                onBackPressed();
+                break;
+            case "exit":
+                finish();
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak(VoiceCommands.getGameHelpText());
+                break;
+            case "read":
+            case "repeat":
+                voiceNavigator.speak("Gra Memory. Znajdź wszystkie pary kart. Wynik: " + score + ". Ruchy: " + moves);
+                break;
+        }
     }
 
     private void setupGame(int columns, int rows) {
         currentColumns = columns;
         currentRows = rows;
-        
-        // Ensure even number of cards for memory pairs
+
         int totalCards = columns * rows;
         if (totalCards % 2 != 0) totalCards--;
         int pairs = totalCards / 2;
@@ -73,7 +115,6 @@ public class MemoryGameActivity extends AppCompatActivity {
         isLocked = false;
 
         List<Integer> selectedImages = new ArrayList<>();
-        // Add exactly 'pairs' pairs of images
         for (int i = 0; i < pairs; i++) {
             int img = cardImages[i % cardImages.length];
             selectedImages.add(img);
@@ -92,7 +133,6 @@ public class MemoryGameActivity extends AppCompatActivity {
             }
         });
 
-        // Calculate height to fit all rows on screen without scrolling
         rvCards.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -139,6 +179,8 @@ public class MemoryGameActivity extends AppCompatActivity {
     }
 
     private void showWinDialog() {
+        voiceNavigator.speak("Brawo! Ukończyłeś grę w " + moves + " ruchach.");
+
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_game_win, null);
         builder.setView(dialogView);
@@ -198,6 +240,14 @@ public class MemoryGameActivity extends AppCompatActivity {
 
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
+        }
     }
 
     private static class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {

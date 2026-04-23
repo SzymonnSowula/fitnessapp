@@ -10,8 +10,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -25,15 +26,28 @@ public class MainActivity extends AppCompatActivity {
     private ModelRunner modelRunner;
     private AppDatabase db;
     private volatile boolean dbReady = false;
+    private VoiceNavigator voiceNavigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Dodanie sprawdzenia uprawnień
+        if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            androidx.core.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO}, 1);
+        }
+
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+        voiceNavigator.setup();
+
         mAuth = FirebaseAuth.getInstance();
 
-        // Spersonalizowane powitanie
         TextView tvWelcome = findViewById(R.id.tv_welcome_title);
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String name = prefs.getString(KEY_USER_NAME, "");
@@ -41,10 +55,8 @@ public class MainActivity extends AppCompatActivity {
             tvWelcome.setText(getString(R.string.welcome_personalized, name));
         }
 
-        // Inicjalizacja Navbar
         NavbarHelper.initNavbar(this);
 
-        // Inicjalizacja ModelRunner i Bazy
         modelRunner = new ModelRunner();
         db = AppDatabase.getDatabase(this);
         try {
@@ -55,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Błąd ładowania systemu rekomendacji", Toast.LENGTH_SHORT).show();
         }
 
-        // Obsługa nastrojów
         findViewById(R.id.card_mood_happy).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SingleExerciseActivity.class);
             intent.putExtra(SingleExerciseActivity.EXTRA_MOOD_TYPE, SingleExerciseActivity.MOOD_HAPPY);
@@ -71,6 +82,63 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(SingleExerciseActivity.EXTRA_MOOD_TYPE, SingleExerciseActivity.MOOD_VERY_SAD);
             startActivity(intent);
         });
+
+        voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "next":
+                voiceNavigator.speak("Czuję się dobrze - trudniejsze ćwiczenia. Jestem zmęczony - umiarkowane. Nie czuję się dobrze - łatwe ćwiczenia.");
+                break;
+            case "home":
+                navigateTo(ChoiceActivity.class);
+                break;
+            case "back":
+                onBackPressed();
+                break;
+            case "exit":
+                finish();
+                break;
+            case "settings":
+                navigateTo(SettingsActivity.class);
+                break;
+            case "exercises":
+            case "read":
+                voiceNavigator.speak("Wybierz nastrój aby otrzymać rekomendację ćwiczeń.");
+                break;
+            case "mood_happy":
+                voiceNavigator.speak("Świetnie! Przygotowałam dla Ciebie zestaw intensywniejszych ćwiczeń.");
+                navigateToMood(SingleExerciseActivity.MOOD_HAPPY);
+                break;
+            case "mood_sad":
+                voiceNavigator.speak("Rozumiem. Spróbujmy łagodnych ćwiczeń na rozruszanie.");
+                navigateToMood(SingleExerciseActivity.MOOD_SAD);
+                break;
+            case "mood_very_sad":
+                voiceNavigator.speak("Pamiętaj, że ruch poprawia humor. Przygotowałam bardzo proste ćwiczenia.");
+                navigateToMood(SingleExerciseActivity.MOOD_VERY_SAD);
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak("Powiedz 'dobrze' aby wybrać trudniejsze ćwiczenia, 'zmęczony' dla umiarkowanych, lub 'nie dobrze' dla łatwych.");
+                break;
+        }
+    }
+
+    private void navigateToMood(int moodType) {
+        Intent intent = new Intent(this, SingleExerciseActivity.class);
+        intent.putExtra(SingleExerciseActivity.EXTRA_MOOD_TYPE, moodType);
+        startActivity(intent);
+    }
+
+    private void navigateTo(Class<?> activityClass) {
+        Intent intent = new Intent(this, activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void loadExerciseDatabase() {
@@ -104,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
         }
     }
 

@@ -11,7 +11,11 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +29,7 @@ public class LiquidSortActivity extends AppCompatActivity {
     private int currentLevel = 1;
     private List<TubeView> tubes = new ArrayList<>();
     private TubeView selectedTube = null;
+    private VoiceNavigator voiceNavigator;
 
     private static final int TUBE_CAPACITY = 4;
     private static final int[] COLORS = {
@@ -42,6 +47,14 @@ public class LiquidSortActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liquid_sort);
 
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+        voiceNavigator.setup();
+
         glTubes = findViewById(R.id.gl_tubes);
         tvLevel = findViewById(R.id.tv_level);
         btnReset = findViewById(R.id.btn_reset);
@@ -56,6 +69,42 @@ public class LiquidSortActivity extends AppCompatActivity {
         });
 
         setupLevel(currentLevel);
+
+        voiceNavigator.speakDelayed("Gra Płyny. Sortuj kolory przelewając płyny między probówkami.", 500);
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "new_game":
+            case "restart":
+            case "reset":
+                setupLevel(currentLevel);
+                voiceNavigator.speak("Resetuję poziom.");
+                break;
+            case "next_level":
+            case "next":
+                if (btnNext.getVisibility() == View.VISIBLE) {
+                    btnNext.performClick();
+                    voiceNavigator.speak("Następny poziom.");
+                }
+                break;
+            case "back":
+                onBackPressed();
+                break;
+            case "exit":
+                finish();
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak("Kliknij na probówkę aby ją wybrać, a następnie na drugą aby prlać płyn. Sortuj kolory aby wszystkie takie same znalazły się razem.");
+                break;
+            case "read":
+            case "repeat":
+                voiceNavigator.speak("Gra Płyny. Poziom " + currentLevel + ". Przelewaj płyny aby posortować kolory.");
+                break;
+        }
     }
 
     private void setupLevel(int level) {
@@ -68,9 +117,17 @@ public class LiquidSortActivity extends AppCompatActivity {
         int numEmptyTubes = 2;
         int totalTubes = numColors + numEmptyTubes;
 
-        // Force a more spacious grid
-        glTubes.setColumnCount(3);
-        glTubes.setRowCount((int) Math.ceil(totalTubes / 3.0));
+        int columns = totalTubes <= 6 ? 3 : 4;
+        glTubes.setColumnCount(columns);
+        int rows = (int) Math.ceil((double) totalTubes / columns);
+        glTubes.setRowCount(rows);
+
+        int tubeHeightDp;
+        if (rows <= 2) {
+            tubeHeightDp = 220;
+        } else {
+            tubeHeightDp = 160;
+        }
 
         List<Integer> allColors = new ArrayList<>();
         for (int i = 0; i < numColors; i++) {
@@ -85,21 +142,21 @@ public class LiquidSortActivity extends AppCompatActivity {
             for (int j = 0; j < TUBE_CAPACITY; j++) {
                 tube.colors.push(allColors.remove(0));
             }
-            addTube(tube);
+            addTube(tube, tubeHeightDp);
         }
 
         for (int i = 0; i < numEmptyTubes; i++) {
-            addTube(new TubeView(this));
+            addTube(new TubeView(this), tubeHeightDp);
         }
     }
 
-    private void addTube(TubeView tube) {
+    private void addTube(TubeView tube, int heightDp) {
         tubes.add(tube);
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = 0;
-        params.height = (int) (220 * getResources().getDisplayMetrics().density); // Slightly reduced height to fit better
+        params.height = (int) (heightDp * getResources().getDisplayMetrics().density);
         params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-        params.setMargins(8, 16, 8, 16); 
+        params.setMargins(8, 12, 8, 12);
         tube.setLayoutParams(params);
         glTubes.addView(tube);
 
@@ -140,7 +197,7 @@ public class LiquidSortActivity extends AppCompatActivity {
 
     private void pourLiquid(final TubeView from, final TubeView to) {
         final int colorToPour = from.colors.peek();
-        
+
         int count = 0;
         List<Integer> temp = new ArrayList<>();
         while (!from.colors.isEmpty() && from.colors.peek() == colorToPour) {
@@ -151,12 +208,10 @@ public class LiquidSortActivity extends AppCompatActivity {
         int space = TUBE_CAPACITY - to.colors.size();
         final int pourCount = Math.min(count, space);
 
-        // Put back any that didn't fit immediately
         for (int i = count - 1; i >= pourCount; i--) {
             from.colors.push(temp.get(i));
         }
 
-        // Sequential pouring animation
         final int finalPourCount = pourCount;
         final android.os.Handler handler = new android.os.Handler();
         for (int i = 0; i < finalPourCount; i++) {
@@ -168,9 +223,9 @@ public class LiquidSortActivity extends AppCompatActivity {
                 if (index == finalPourCount - 1) {
                     checkWin();
                 }
-            }, i * 150); // 150ms delay between each block
+            }, i * 150);
         }
-        
+
         if (finalPourCount == 0) {
             from.invalidate();
         }
@@ -210,7 +265,16 @@ public class LiquidSortActivity extends AppCompatActivity {
 
         if (win && completedTubesCount == numColors) {
             Toast.makeText(this, "Brawo! Poziom ukończony!", Toast.LENGTH_SHORT).show();
+            voiceNavigator.speak("Brawo! Poziom ukończony!");
             btnNext.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
         }
     }
 
@@ -250,41 +314,35 @@ public class LiquidSortActivity extends AppCompatActivity {
             super.onDraw(canvas);
             float w = getWidth();
             float h = getHeight();
-            
-            // Constrain width to look more like a real test tube
-            float tubeWidth = Math.min(w * 0.75f, 140f); 
+
+            float tubeWidth = Math.min(w * 0.75f, 140f);
             float left = (w - tubeWidth) / 2;
             float right = left + tubeWidth;
-            float topBound = 70; 
+            float topBound = 70;
             float bottomBound = h - 20;
             float tubeHeight = bottomBound - topBound;
 
             canvas.save();
             canvas.translate(0, selectionOffset);
 
-            // 1. Draw Liquid (Inside)
             paint.setStyle(Paint.Style.FILL);
             float innerPadding = 12;
             float liquidWidth = tubeWidth - (innerPadding * 2);
             float liquidLeft = left + innerPadding;
             float liquidRight = right - innerPadding;
-            
-            // Calculate block height based on available internal space
+
             float availableLiquidHeight = tubeHeight - (tubeWidth / 2) - 10;
             float blockHeight = availableLiquidHeight / TUBE_CAPACITY;
-            
+
             for (int i = 0; i < colors.size(); i++) {
                 paint.setColor(colors.get(i));
                 float blockBottom = bottomBound - (innerPadding + 4) - (i * blockHeight);
                 float blockTop = blockBottom - blockHeight + 2;
-                
+
                 if (i == 0) {
-                    // Rounded bottom for the first block
                     float radius = liquidWidth / 2;
-                    // Draw the rectangular part of the bottom block
                     rect.set(liquidLeft, Math.min(blockTop, blockBottom - radius), liquidRight, blockBottom - radius);
                     canvas.drawRect(rect, paint);
-                    // Draw the semi-circle part
                     bottomRect.set(liquidLeft, blockBottom - radius * 2, liquidRight, blockBottom);
                     canvas.drawArc(bottomRect, 0, 180, true, paint);
                 } else {
@@ -293,12 +351,11 @@ public class LiquidSortActivity extends AppCompatActivity {
                 }
             }
 
-            // 2. Draw Tube Glass (Outline)
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(14);
             paint.setStrokeCap(Paint.Cap.ROUND);
             paint.setColor(isCompleted ? 0xFF059669 : 0xFFCBD5E1);
-            
+
             tubePath.reset();
             tubePath.moveTo(left, topBound);
             tubePath.lineTo(left, bottomBound - tubeWidth / 2);
@@ -307,7 +364,6 @@ public class LiquidSortActivity extends AppCompatActivity {
             tubePath.lineTo(right, topBound);
             canvas.drawPath(tubePath, paint);
 
-            // 3. Draw rim at the top
             paint.setStrokeWidth(12);
             canvas.drawLine(left - 10, topBound, right + 10, topBound, paint);
 

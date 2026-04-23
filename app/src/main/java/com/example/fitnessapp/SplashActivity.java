@@ -33,6 +33,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        // Inicjalizacja systemu głosowego
+        VoiceManager.getInstance().init(this);
+
         // Dodatkowe sprawdzenie SharedPreferences dla onboardingu (wymóg lokalnego zapisu)
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean onboardingCompletedLocal = prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false);

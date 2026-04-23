@@ -237,4 +237,19 @@
         app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_mic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="220dp"
+        android:contentDescription="Nagrywanie głosu"
+        android:src="@drawable/ic_mic"
+        app:backgroundTint="#004A99"
+        app:tint="#FFFFFF"
+        app:fabSize="normal"
+        app:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

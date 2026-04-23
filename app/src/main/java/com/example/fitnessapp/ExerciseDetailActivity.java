@@ -1,20 +1,42 @@
 package com.example.fitnessapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class ExerciseDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = "ExerciseDetail";
+
     private AppDatabase db;
+    private Exercise currentExercise;
+    private VoiceNavigator voiceNavigator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_detail);
+
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+        voiceNavigator.setup();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -37,32 +59,71 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         TextView tvImpacts = findViewById(R.id.tv_impacts);
 
         new Thread(() -> {
-            Exercise e = db.exerciseDao().getById(id);
+            currentExercise = db.exerciseDao().getById(id);
             runOnUiThread(() -> {
-                if (e == null) { finish(); return; }
-                tvName.setText(e.name);
-                tvCategory.setText(getString(R.string.exercise_category_fmt, e.category));
-                tvDifficulty.setText(getString(R.string.exercise_difficulty_fmt, (int)e.poziomTrudnosciNum));
-                tvIntensity.setText(getString(R.string.exercise_intensity_fmt, (int)e.intensywnoscNum));
+                if (currentExercise == null) {
+                    finish();
+                    return;
+                }
+
+                tvName.setText(currentExercise.name);
+                tvCategory.setText(getString(R.string.exercise_category_fmt, currentExercise.category));
+                tvDifficulty.setText(getString(R.string.exercise_difficulty_fmt, (int) currentExercise.poziomTrudnosciNum));
+                tvIntensity.setText(getString(R.string.exercise_intensity_fmt, (int) currentExercise.intensywnoscNum));
 
                 String flags = getString(R.string.exercise_flags_fmt,
-                        e.wspomaganeKrzeslemBin > 0 ? getString(R.string.yes) : getString(R.string.no),
-                        e.moznaWLozkuBin > 0 ? getString(R.string.yes) : getString(R.string.no),
-                        e.moznaSiedzacBin > 0 ? getString(R.string.yes) : getString(R.string.no),
-                        e.wymagaStaniaBin > 0 ? getString(R.string.yes) : getString(R.string.no),
-                        e.wymagaPodlogiBin > 0 ? getString(R.string.yes) : getString(R.string.no)
+                        currentExercise.wspomaganeKrzeslemBin > 0 ? getString(R.string.yes) : getString(R.string.no),
+                        currentExercise.moznaWLozkuBin > 0 ? getString(R.string.yes) : getString(R.string.no),
+                        currentExercise.moznaSiedzacBin > 0 ? getString(R.string.yes) : getString(R.string.no),
+                        currentExercise.wymagaStaniaBin > 0 ? getString(R.string.yes) : getString(R.string.no),
+                        currentExercise.wymagaPodlogiBin > 0 ? getString(R.string.yes) : getString(R.string.no)
                 );
                 tvFlags.setText(flags);
 
                 String impacts = getString(R.string.exercise_impacts_fmt,
-                        (int)e.wplywNaSileNum,
-                        (int)e.wplywNaElastycznoscNum,
-                        (int)e.wplywNaKardioNum,
-                        (int)e.wplywNaPostaweNum
+                        (int) currentExercise.wplywNaSileNum,
+                        (int) currentExercise.wplywNaElastycznoscNum,
+                        (int) currentExercise.wplywNaKardioNum,
+                        (int) currentExercise.wplywNaPostaweNum
                 );
                 tvImpacts.setText(impacts);
+
+                voiceNavigator.speakDelayed("Szczegóły ćwiczenia: " + currentExercise.name, 500);
             });
         }).start();
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "back":
+                onBackPressed();
+                break;
+            case "exit":
+                finish();
+                break;
+            case "read":
+            case "read_description":
+            case "read_more":
+                if (currentExercise != null) {
+                    String text = currentExercise.name + ". ";
+                    if (currentExercise.opis != null && !currentExercise.opis.trim().isEmpty()) {
+                        text += currentExercise.opis;
+                    }
+                    voiceNavigator.speak(text);
+                }
+                break;
+            case "repeat":
+                if (currentExercise != null) {
+                    voiceNavigator.speak(currentExercise.name);
+                }
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak(VoiceCommands.getExerciseHelpText());
+                break;
+        }
     }
 
     @Override
@@ -72,5 +133,13 @@ public class ExerciseDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
+        }
     }
 }

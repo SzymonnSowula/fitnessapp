@@ -5,8 +5,12 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class ColorTapActivity extends AppCompatActivity {
     private List<Integer> userSequence = new ArrayList<>();
     private List<CardView> colorCards = new ArrayList<>();
     private boolean isShowingSequence = false;
+    private VoiceNavigator voiceNavigator;
 
     private final int[] colors = {
             0xFF004A99, // blue
@@ -40,6 +45,14 @@ public class ColorTapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_tap);
+
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+        voiceNavigator.setup();
 
         containerGrid = findViewById(R.id.container_grid);
         tvScore = findViewById(R.id.tv_score);
@@ -58,6 +71,35 @@ public class ColorTapActivity extends AppCompatActivity {
 
         setupTiles();
         startLevel();
+
+        voiceNavigator.speakDelayed("Gra Kolory. Powtarzaj sekwencję kolorów.", 500);
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "new_game":
+            case "restart":
+            case "reset":
+                restartGame();
+                voiceNavigator.speak("Nowa gra.");
+                break;
+            case "back":
+                onBackPressed();
+                break;
+            case "exit":
+                finish();
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak("Obserwuj sekwencję kolorów i ją powtórz. Użyj głosu 'dobrze' aby sprawdzić odpowiedź.");
+                break;
+            case "read":
+            case "repeat":
+                voiceNavigator.speak("Gra Kolory. Poziom " + level + ". Wynik: " + score);
+                break;
+        }
     }
 
     private void setupTiles() {
@@ -114,6 +156,7 @@ public class ColorTapActivity extends AppCompatActivity {
                     isShowingSequence = false;
                     tvTitle.setText("Dobrze!");
                     tvInstruction.setText("Powtórz sekwencję!");
+                    voiceNavigator.speak("Twoja kolej. Powtórz sekwencję.");
                 }
             }
         };
@@ -136,6 +179,7 @@ public class ColorTapActivity extends AppCompatActivity {
             isShowingSequence = true;
             tvTitle.setText("Ups!");
             tvInstruction.setText("Spróbuj jeszcze raz.");
+            voiceNavigator.speak("Niestety błąd. Spróbuj jeszcze raz.");
             new Handler().postDelayed(this::startLevel, 1500);
             return;
         }
@@ -147,6 +191,7 @@ public class ColorTapActivity extends AppCompatActivity {
             tvScore.setText("Wynik: " + score);
             tvLevel.setText("Poziom " + level);
             tvTitle.setText("Świetnie!");
+            voiceNavigator.speak("Świetnie! Przechodzisz do poziomu " + level);
             new Handler().postDelayed(this::startLevel, 1500);
         }
     }
@@ -179,5 +224,13 @@ public class ColorTapActivity extends AppCompatActivity {
         tvScore.setText("Wynik: 0");
         tvLevel.setText("Poziom 1");
         startLevel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
+        }
     }
 }

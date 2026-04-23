@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,11 +29,22 @@ public class RecommendationListActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView tvEmpty;
     private ExerciseAdapter adapter;
+    private VoiceNavigator voiceNavigator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendations);
+
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+
+        FloatingActionButton fabMic = findViewById(R.id.fab_mic);
+        voiceNavigator.setup();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,7 +72,6 @@ public class RecommendationListActivity extends AppCompatActivity {
         float prefDifficulty = getIntent().getFloatExtra("prefDifficulty", 2.0f);
         float prefIntensity = getIntent().getFloatExtra("prefIntensity", 2.0f);
 
-        // --- POBIERANIE DANYCH Z ONBOARDINGU (Z poprawnym importem Context) ---
         SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", Context.MODE_PRIVATE);
         Set<String> userConditions = prefs.getStringSet("conditions", new HashSet<>());
 
@@ -82,7 +94,6 @@ public class RecommendationListActivity extends AppCompatActivity {
 
                         boolean isSafe = true;
 
-                        // Sprawdzanie przeciwwskazań
                         if (e.przeciwwskazania != null && !e.przeciwwskazania.trim().isEmpty() && !e.przeciwwskazania.equalsIgnoreCase("brak")) {
                             for (String condition : userConditions) {
                                 if (e.przeciwwskazania.toLowerCase().contains(condition.toLowerCase())) {
@@ -109,9 +120,27 @@ public class RecommendationListActivity extends AppCompatActivity {
                 } else {
                     recyclerView.setVisibility(View.VISIBLE);
                     adapter.update(finalList);
+                    voiceNavigator.speakDelayed("Znaleziono " + finalList.size() + " ćwiczeń w kategorii " + finalCategory, 500);
                 }
             });
         }).start();
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "back":
+                onBackPressed();
+                break;
+            case "exit":
+                finish();
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak("Użyj przycisku mikrofonu lub powiedz \"następne\" aby przewinąć listę.");
+                break;
+        }
     }
 
     @Override
@@ -121,6 +150,14 @@ public class RecommendationListActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
+        }
     }
 
     private static class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {

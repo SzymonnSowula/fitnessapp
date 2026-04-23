@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -39,13 +41,24 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private Button btnNext;
     private Button btnFinish;
 
+    private VoiceNavigator voiceNavigator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_exercise);
 
         initViews();
-        
+
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+
+        voiceNavigator.setup();
+
         // Hide standard ActionBar if exists since we have custom header
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -90,6 +103,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                     finish();
                 } else {
                     showExercise(currentIndex);
+                    voiceNavigator.speakDelayed("Ćwiczenie 1 z " + exercises.size() + ". " + exercises.get(0).name, 500);
                 }
             });
         }).start();
@@ -98,25 +112,55 @@ public class SingleExerciseActivity extends AppCompatActivity {
             if (currentIndex < exercises.size() - 1) {
                 currentIndex++;
                 showExercise(currentIndex);
+                voiceNavigator.speak("Ćwiczenie " + (currentIndex + 1) + " z " + exercises.size() + ". " + exercises.get(currentIndex).name);
             } else {
-                finish(); // Finish training
+                finish();
             }
         });
 
         btnFinish.setOnClickListener(v -> finish());
     }
 
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "next":
+            case "next_exercise":
+                if (currentIndex < exercises.size() - 1) {
+                    btnNext.performClick();
+                }
+                break;
+            case "back":
+                onBackPressed();
+                break;
+            case "exit":
+            case "finish":
+                finish();
+                break;
+            case "read":
+            case "read_description":
+            case "read_more":
+                voiceNavigator.speak(tvDescription.getText().toString());
+                break;
+            case "repeat":
+                voiceNavigator.speak(tvExerciseName.getText().toString() + ". " + tvDescription.getText().toString());
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak(VoiceCommands.getExerciseHelpText());
+                break;
+        }
+    }
+
     private List<Exercise> loadExercisesForMood(int moodType) {
         switch (moodType) {
             case MOOD_HAPPY:
-                // Najtrudniejsze i najbardziej intensywne
                 return db.exerciseDao().getHardestByCategory("sila", 3.0f, 3.0f);
             case MOOD_VERY_SAD:
-                // Najłatwiejsze i najmniej intensywne
                 return db.exerciseDao().getEasiestByCategory("mobilnosc", 3.0f, 3.0f);
             case MOOD_SAD:
             default:
-                // Umiarkowane - bliskie preferencjom
                 return db.exerciseDao().getByCategorySortedByMood("mieszana", 1.5f, 1.5f);
         }
     }
@@ -147,13 +191,11 @@ public class SingleExerciseActivity extends AppCompatActivity {
         progressExercise.setProgress(progress);
 
         tvExerciseName.setText(e.name);
-        
-        // Map numerical difficulty to stars and text
+
         int diff = (int) e.poziomTrudnosciNum;
         tvDifficultyIcons.setText(getDifficultyIcons(diff));
         tvDifficultyText.setText(getDifficultyText(diff));
-        
-        // Styling based on difficulty
+
         int diffColor = getDifficultyColor(diff);
         tvDifficultyIcons.setTextColor(diffColor);
         tvDifficultyText.setTextColor(diffColor);
@@ -171,7 +213,6 @@ public class SingleExerciseActivity extends AppCompatActivity {
             tvContraindications.setVisibility(View.GONE);
         }
 
-        // Update button
         if (index >= exercises.size() - 1) {
             btnNext.setText("ZAKOŃCZ TRENING");
             btnFinish.setVisibility(View.GONE);
@@ -184,7 +225,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private String getDifficultyIcons(int value) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 5; i++) {
-            sb.append(i < value ? "⤢ " : "⤢ "); // Using the same icon but can change style via color
+            sb.append(i < value ? "⤢ " : "⤢ ");
         }
         return sb.toString().trim();
     }
@@ -196,9 +237,9 @@ public class SingleExerciseActivity extends AppCompatActivity {
     }
 
     private int getDifficultyColor(int value) {
-        if (value <= 2) return 0xFF057A32; // Green
-        if (value <= 3) return 0xFF994A00; // Orange
-        return 0xFFEF4444; // Red
+        if (value <= 2) return 0xFF057A32;
+        if (value <= 3) return 0xFF994A00;
+        return 0xFFEF4444;
     }
 
     @Override
@@ -208,5 +249,13 @@ public class SingleExerciseActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
+        }
     }
 }

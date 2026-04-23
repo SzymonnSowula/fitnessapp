@@ -21,7 +21,6 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
 
     public void setup() {
         VoiceManager.getInstance().addCallback(this);
-        // Automatyczny start słuchania przy wejściu na ekran
         startListening();
     }
 
@@ -52,23 +51,21 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
         VoiceManager.getInstance().stopSpeech();
     }
 
+    public boolean isSpeaking() {
+        return VoiceManager.getInstance().isSpeaking();
+    }
+
     @Override
     public void onSpeechResult(String text, boolean isFinal) {
         if (!isFinal) return;
 
         Log.d(TAG, "Recognized text: " + text);
-        
-        // 1. Sprawdzamy dopasowanie w VoiceCommands (teraz rygorystyczne)
+
         String command = VoiceCommands.matchCommand(text);
-        
+
         if (command != null) {
             Log.d(TAG, "Matched command: " + command);
-            
-            // Reaguj tylko jeśli:
-            // a) To komenda nawigacyjna (zawsze ważne)
-            // b) Tekst zawierał słowo "Fitness" (zaimplementowane w matchCommand)
-            // c) Lub po prostu komenda jest znaleziona (matchCommand odsieje śmieci)
-            
+
             if (isNavigationCommand(command)) {
                 handleNavigationCommand(command);
             } else if (callback != null) {
@@ -78,33 +75,89 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     }
 
     private boolean isNavigationCommand(String command) {
-        return command.equals("home") || command.equals("exercises") || 
-               command.equals("games") || command.equals("settings") || 
-               command.equals("back") || command.equals("exit");
+        return command.equals("home") || command.equals("exercises") ||
+               command.equals("games") || command.equals("settings") ||
+               command.equals("back") || command.equals("exit") ||
+               command.equals("body") || command.equals("mind") ||
+               command.equals("profile") || command.equals("back_main");
     }
 
     public void handleNavigationCommand(String command) {
         if (activity == null || activity.isFinishing()) return;
 
         switch (command) {
-            case "home": navigateTo(ChoiceActivity.class); break;
-            case "exercises": navigateTo(MainActivity.class); break;
-            case "games": navigateTo(MindGamesActivity.class); break;
-            case "settings": navigateTo(SettingsActivity.class); break;
-            case "back": activity.onBackPressed(); break;
-            case "exit": activity.finish(); break;
+            case "home":
+            case "back_main":
+                navigateTo(ChoiceActivity.class);
+                speak("Przechodzę do strony głównej");
+                break;
+            case "exercises":
+                navigateTo(MainActivity.class);
+                speak("Przechodzę do ćwiczeń");
+                break;
+            case "games":
+                navigateTo(MindGamesActivity.class);
+                speak("Przechodzę do gier");
+                break;
+            case "settings":
+                navigateTo(SettingsActivity.class);
+                speak("Przechodzę do ustawień");
+                break;
+            case "body":
+                navigateTo(MainActivity.class);
+                speak("Przechodzę do ćwiczeń");
+                break;
+            case "mind":
+                navigateTo(MindGamesActivity.class);
+                speak("Przechodzę do gier umysłowych");
+                break;
+            case "profile":
+                speak("Funkcja profilu nie jest jeszcze dostępna");
+                break;
+            case "back":
+                activity.onBackPressed();
+                break;
+            case "exit":
+                speak("Zamykam aplikację");
+                new android.os.Handler().postDelayed(() -> activity.finish(), 1000);
+                break;
         }
     }
 
     private void navigateTo(Class<?> to) {
-        if (activity.getClass().equals(to)) return; // Już tu jesteśmy
+        if (activity.getClass().equals(to)) return;
         Intent intent = new Intent(activity, to);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
-    @Override public void onSpeechError(int errorCode, String errorMessage) {}
-    @Override public void onTTSReady() {}
-    @Override public void onTTSStarted() {}
-    @Override public void onTTSDone() {}
+    @Override
+    public void onSpeechError(int errorCode, String errorMessage) {
+        Log.e(TAG, "Speech error: " + errorMessage);
+    }
+
+    @Override
+    public void onTTSReady() {
+        Log.d(TAG, "TTS Ready");
+    }
+
+    @Override
+    public void onTTSStarted() {
+        Log.d(TAG, "TTS Started speaking");
+    }
+
+    @Override
+    public void onTTSDone() {
+        Log.d(TAG, "TTS Done speaking");
+    }
+
+    @Override
+    public void onListeningStarted() {
+        Log.d(TAG, "Listening started");
+    }
+
+    @Override
+    public void onListeningStopped() {
+        Log.d(TAG, "Listening stopped");
+    }
 }

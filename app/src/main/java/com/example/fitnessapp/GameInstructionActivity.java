@@ -2,6 +2,9 @@ package com.example.fitnessapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +21,9 @@ public class GameInstructionActivity extends AppCompatActivity {
     private ImageView ivGameIcon;
     private TextView tvGameTitle;
     private TextView tvInstructionText;
+    private View fabMic;
+    private VoiceNavigator voiceNavigator;
+    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +33,49 @@ public class GameInstructionActivity extends AppCompatActivity {
         ivGameIcon = findViewById(R.id.iv_game_icon);
         tvGameTitle = findViewById(R.id.tv_game_title);
         tvInstructionText = findViewById(R.id.tv_instruction_text);
+        fabMic = findViewById(R.id.fab_mic);
+
+        // Setup voice navigation
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+
+        // Start listening when activity is shown
+        new android.os.Handler().postDelayed(() -> {
+            voiceNavigator.setup();
+            voiceNavigator.startListening();
+        }, 500);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         int gameType = getIntent().getIntExtra(EXTRA_GAME_TYPE, GAME_MEMORY);
         setupGameInstruction(gameType);
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "back":
+            case "exit":
+                finish();
+                break;
+            case "start":
+            case "confirm":
+            case "next":
+                // Start the game
+                View btnStart = findViewById(R.id.btn_start);
+                if (btnStart != null) btnStart.performClick();
+                break;
+            case "read":
+            case "repeat":
+                voiceNavigator.speak(tvInstructionText.getText().toString());
+                break;
+            case "help":
+                voiceNavigator.speak("Komendy: start lub następny - rozpocznij grę. Wstecz - wróć. Czytaj - przeczytaj instrukcję.");
+                break;
+        }
     }
 
     private void setupGameInstruction(int gameType) {
@@ -51,6 +95,7 @@ public class GameInstructionActivity extends AppCompatActivity {
                     startActivity(new Intent(this, EasyGamesActivity.class));
                     finish();
                 });
+                voiceNavigator.speakDelayed("Gra Pamięć. Znajdź wszystkie pary jednakowych kart. Powiedz start aby rozpocząć.", 800);
                 break;
 
             case GAME_COLORS:
@@ -71,6 +116,7 @@ public class GameInstructionActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 });
+                voiceNavigator.speakDelayed("Gra Kolory. Obserwuj sekwencję kolorów, którą musisz powtórzyć. Powiedz start aby rozpocząć.", 800);
                 break;
 
             case GAME_LIQUID:
@@ -90,7 +136,16 @@ public class GameInstructionActivity extends AppCompatActivity {
                     startActivity(new Intent(this, LiquidSortActivity.class));
                     finish();
                 });
+                voiceNavigator.speakDelayed("Gra Płyny. Sortuj kolory przelewając płyny między probówkami. Powiedz start aby rozpocząć.", 800);
                 break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
         }
     }
 }

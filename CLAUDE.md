@@ -72,6 +72,116 @@ MindGamesActivity → GameInstructionActivity → [GameActivity]
  - Physical capabilities (can_stand, can_exercise_floor, needs_chair, can_exercise_bed, can_exercise_sitting)
  - Health conditions set
 
+## Voice System (TTS + Speech Recognition)
+
+### Overview
+The app uses a comprehensive voice control system designed for seniors:
+- **TTS (Text-to-Speech)**: Reads content aloud in Polish
+- **Speech Recognition**: Listens for voice commands
+- **VoiceNavigator**: Per-activity voice handler
+- **VoiceCommands**: Central command matching
+
+### Key Classes
+
+| Class | Purpose |
+|-------|---------|
+| `VoiceManager` | Singleton managing TTS and SpeechRecognizer |
+| `VoiceNavigator` | Per-activity voice handling, callback interface |
+| `VoiceCommands` | Maps Polish phrases to command strings |
+| `GameInstructionActivity` | Instruction screen before each mind game |
+
+### VoiceManager (VoiceManager.java)
+Singleton that manages both TTS and speech recognition:
+- **TTS**: Polish language (pl-PL), speech rate 0.85f for seniors
+- **Speech Recognition**: Creates new recognizer instance per listening session
+- **Callbacks**: `onSpeechResult`, `onSpeechError`, `onTTSReady`, `onTTSStarted`, `onTTSDone`, `onListeningStarted`, `onListeningStopped`
+- **Retry logic**: Auto-restarts on errors with delays
+- **Preferences**: Stores `tts_enabled`, `speech_enabled`, `speech_rate` in `VoiceSettings`
+
+### VoiceNavigator Usage
+Each activity that uses voice should:
+```java
+private VoiceNavigator voiceNavigator;
+
+voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+    @Override
+    public void onVoiceCommand(String command) {
+        runOnUiThread(() -> handleVoiceCommand(command));
+    }
+});
+voiceNavigator.setup();
+
+// When activity is destroyed:
+if (voiceNavigator != null) {
+    voiceNavigator.cleanup();
+}
+```
+
+### Voice Commands
+
+#### General Commands (always available)
+| Command | Phrases |
+|---------|---------|
+| `help` | pomoc, komendy, co mogę powiedzieć |
+| `stop` | stop, cisza, milcz, zamknij się |
+| `read` | czytaj, przeczytaj, odczytaj |
+| `repeat` | powtórz, jeszcze raz |
+| `confirm` | tak, okej, potwierdzam, dobrze |
+| `cancel` | nie, anuluj |
+
+#### Navigation Commands
+| Command | Phrases |
+|---------|---------|
+| `home` | główna, menu główne, strona startowa |
+| `back` | wstecz, cofnij, wróć |
+| `exit` | wyjdź, zamknij, koniec, wyloguj |
+| `exercises` | ćwiczenia, trening, chcę ćwiczyć |
+| `body` | ciało, ćwiczenia ciała |
+| `games` | gry, pobawmy się, otwórz gry |
+| `mind` | umysł, umysłowe |
+| `settings` | ustawienia, opcje |
+| `next` | następne, dalej, kolejne |
+| `previous` | poprzednie, wstecz |
+
+#### Exercise Commands
+| Command | Phrases |
+|---------|---------|
+| `next_exercise` | następne ćwiczenie |
+| `start` | start, rozpocznij, zaczynamy |
+| `finish` | zakończ, koniec, stop |
+| `read_description` | czytaj opis, opisz ćwiczenie |
+
+#### Game Commands
+| Command | Phrases |
+|---------|---------|
+| `new_game` | nowa gra |
+| `restart` | restart, resetuj, od nowa |
+| `next_level` | następny poziom |
+| `game_memory` | memory, pamięć, karty |
+| `game_colors` | kolory, barwy |
+| `game_liquid` | płyny, probówki, sortowanie |
+| `good` | dobrze, super, świetnie, brawo |
+| `wrong` | źle, błąd, pudło |
+
+### Voice Command Flow
+1. User speaks → SpeechRecognizer captures audio
+2. VoiceManager receives result via `onSpeechResult`
+3. VoiceNavigator calls `VoiceCommands.matchCommand(text)`
+4. Matched command string returned (e.g., "back", "home", "games")
+5. Navigation commands handled by VoiceNavigator
+6. Other commands passed to activity callback via `onVoiceCommand(command)`
+
+### Adding Voice to New Screens
+1. Add `VoiceNavigator voiceNavigator` field
+2. Initialize in `onCreate` with callback
+3. Handle commands in `handleVoiceCommand(String command)`
+4. Call `voiceNavigator.speak(text)` to read content aloud
+5. Cleanup in `onDestroy`
+
+### Animations
+- `fab_pulse.xml`: Pulse animation for listening FAB
+- `fab_click.xml`: Click feedback animation
+
 ## Design Conventions
 
 ### UI Text Style
@@ -116,6 +226,9 @@ MindGamesActivity → GameInstructionActivity → [GameActivity]
 | `ColorTapActivity` | Color sequence memory game |
 | `LiquidSortActivity` | Liquid sorting puzzle game |
 | `MemoryGameActivity` | Card matching memory game |
+| `VoiceManager` | Singleton for TTS and speech recognition |
+| `VoiceNavigator` | Per-activity voice handling |
+| `VoiceCommands` | Maps Polish phrases to canonical commands |
 
 ## Asset Files
 
@@ -129,3 +242,11 @@ MindGamesActivity → GameInstructionActivity → [GameActivity]
 2. Add case in `setupGameInstruction()` with icon, title, instructions, and launch intent
 3. Add click handler in `MindGamesActivity.java` to launch `GameInstructionActivity`
 4. Use neon green (#39FF14) for any visual highlights in the game
+
+## Adding Voice Support to New Activities
+
+1. Add `VoiceNavigator` field and initialize in `onCreate()`
+2. Create `handleVoiceCommand()` method for command handling
+3. Add voice commands to `VoiceCommands.java` if needed
+4. Call `speak()` to read content, `speakDelayed()` for delayed announcements
+5. Cleanup in `onDestroy()`

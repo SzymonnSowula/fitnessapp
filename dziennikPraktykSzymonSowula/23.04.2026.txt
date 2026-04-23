@@ -1,5 +1,4 @@
-Finalizacja projektu:
-- Ostatnie poprawki i szlify
-- Przygotowanie dokumentacji projektu
-- Finalne testowanie wszystkich funkcjonalności
-- Oddanie projektu aplikacji fitness dla seniorów z mood-based rekomendacjami, grami umysłowymi i systemem ćwiczeń
+
+- Testowanie i debugowanie poszczególnych funkcjonalności
+- Zaimplementowanie interfejsu głosowego -> jego działanie -> Asystent działa w pętli ciągłego nasłuchiwania, analizując mowę użytkownika w poszukiwaniu precyzyjnych słów kluczowych i fraz zdefiniowanych w bazie poleceń. Po rozpoznaniu komendy system automatycznie wyzwala nawigację między ekranami lub konkretne akcje w grach i ćwiczeniach, umożliwiając seniorom całkowicie bezdotykową obsługę aplikacji.
+- Optymalizacja kodu i poprawa błędów

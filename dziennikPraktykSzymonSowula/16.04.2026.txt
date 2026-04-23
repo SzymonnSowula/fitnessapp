@@ -1,0 +1,5 @@
+Kontynuacja rozwoju aplikacji:
+- Uproszczyłem poziomy trudności gier umysłowych
+- Dodałem grę sortowania kolorów (color sorting game)
+- Dodałem interfejs głosowy (voice interface)
+- Wykonałem drobne poprawki i naprawy

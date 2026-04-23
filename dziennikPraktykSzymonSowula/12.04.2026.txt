@@ -1,0 +1,6 @@
+Praca nad systemem rekomendacji i modelem ML:
+- Dodałem model do plików (rf_rekomendator.onnx)
+- Zaimplementowałem system rekomendacji ćwiczeń oparty na nastroju
+- Naprawiłem wcześniejsze błędy związane z generowaniem ćwiczeń
+- Dodałem ćwiczenia do bazy danych
+- Pracowałem nad sesją treningową umysłu (mind training session)

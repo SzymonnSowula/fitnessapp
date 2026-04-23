@@ -1,0 +1,4 @@
+Prace nad aplikacją:
+- Dalszy rozwój funkcjonalności zgodnie z wymaganiami
+- Testowanie poszczególnych modułów
+- Integracja wszystkich komponentów

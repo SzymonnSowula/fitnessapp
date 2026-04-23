@@ -1,0 +1,9 @@
+Kontynuowałem rozwój aplikacji fitness dla seniorów:
+- Zwiększyłem kolory i rozmiar wszystkich elementów (dostępność dla seniorów)
+- Dodałem więcej gier umysłowych i poziomów trudności
+- Naprawiłem problemy z przyciskami
+- Poprawiłem UI aplikacji
+- Refaktoryzacja UI ćwiczeń z wysokim kontrastem
+- Implementacja zarządzania warunkami zdrowotnymi w ustawieniach
+- Usprawnienie przepływu nawigacji dla seniorów
+- Naprawiłem kolejne błędy

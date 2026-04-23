@@ -1,0 +1,6 @@
+Kontynuowałem prace nad aplikacją. Tego dnia:
+- Naprawiłem problemy z ekranem logowania
+- Usunąłem zbędne ekrany logowania i zoptymalizowałem przepływ użytkownika
+- Dodałem starting questions (pytania początkowe)
+- Naprawiłem generowanie ćwiczeń
+- Rozpocząłem pracę nad systemem rekomendacji

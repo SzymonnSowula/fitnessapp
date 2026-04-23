@@ -1,0 +1,5 @@
+Finalizacja projektu:
+- Ostatnie poprawki i szlify
+- Przygotowanie dokumentacji projektu
+- Finalne testowanie wszystkich funkcjonalności
+- Oddanie projektu aplikacji fitness dla seniorów z mood-based rekomendacjami, grami umysłowymi i systemem ćwiczeń

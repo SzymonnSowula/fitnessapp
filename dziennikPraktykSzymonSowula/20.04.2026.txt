@@ -1,0 +1,4 @@
+Kontynuacja developmentu:
+- Rozwój gier umysłowych (memory, 2048, sortowanie kolorów)
+- Praca nad personalizacją doświadczenia użytkownika
+- Optymalizacja wydajności aplikacji

@@ -1,0 +1,6 @@
+Prace projektowe i implementacyjne:
+- Zaimplementowałem design ekranu onboarding (wprowadzenie użytkownika)
+- Dodałem design do pozostałych ekranów aplikacji
+- Zaprojektowałem mini-gry (mind games)
+- Dodałem przycisk powrotu i optymalizacja kodu
+- Poprawiłem błędy cruschingu aplikacji

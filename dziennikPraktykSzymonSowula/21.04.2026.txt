@@ -1,0 +1,4 @@
+Prace nad aplikacją:
+- Dalsza integracja Firebase Auth
+- Praca nad bazą danych ćwiczeń (Room + CSV)
+- Implementacja logiki rekomendacji opartaj na modelu ONNX

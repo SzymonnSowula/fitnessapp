@@ -1,0 +1,4 @@
+Prace programistyczne:
+- Kontynuacja rozwoju aplikacji fitness dla seniorów
+- Praca nad zadaniami sprintu 4-tygodniowego
+- Implementacja kolejnych funkcjonalności

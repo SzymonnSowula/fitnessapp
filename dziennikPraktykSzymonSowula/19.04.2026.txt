@@ -1,0 +1,4 @@
+Prace programistyczne:
+- Implementacja nowych funkcji zgodnie z planem sprintu
+- Rozwiązywanie problemów zgłoszonych podczas testów
+- Praca nad interfejsem użytkownika

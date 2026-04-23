@@ -1,0 +1,4 @@
+Prace programistyczne:
+- Testowanie i debugowanie poszczególnych funkcjonalności
+- Optymalizacja kodu i poprawa błędów
+- Przygotowanie do prezentacji projektu

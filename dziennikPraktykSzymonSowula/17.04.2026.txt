@@ -1,0 +1,5 @@
+Prace porządkowe i końcowe:
+- Ostatnie poprawki i optymalizacje kodu
+- Finalizacja projektu na sprint 4-tygodniowy
+- Przygotowanie do oddania projektu
+- Dokumentacja postępu prac

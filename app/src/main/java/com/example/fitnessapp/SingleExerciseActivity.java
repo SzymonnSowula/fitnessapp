@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,12 @@ public class SingleExerciseActivity extends AppCompatActivity {
         });
 
         voiceNavigator.setup();
+
+        // Help button listener
+        ImageButton btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
 
         // Hide standard ActionBar if exists since we have custom header
         if (getSupportActionBar() != null) {

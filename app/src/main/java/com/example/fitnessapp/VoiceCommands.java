@@ -332,12 +332,13 @@ public class VoiceCommands {
         String lowerText = text.toLowerCase().trim();
         String paddedText = " " + lowerText + " ";
 
-        // Check command maps in order of priority
-        String res = searchInMap(paddedText, GENERAL_COMMANDS);
-        if (res == null) res = searchInMap(paddedText, NAVIGATION_COMMANDS);
-        if (res == null) res = searchInMap(paddedText, EXERCISE_COMMANDS);
-        if (res == null) res = searchInMap(paddedText, GAME_COMMANDS);
-        if (res == null) res = searchInMap(paddedText, MOOD_COMMANDS);
+// Check command maps in order of priority
+    // MOOD commands checked first because they are specific phrases on MainActivity
+    String res = searchInMap(paddedText, MOOD_COMMANDS);
+    if (res == null) res = searchInMap(paddedText, NAVIGATION_COMMANDS);
+    if (res == null) res = searchInMap(paddedText, EXERCISE_COMMANDS);
+    if (res == null) res = searchInMap(paddedText, GAME_COMMANDS);
+    if (res == null) res = searchInMap(paddedText, GENERAL_COMMANDS);
 
         return res;
     }

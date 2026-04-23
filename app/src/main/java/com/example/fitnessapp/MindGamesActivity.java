@@ -2,6 +2,7 @@ package com.example.fitnessapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -26,9 +27,15 @@ public class MindGamesActivity extends AppCompatActivity {
 
  voiceNavigator.setup();
 
- NavbarHelper.initNavbar(this);
+NavbarHelper.initNavbar(this);
 
- findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        // Help button listener
+        ImageButton btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
+
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
  CardView cardMemory = findViewById(R.id.card_memory_selection);
  cardMemory.setOnClickListener(v -> {

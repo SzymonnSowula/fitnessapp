@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="KOMENDY GŁOSOWE"
+        android:textColor="#004A99"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:letterSpacing="0.05" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginVertical="16dp"
+        android:background="#E2E8F0" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="400dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NAWIGACJA"
+                android:textColor="#004A99"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• główna - powrót do strony głównej\n• wstecz - wróć do poprzedniego ekranu\n• ćwiczenia - przejdź do ćwiczeń\n• gry - przejdź do gier umysłowych\n• ustawienia - otwórz ustawienia\n• wyjdź - zamknij aplikację"
+                android:textColor="#1E293B"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OGÓLNE"
+                android:textColor="#004A99"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• pomoc - pokaż listę komend\n• stop lub cisza - zatrzymaj mówienie\n• czytaj - przeczytaj tekst na ekranie\n• powtórz - powtórz ostatnią wiadomość\n• tak / nie - potwierdź lub anuluj"
+                android:textColor="#1E293B"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ĆWICZENIA"
+                android:textColor="#004A99"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• następne ćwiczenie - przejdź dalej\n• start lub zaczynamy - rozpocznij\n• zakończ lub koniec - zakończ trening\n• czytaj opis - przeczytaj opis ćwiczenia"
+                android:textColor="#1E293B"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GRY"
+                android:textColor="#004A99"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• nowa gra lub restart - zacznij od nowa\n• następny poziom - przejdź dalej\n• memory, kolory, płyny - wybierz grę\n• dobrze / źle - reaguj na wynik"
+                android:textColor="#1E293B"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

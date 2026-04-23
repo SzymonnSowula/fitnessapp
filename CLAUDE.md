@@ -87,8 +87,34 @@ The app uses a comprehensive voice control system designed for seniors:
 |-------|---------|
 | `VoiceManager` | Singleton managing TTS and SpeechRecognizer |
 | `VoiceNavigator` | Per-activity voice handling, callback interface |
-| `VoiceCommands` | Maps Polish phrases to command strings |
-| `GameInstructionActivity` | Instruction screen before each mind game |
+| `VoiceCommands` | Maps Polish phrases to canonical commands |
+| `VoiceHelpDialog` | Dialog showing available voice commands |
+
+### Voice Help Dialog
+A help dialog showing available voice commands is accessible via a **?** icon in the top-right corner of each screen:
+- **Icon**: `ic_help.xml` - blue question mark vector drawable
+- **Layout**: `dialog_voice_help.xml` - shows commands organized by category
+- **Class**: `VoiceHelpDialog.java` - simple dialog helper
+
+To add the help button to a new screen:
+1. Add `ImageButton` with `android:id="@+id/btn_help"` and `android:src="@drawable/ic_help"` in the header
+2. In the Activity's `onCreate`, add:
+```java
+ImageButton btnHelp = findViewById(R.id.btn_help);
+if (btnHelp != null) {
+    btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+}
+```
+
+### Voice Commands Priority
+Command categories are checked in this order:
+1. **MOOD** (highest priority) - "czuję się dobrze", etc.
+2. **NAVIGATION** - home, back, exercises, games, etc.
+3. **EXERCISE** - next_exercise, start, finish, etc.
+4. **GAME** - new_game, restart, game_memory, etc.
+5. **GENERAL** (lowest priority) - help, stop, read, etc.
+
+This ensures mood commands like "czuję się dobrze" are matched before generic words like "dobrze" (which could match `confirm`).
 
 ### VoiceManager (VoiceManager.java)
 Singleton that manages both TTS and speech recognition:
@@ -146,10 +172,13 @@ if (voiceNavigator != null) {
 #### Exercise Commands
 | Command | Phrases |
 |---------|---------|
-| `next_exercise` | następne ćwiczenie |
+| `next_exercise` | następne ćwiczenie, kolejne ćwiczenie |
+| `previous_exercise` | poprzednie ćwiczenie |
 | `start` | start, rozpocznij, zaczynamy |
 | `finish` | zakończ, koniec, stop |
 | `read_description` | czytaj opis, opisz ćwiczenie |
+| `ask_reps` | ile powtórzeń, ile razy |
+| `ask_duration` | jak długo, czas |
 
 #### Game Commands
 | Command | Phrases |
@@ -162,6 +191,13 @@ if (voiceNavigator != null) {
 | `game_liquid` | płyny, probówki, sortowanie |
 | `good` | dobrze, super, świetnie, brawo |
 | `wrong` | źle, błąd, pudło |
+
+#### Mood Commands (on MainActivity)
+| Command | Phrases |
+|---------|---------|
+| `mood_happy` | czuję się dobrze, czuję się świetnie, jestem szczęśliwy, bardzo dobrze, dobrze |
+| `mood_sad` | jestem zmęczony, czuję się średnio, tak sobie, średnio |
+| `mood_very_sad` | nie czuję się dobrze, czuję się źle, jestem chory, boli mnie, bardzo źle |
 
 ### Voice Command Flow
 1. User speaks → SpeechRecognizer captures audio

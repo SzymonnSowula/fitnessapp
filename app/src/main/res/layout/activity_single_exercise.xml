@@ -16,30 +16,42 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ĆWICZENIE 1 Z 5"
-                android:textColor="#1E293B"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.05" />
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ĆWICZENIE 1 Z 5"
+            android:textColor="#1E293B"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
 
-            <TextView
-                android:id="@+id/tv_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="20%"
-                android:textColor="#004A99"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+        <ImageButton
+            android:id="@+id/btn_help"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_help"
+            android:scaleType="fitCenter"
+            android:padding="8dp"
+            android:contentDescription="Pomoc głosowa" />
+
+        <TextView
+            android:id="@+id/tv_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/btn_help"
+            android:layout_marginEnd="8dp"
+            android:text="20%"
+            android:textColor="#004A99"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/progress_exercise"

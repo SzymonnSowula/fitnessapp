@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -83,7 +84,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
+voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
+
+        // Help button listener
+        ImageButton btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
     }
 
     private void handleVoiceCommand(String command) {

@@ -2,6 +2,7 @@ package com.example.fitnessapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -43,7 +44,13 @@ public class ChoiceActivity extends AppCompatActivity {
             startActivity(new Intent(ChoiceActivity.this, MindGamesActivity.class));
         });
 
-        voiceNavigator.speakDelayed("Co chcesz poćwiczyć? Wybierz Ciało lub Umysł.", 500);
+voiceNavigator.speakDelayed("Co chcesz poćwiczyć? Wybierz Ciało lub Umysł.", 500);
+
+        // Help button listener
+        ImageButton btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
     }
 
     private void handleVoiceCommand(String command) {

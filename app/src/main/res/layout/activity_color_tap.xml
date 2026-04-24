@@ -22,7 +22,7 @@
  android:layout_weight="1"
  android:text="Poziom 1"
  android:textColor="#004A99"
- android:textSize="28sp"
+ android:textSize="32sp"
  android:textStyle="bold" />
 
  <androidx.cardview.widget.CardView
@@ -38,8 +38,8 @@
  android:paddingHorizontal="16dp"
  android:paddingVertical="8dp"
  android:text="Wynik: 0"
- android:textColor="#004A99"
- android:textSize="28sp"
+ android:textColor="#1E40AF"
+ android:textSize="32sp"
  android:textStyle="bold" />
  </androidx.cardview.widget.CardView>
  </LinearLayout>
@@ -191,7 +191,7 @@
  android:layout_marginHorizontal="24dp"
  android:layout_marginBottom="12dp"
  android:backgroundTint="#057A32"
- android:text="Wstecz"
+ android:text="Wyjdź"
  android:textAllCaps="false"
  android:textColor="@color/white"
  android:textSize="28sp"
@@ -221,19 +221,5 @@
  app:iconTint="@color/white"
  app:cornerRadius="16dp"
  app:layout_constraintBottom_toBottomOf="parent" />
-
- <com.google.android.material.floatingactionbutton.FloatingActionButton
- android:id="@+id/fab_mic"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:layout_margin="16dp"
- android:contentDescription="Nagrywanie głosu"
- android:src="@drawable/ic_mic"
- app:backgroundTint="#004A99"
- app:tint="#FFFFFF"
- app:fabSize="normal"
- app:elevation="8dp"
- app:layout_constraintBottom_toBottomOf="parent"
- app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

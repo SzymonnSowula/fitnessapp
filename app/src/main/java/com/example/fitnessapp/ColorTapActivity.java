@@ -96,17 +96,11 @@ public class ColorTapActivity extends AppCompatActivity {
                 restartGame();
                 voiceNavigator.speak("Nowa gra.");
                 break;
-            case "back":
-                onBackPressed();
-                break;
-            case "exit":
-                finish();
-                break;
             case "stop":
                 voiceNavigator.stopSpeaking();
                 break;
             case "help":
-                voiceNavigator.speak("Obserwuj sekwencję kolorów i ją powtórz. Użyj głosu 'dobrze' aby sprawdzić odpowiedź.");
+                voiceNavigator.speak("Obserwuj sekwencję kolorów i ją powtórz.");
                 break;
             case "read":
             case "repeat":

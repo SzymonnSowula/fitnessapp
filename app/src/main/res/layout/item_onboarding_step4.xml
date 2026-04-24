@@ -18,7 +18,7 @@
             android:layout_marginBottom="32dp"
             android:text="Co jest Twoim głównym celem?"
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textSize="44sp"
             android:textStyle="bold"
             android:gravity="center_horizontal" />
 
@@ -41,7 +41,7 @@
                     android:padding="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/onboarding_goal_strength"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -51,7 +51,7 @@
                     android:padding="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/onboarding_goal_balance"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -61,7 +61,7 @@
                     android:padding="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/onboarding_goal_mobility"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -71,7 +71,7 @@
                     android:padding="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/onboarding_goal_cardio"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -81,7 +81,7 @@
                     android:padding="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/onboarding_goal_posture"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:padding="20dp"
                     android:text="@string/onboarding_goal_mixed"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textColor="@color/black" />
             </RadioGroup>
         </androidx.cardview.widget.CardView>

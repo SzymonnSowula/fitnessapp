@@ -53,7 +53,6 @@ public class MemoryGameActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fabMic = findViewById(R.id.fab_mic);
         voiceNavigator.setup();
 
         rvCards = findViewById(R.id.rv_cards);

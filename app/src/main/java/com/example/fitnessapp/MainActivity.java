@@ -13,8 +13,6 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -98,20 +96,9 @@ voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
             case "next":
                 voiceNavigator.speak("Czuję się dobrze - trudniejsze ćwiczenia. Jestem zmęczony - umiarkowane. Nie czuję się dobrze - łatwe ćwiczenia.");
                 break;
-            case "home":
-                navigateTo(ChoiceActivity.class);
-                break;
-            case "back":
-                onBackPressed();
-                break;
-            case "exit":
-                finish();
-                break;
-            case "settings":
-                navigateTo(SettingsActivity.class);
-                break;
             case "exercises":
             case "read":
+            case "repeat":
                 voiceNavigator.speak("Wybierz nastrój aby otrzymać rekomendację ćwiczeń.");
                 break;
             case "mood_happy":

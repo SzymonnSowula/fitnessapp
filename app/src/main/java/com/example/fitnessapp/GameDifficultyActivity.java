@@ -88,22 +88,29 @@ public class GameDifficultyActivity extends AppCompatActivity {
 
     private void handleVoiceCommand(String command) {
         switch (command) {
-            case "back":
-            case "exit":
-                finish();
-                break;
             case "start":
             case "confirm":
             case "next":
-                launchGame();
+                voiceNavigator.speak("Rozpoczynam grę.");
+                new android.os.Handler().postDelayed(this::launchGame, 1000);
                 break;
             case "help":
                 voiceNavigator.speak("Wybierz poziom trudności: łatwy, średni lub trudny. Powiedz start aby rozpocząć grę.");
                 break;
-            case "game_memory":
+            case "easy":
                 selectedDifficulty = DIFFICULTY_EASY;
                 updateDifficultyUI();
-                launchGame();
+                voiceNavigator.speak("Wybrano poziom łatwy. Powiedz start aby zacząć.");
+                break;
+            case "medium":
+                selectedDifficulty = DIFFICULTY_MEDIUM;
+                updateDifficultyUI();
+                voiceNavigator.speak("Wybrano poziom średni. Powiedz start aby zacząć.");
+                break;
+            case "hard":
+                selectedDifficulty = DIFFICULTY_HARD;
+                updateDifficultyUI();
+                voiceNavigator.speak("Wybrano poziom trudny. Powiedz start aby zacząć.");
                 break;
         }
     }
@@ -139,6 +146,16 @@ public class GameDifficultyActivity extends AppCompatActivity {
                 tvHardDesc.setText("5 kolorów");
                 voiceNavigator.speakDelayed("Wybierz poziom trudności gry Płyny. Łatwy, średni lub trudny.", 800);
                 break;
+
+            case GameInstructionActivity.GAME_2048:
+                ivGameIcon.setImageResource(R.drawable.ic_onboarding_3);
+                ivGameIcon.setColorFilter(0xFFEA580C);
+                tvGameTitle.setText("2048");
+                tvEasyDesc.setText("Cel: 512");
+                tvMediumDesc.setText("Cel: 1024");
+                tvHardDesc.setText("Cel: 2048");
+                voiceNavigator.speakDelayed("Wybierz poziom trudności gry dwa tysiące czterdzieści osiem. Łatwy, średni lub trudny.", 800);
+                break;
         }
     }
 
@@ -158,31 +175,44 @@ public class GameDifficultyActivity extends AppCompatActivity {
             cardHard.setCardBackgroundColor(0xFFDC2626);
         }
 
-        // Update text colors based on selection
-        updateCardTextColor(cardEasy, selectedDifficulty == DIFFICULTY_EASY);
-        updateCardTextColor(cardMedium, selectedDifficulty == DIFFICULTY_MEDIUM);
-        updateCardTextColor(cardHard, selectedDifficulty == DIFFICULTY_HARD);
+        // Update text and icon colors based on selection for accessibility
+        updateCardSelectionState(cardEasy, R.id.iv_easy_icon, 0xFF34D399, selectedDifficulty == DIFFICULTY_EASY);
+        updateCardSelectionState(cardMedium, R.id.iv_medium_icon, 0xFF93C5FD, selectedDifficulty == DIFFICULTY_MEDIUM);
+        updateCardSelectionState(cardHard, R.id.iv_hard_icon, 0xFFFCA5A5, selectedDifficulty == DIFFICULTY_HARD);
     }
 
-    private void updateCardTextColor(CardView card, boolean isSelected) {
-        // Find the LinearLayout inside the card, then update text colors
+    private void updateCardSelectionState(CardView card, int iconId, int indicatorColor, boolean isSelected) {
         if (card.getChildCount() > 0 && card.getChildAt(0) instanceof android.view.ViewGroup) {
             android.view.ViewGroup container = (android.view.ViewGroup) card.getChildAt(0);
-            // container is horizontal LinearLayout, second child is vertical LinearLayout with texts
+
+            // 1. Update Icon and its indicator background
+            if (container.getChildCount() > 0 && container.getChildAt(0) instanceof android.view.ViewGroup) {
+                android.view.ViewGroup iconFrame = (android.view.ViewGroup) container.getChildAt(0);
+                if (iconFrame.getChildCount() >= 2) {
+                    android.view.View indicator = iconFrame.getChildAt(0);
+                    ImageView icon = (ImageView) iconFrame.getChildAt(1);
+
+                    if (isSelected) {
+                        indicator.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0x40FFFFFF)); // Semi-transparent white
+                        icon.setColorFilter(0xFFFFFFFF);
+                    } else {
+                        indicator.setBackgroundTintList(android.content.res.ColorStateList.valueOf(indicatorColor));
+                        // Pick a dark color for the icon on light background
+                        icon.setColorFilter(0xFF1E40AF);
+                    }
+                }
+            }
+
+            // 2. Update Text Colors
             if (container.getChildCount() > 1 && container.getChildAt(1) instanceof android.view.ViewGroup) {
                 android.view.ViewGroup textContainer = (android.view.ViewGroup) container.getChildAt(1);
                 for (int i = 0; i < textContainer.getChildCount(); i++) {
                     if (textContainer.getChildAt(i) instanceof TextView) {
                         TextView tv = (TextView) textContainer.getChildAt(i);
                         if (isSelected) {
-                            tv.setTextColor(0xFFFFFFFF); // White text on colored background
+                            tv.setTextColor(0xFFFFFFFF);
                         } else {
-                            // Title gets blue, description gets lighter blue
-                            if (i == 0) {
-                                tv.setTextColor(0xFF004A99);
-                            } else {
-                                tv.setTextColor(0xFF3B82F6);
-                            }
+                            tv.setTextColor(i == 0 ? 0xFF004A99 : 0xFF1E40AF);
                         }
                     }
                 }
@@ -220,6 +250,11 @@ public class GameDifficultyActivity extends AppCompatActivity {
             case GameInstructionActivity.GAME_LIQUID:
                 intent = new Intent(this, LiquidSortActivity.class);
                 intent.putExtra(LiquidSortActivity.EXTRA_DIFFICULTY, selectedDifficulty);
+                break;
+
+            case GameInstructionActivity.GAME_2048:
+                intent = new Intent(this, Game2048Activity.class);
+                intent.putExtra("EXTRA_DIFFICULTY", selectedDifficulty);
                 break;
         }
 

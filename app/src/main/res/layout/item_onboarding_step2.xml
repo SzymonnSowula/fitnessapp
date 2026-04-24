@@ -13,7 +13,7 @@
         android:layout_marginBottom="24dp"
         android:text="Zaznacz poniżej, jakie formy ruchu są dla Ciebie dostępne"
         android:textColor="@color/black"
-        android:textSize="26sp"
+        android:textSize="44sp"
         android:textStyle="bold"
         android:gravity="center" />
 
@@ -37,7 +37,7 @@
             android:padding="20dp"
             android:text="Mogę ćwiczyć w każdej pozycji"
             android:textColor="#FFFFFF"
-            android:textSize="22sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
@@ -92,7 +92,7 @@
                     android:layout_weight="1"
                     android:text="@string/onboarding_q1"
                     android:textColor="#004A99"
-                    android:textSize="20sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -148,7 +148,7 @@
                     android:layout_weight="1"
                     android:text="@string/onboarding_q2"
                     android:textColor="#004A99"
-                    android:textSize="20sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -204,7 +204,7 @@
                     android:layout_weight="1"
                     android:text="@string/onboarding_q3"
                     android:textColor="#004A99"
-                    android:textSize="20sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -260,7 +260,7 @@
                     android:layout_weight="1"
                     android:text="@string/onboarding_q4"
                     android:textColor="#004A99"
-                    android:textSize="20sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -316,7 +316,7 @@
                     android:layout_weight="1"
                     android:text="@string/onboarding_q5"
                     android:textColor="#004A99"
-                    android:textSize="20sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <ImageView

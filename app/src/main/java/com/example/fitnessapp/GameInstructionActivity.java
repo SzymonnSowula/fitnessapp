@@ -16,6 +16,7 @@ public class GameInstructionActivity extends AppCompatActivity {
     public static final int GAME_MEMORY = 1;
     public static final int GAME_COLORS = 2;
     public static final int GAME_LIQUID = 3;
+    public static final int GAME_2048 = 4;
 
     private ImageView ivGameIcon;
     private TextView tvGameTitle;
@@ -59,16 +60,14 @@ public class GameInstructionActivity extends AppCompatActivity {
 
     private void handleVoiceCommand(String command) {
         switch (command) {
-            case "back":
-            case "exit":
-                finish();
-                break;
             case "start":
             case "confirm":
             case "next":
-                // Navigate to difficulty selection
-                View btnStart = findViewById(R.id.btn_start);
-                if (btnStart != null) btnStart.performClick();
+                voiceNavigator.speak("Przechodzę do wyboru poziomu trudności.");
+                new android.os.Handler().postDelayed(() -> {
+                    View btnStart = findViewById(R.id.btn_start);
+                    if (btnStart != null) btnStart.performClick();
+                }, 1000);
                 break;
             case "read":
             case "repeat":
@@ -134,6 +133,20 @@ public class GameInstructionActivity extends AppCompatActivity {
                     "ABY PRZELAĆ PŁYN."
                 );
                 voiceNavigator.speakDelayed("Gra Płyny. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
+                break;
+
+            case GAME_2048:
+                ivGameIcon.setImageResource(R.drawable.ic_onboarding_3);
+                ivGameIcon.setColorFilter(0xFFEA580C);
+                tvGameTitle.setText("GRA 2048");
+                tvInstructionText.setText(
+                    "ŁĄCZ KAFELKI Z TYMI SAMYMI LICZBAMI, ABY " +
+                    "ZDOBYĆ KAFLA 2048. PRZESUWAJ KAFELKI " +
+                    "W GÓRĘ, W DÓŁ, W LEWO LUB W PRAWO. " +
+                    "GDY DWA KAFELKI Z TĄ SAMĄ LICZBĄ SIĘ " +
+                    "STKNĄ, POŁĄCZĄ SIĘ W JEDEN!"
+                );
+                voiceNavigator.speakDelayed("Gra 2048. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
                 break;
         }
     }

@@ -113,22 +113,29 @@ public class LiquidSortActivity extends AppCompatActivity {
                     voiceNavigator.speak("Następny poziom.");
                 }
                 break;
-            case "back":
-                onBackPressed();
-                break;
-            case "exit":
-                finish();
-                break;
             case "stop":
                 voiceNavigator.stopSpeaking();
                 break;
             case "help":
-                voiceNavigator.speak("Kliknij na probówkę aby ją wybrać, a następnie na drugą aby prlać płyn. Sortuj kolory aby wszystkie takie same znalazły się razem.");
+                voiceNavigator.speak("Kliknij na probówkę aby ją wybrać, a następnie na drugą aby przelać płyn.");
                 break;
             case "read":
             case "repeat":
-                voiceNavigator.speak("Gra Płyny. Poziom " + currentLevel + ". Przelewaj płyny aby posortować kolory.");
+                voiceNavigator.speak("Gra Płyny. Poziom " + currentLevel + ". " + getGameStateVoiceDescription());
                 break;
+        }
+    }
+
+    private String getGameStateVoiceDescription() {
+        int completed = 0;
+        for (TubeView tube : tubes) {
+            if (tube.isCompleted) completed++;
+        }
+        int total = Math.min(2 + (currentLevel / 2), COLORS.length);
+        if (completed == 0) {
+            return "Wszystkie probówki są jeszcze nieposortowane.";
+        } else {
+            return "Uzupełniono " + completed + " z " + total + " kolorów.";
         }
     }
 

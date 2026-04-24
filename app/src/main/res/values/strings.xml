@@ -107,4 +107,8 @@
     <string name="exercise_impacts_fmt">Siła: %1$d • Elastyczność: %2$d • Kardio: %3$d • Postawa: %4$d</string>
     <string name="yes">tak</string>
     <string name="no">nie</string>
+    <string name="instruction_label">Instrukcja:</string>
+    <string name="contraindications_label">Przeciwwskazania:</string>
+    <string name="no_description">Brak opisu ćwiczenia.</string>
+    <string name="none">Brak.</string>
 </resources>

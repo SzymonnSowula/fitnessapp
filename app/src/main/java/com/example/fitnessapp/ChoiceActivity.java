@@ -55,28 +55,6 @@ voiceNavigator.speakDelayed("Co chcesz poćwiczyć? Wybierz Ciało lub Umysł.",
 
     private void handleVoiceCommand(String command) {
         switch (command) {
-            case "exercises":
-            case "body":
-            case "ciało":
-                startActivity(new Intent(ChoiceActivity.this, MainActivity.class));
-                break;
-            case "games":
-            case "mind":
-            case "umysł":
-                startActivity(new Intent(ChoiceActivity.this, MindGamesActivity.class));
-                break;
-            case "home":
-                voiceNavigator.speak("Już jesteś na stronie głównej.");
-                break;
-            case "settings":
-                navigateTo(SettingsActivity.class);
-                break;
-            case "back":
-                onBackPressed();
-                break;
-            case "exit":
-                finish();
-                break;
             case "stop":
                 voiceNavigator.stopSpeaking();
                 break;

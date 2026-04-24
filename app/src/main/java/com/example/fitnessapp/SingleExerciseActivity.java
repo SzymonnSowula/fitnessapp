@@ -116,6 +116,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
         }).start();
 
         btnNext.setOnClickListener(v -> {
+            voiceNavigator.stopSpeaking();
             if (currentIndex < exercises.size() - 1) {
                 currentIndex++;
                 showExercise(currentIndex);

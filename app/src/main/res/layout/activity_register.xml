@@ -13,7 +13,7 @@
         android:layout_marginTop="48dp"
         android:text="@string/register_btn"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="44sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +26,7 @@
         android:layout_marginTop="48dp"
         android:text="@string/email"
         android:textColor="@color/black"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_title" />
@@ -48,6 +49,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/password"
         android:textColor="@color/black"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_email" />
@@ -72,7 +74,8 @@
         android:text="@string/register_btn"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="22sp"
+        android:textSize="26sp"
+        android:textStyle="bold"
         app:backgroundTint="@null"
         app:layout_constraintTop_toBottomOf="@id/et_password" />
 
@@ -83,6 +86,7 @@
         android:layout_marginTop="24dp"
         android:text="Masz już konto? Zaloguj się"
         android:textColor="@color/blue_primary"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_do_register" />

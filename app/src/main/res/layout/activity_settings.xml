@@ -36,7 +36,7 @@
                 android:layout_marginTop="32dp"
                 android:text="Ustawienia głosowe"
                 android:textColor="#64748B"
-                android:textSize="18sp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
@@ -51,9 +51,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- TTS Enabled -->
+                    <!-- Combined Voice Control -->
                     <LinearLayout
-                        android:id="@+id/layout_tts_enabled"
+                        android:id="@+id/layout_voice_enabled"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
@@ -72,70 +72,22 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Synteza mowy (TTS)"
+                                android:text="Obsługa głosowa"
                                 android:textColor="#0F172A"
-                                android:textSize="22sp"
+                                android:textSize="26sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Czytać tekst na głos"
+                                android:text="Sterowanie i czytanie tekstu"
                                 android:textColor="#64748B"
-                                android:textSize="16sp" />
+                                android:textSize="20sp" />
                         </LinearLayout>
 
                         <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switch_tts_enabled"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="24dp"
-                        android:background="#E2E8F0" />
-
-                    <!-- Speech Recognition Enabled -->
-                    <LinearLayout
-                        android:id="@+id/layout_speech_enabled"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:orientation="horizontal"
-                        android:padding="24dp"
-                        android:gravity="center_vertical">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rozpoznawanie mowy"
-                                android:textColor="#0F172A"
-                                android:textSize="22sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="Sterowanie głosowe"
-                                android:textColor="#64748B"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switch_speech_enabled"
+                            android:id="@+id/switch_voice_enabled"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true" />
@@ -160,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:text="Szybkość mowy"
                             android:textColor="#0F172A"
-                            android:textSize="22sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -169,7 +121,7 @@
                             android:layout_marginTop="4dp"
                             android:text="Wolniej - szybciej"
                             android:textColor="#64748B"
-                            android:textSize="16sp" />
+                            android:textSize="20sp" />
 
                         <SeekBar
                             android:id="@+id/seekbar_speech_rate"
@@ -190,7 +142,7 @@
                 android:layout_marginTop="32dp"
                 android:text="Konto"
                 android:textColor="#64748B"
-                android:textSize="18sp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
@@ -215,7 +167,7 @@
                         android:padding="24dp"
                         android:text="Zmień imię"
                         android:textColor="#0F172A"
-                        android:textSize="22sp"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
 
                     <View
@@ -234,7 +186,7 @@
                         android:padding="24dp"
                         android:text="Moje schorzenia"
                         android:textColor="#0F172A"
-                        android:textSize="22sp"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -249,7 +201,7 @@
                 android:text="Wyloguj się"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 app:backgroundTint="#EF4444" />
 

@@ -303,22 +303,28 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
             Log.w(TAG, "TTS not ready or disabled, skipping: " + text);
             return;
         }
+        isSpeakingNow = true;
+        pauseListeningTemporarily();
         try {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, UUID.randomUUID().toString());
             Log.d(TAG, "Speaking: " + text);
         } catch (Exception e) {
             Log.e(TAG, "Error speaking: " + e.getMessage());
+            isSpeakingNow = false;
         }
     }
 
     public void speakLongText(String text) {
         if (!ttsReady || !isTTSEnabled()) return;
+        isSpeakingNow = true;
+        pauseListeningTemporarily();
         // For longer text, add a short delay before speaking
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             try {
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, UUID.randomUUID().toString());
             } catch (Exception e) {
                 Log.e(TAG, "Error speaking long text: " + e.getMessage());
+                isSpeakingNow = false;
             }
         }, 300);
     }

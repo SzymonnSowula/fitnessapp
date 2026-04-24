@@ -39,6 +39,10 @@ public class CsvImporter {
                 Exercise e = new Exercise();
                 e.name = columns[0];
                 
+                // POBIERANIE OPISU I PRZECIWWSKAZAŃ (Zakładając kolumny 1 i 2)
+                if (columns.length > 1) e.opis = columns[1].trim();
+                if (columns.length > 2) e.przeciwwskazania = columns[2].trim();
+
                 String rawCategory = columns[3].toLowerCase();
                 // Mapowanie nastroju na kategorie modelu
                 if (rawCategory.contains("sila") || rawCategory.contains("siła")) e.category = "sila";

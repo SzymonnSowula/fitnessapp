@@ -16,6 +16,7 @@ public class Game2048Activity extends AppCompatActivity {
     private TextView[][] cells = new TextView[4][4];
     private int score = 0;
     private TextView tvScore;
+    private VoiceNavigator voiceNavigator;
 
     private final int[] cellColors = {
             0xFFEEE4DA, 0xFFEDE0C8, 0xFFF2B179, 0xFFF59563,
@@ -23,10 +24,33 @@ public class Game2048Activity extends AppCompatActivity {
             0xFFEDC850, 0xFFEDC53F, 0xFFEDC22E
     };
 
+    private int targetScore = 2048;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game2048);
+
+        int difficulty = getIntent().getIntExtra("EXTRA_DIFFICULTY", GameDifficultyActivity.DIFFICULTY_HARD);
+        switch (difficulty) {
+            case GameDifficultyActivity.DIFFICULTY_EASY:
+                targetScore = 512;
+                break;
+            case GameDifficultyActivity.DIFFICULTY_MEDIUM:
+                targetScore = 1024;
+                break;
+            case GameDifficultyActivity.DIFFICULTY_HARD:
+                targetScore = 2048;
+                break;
+        }
+
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+        });
+        voiceNavigator.setup();
 
         tvScore = findViewById(R.id.tv_score);
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
@@ -39,6 +63,8 @@ public class Game2048Activity extends AppCompatActivity {
 
         initCells();
         restartGame();
+
+        voiceNavigator.speakDelayed("Gra 2048. Twój cel to " + targetScore + ". Przesuwaj kafelki aby łączyć te same liczby.", 500);
     }
 
     private void initCells() {
@@ -52,6 +78,40 @@ public class Game2048Activity extends AppCompatActivity {
             for (int j = 0; j < 4; j++) {
                 cells[i][j] = findViewById(ids[i * 4 + j]);
             }
+        }
+    }
+
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "restart":
+            case "new_game":
+            case "reset":
+                restartGame();
+                voiceNavigator.speak("Zaczynamy od nowa.");
+                break;
+            case "move_up":
+                voiceNavigator.speak("Góra");
+                moveUp();
+                break;
+            case "move_down":
+                voiceNavigator.speak("Dół");
+                moveDown();
+                break;
+            case "move_left":
+                voiceNavigator.speak("Lewo");
+                moveLeft();
+                break;
+            case "move_right":
+                voiceNavigator.speak("Prawo");
+                moveRight();
+                break;
+            case "help":
+                voiceNavigator.speak("Mów góra, dół, lewo lub prawo aby przesuwać kafelki.");
+                break;
+            case "read":
+            case "repeat":
+                voiceNavigator.speak("Gra 2048. Twój wynik to " + score);
+                break;
         }
     }
 
@@ -151,13 +211,22 @@ public class Game2048Activity extends AppCompatActivity {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (grid[i][j] == 2048) hasWon = true;
+                if (grid[i][j] == targetScore) hasWon = true;
                 if (grid[i][j] == 0) hasEmpty = true;
             }
         }
 
         if (hasWon) {
-            Toast.makeText(this, "Gratulacje! Wygrałeś!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Gratulacje! Cel osiągnięty!", Toast.LENGTH_LONG).show();
+            voiceNavigator.speak("Gratulacje! Cel " + targetScore + " osiągnięty! Wygrałeś!");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (voiceNavigator != null) {
+            voiceNavigator.cleanup();
         }
     }
 

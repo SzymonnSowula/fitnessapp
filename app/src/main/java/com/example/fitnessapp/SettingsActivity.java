@@ -20,8 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String KEY_SPEECH_ENABLED = "speech_enabled";
     private static final String KEY_SPEECH_RATE = "speech_rate";
 
-    private SwitchCompat switchTtsEnabled;
-    private SwitchCompat switchSpeechEnabled;
+    private SwitchCompat switchVoiceEnabled;
     private SeekBar seekbarSpeechRate;
     private VoiceNavigator voiceNavigator;
 
@@ -49,37 +48,30 @@ public class SettingsActivity extends AppCompatActivity {
     private void initVoiceSettings() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
-        switchTtsEnabled = findViewById(R.id.switch_tts_enabled);
-        switchSpeechEnabled = findViewById(R.id.switch_speech_enabled);
+        switchVoiceEnabled = findViewById(R.id.switch_voice_enabled);
         seekbarSpeechRate = findViewById(R.id.seekbar_speech_rate);
 
         // Load saved settings
-        boolean ttsEnabled = prefs.getBoolean(KEY_TTS_ENABLED, true);
-        boolean speechEnabled = prefs.getBoolean(KEY_SPEECH_ENABLED, true);
+        boolean voiceEnabled = prefs.getBoolean(KEY_SPEECH_ENABLED, true);
         int speechRate = prefs.getInt(KEY_SPEECH_RATE, 10);
 
-        switchTtsEnabled.setChecked(ttsEnabled);
-        switchSpeechEnabled.setChecked(speechEnabled);
+        switchVoiceEnabled.setChecked(voiceEnabled);
         seekbarSpeechRate.setProgress(speechRate);
 
-        // Apply saved speech rate to TTS
+        // Apply saved speech rate
         VoiceManager.getInstance().setSpeechRate(getSpeechRateFloat(speechRate));
 
-        // TTS toggle listener
-        switchTtsEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            VoiceManager.getInstance().setTTSEnabled(isChecked);
-            prefs.edit().putBoolean(KEY_TTS_ENABLED, isChecked).apply();
-            if (isChecked) {
-                VoiceManager.getInstance().speak("Synteza mowy włączona");
-            }
-        });
-
-        // Speech recognition toggle listener
-        switchSpeechEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        // Master Voice switch listener
+        switchVoiceEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
             VoiceManager.getInstance().setSpeechEnabled(isChecked);
+            VoiceManager.getInstance().setTTSEnabled(isChecked);
             prefs.edit().putBoolean(KEY_SPEECH_ENABLED, isChecked).apply();
+            prefs.edit().putBoolean(KEY_TTS_ENABLED, isChecked).apply();
+            
             if (isChecked) {
-                VoiceManager.getInstance().speak("Rozpoznawanie mowy włączone");
+                VoiceManager.getInstance().speak("Obsługa głosowa włączona");
+            } else {
+                VoiceManager.getInstance().stopSpeech();
             }
         });
 
@@ -137,15 +129,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void handleVoiceCommand(String command) {
         switch (command) {
-            case "back":
-                onBackPressed();
-                break;
-            case "exit":
-                finish();
-                break;
-            case "home":
-                navigateTo(ChoiceActivity.class);
-                break;
             case "stop":
                 voiceNavigator.stopSpeaking();
                 break;
@@ -153,9 +136,8 @@ public class SettingsActivity extends AppCompatActivity {
                 voiceNavigator.speak("Ustawienia głosowe pozwalają kontrolować syntezę mowy i rozpoznawanie głosu.");
                 break;
             case "read":
-            case "read_description":
-            case "read_more":
-                voiceNavigator.speak("Ustawienia głosowe: synteza mowy, rozpoznawanie mowy, szybkość mowy.");
+            case "repeat":
+                voiceNavigator.speak("Ustawienia głosowe: włączanie głosu oraz szybkość mowy.");
                 break;
         }
     }

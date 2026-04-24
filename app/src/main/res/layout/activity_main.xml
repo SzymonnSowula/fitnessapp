@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="Witaj Użytkowniku!"
             android:textColor="#004A99"
-            android:textSize="48sp"
+            android:textSize="44sp"
             android:textStyle="bold" />
 
         <ImageButton
@@ -101,8 +101,8 @@
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:text="Czuję się\ndobrze"
-                    android:textColor="#0F172A"
-                    android:textSize="30sp"
+                    android:textColor="#1E293B"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="0.85" />
             </LinearLayout>
@@ -149,8 +149,8 @@
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:text="Jestem\nzmęczony"
-                    android:textColor="#0F172A"
-                    android:textSize="30sp"
+                    android:textColor="#1E293B"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="0.85" />
             </LinearLayout>
@@ -197,8 +197,8 @@
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:text="Nie czuję się\ndobrze"
-                    android:textColor="#0F172A"
-                    android:textSize="30sp"
+                    android:textColor="#1E293B"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="0.85" />
             </LinearLayout>
@@ -213,19 +213,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_mic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="220dp"
-        android:contentDescription="Nagrywanie głosu"
-        android:src="@drawable/ic_mic"
-        app:backgroundTint="#004A99"
-        app:tint="#FFFFFF"
-        app:fabSize="normal"
-        app:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

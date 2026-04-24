@@ -43,7 +43,6 @@ public class RecommendationListActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fabMic = findViewById(R.id.fab_mic);
         voiceNavigator.setup();
 
         if (getSupportActionBar() != null) {

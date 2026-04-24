@@ -19,7 +19,7 @@
             android:layout_marginBottom="24dp"
             android:text="Czy masz jakieś schorzenia lub problemy zdrowotne?"
             android:textColor="@color/black"
-            android:textSize="26sp"
+            android:textSize="44sp"
             android:textStyle="bold" />
 
         <CheckBox
@@ -32,7 +32,7 @@
             android:padding="20dp"
             android:text="@string/onboarding_no_conditions"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
         <!-- Group: Back -->
@@ -42,15 +42,15 @@
             android:layout_marginBottom="12dp"
             android:text="@string/group_back"
             android:textColor="@color/gray_text"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textAllCaps="true"
             android:letterSpacing="0.1"
             android:textStyle="bold" />
 
-        <CheckBox android:id="@+id/cb_low_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_low_back_pain" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_upper_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_upper_back_pain" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_spine_stiffness" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_spine_stiffness" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_bad_posture" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_bad_posture" android:textSize="18sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_low_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_low_back_pain" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_upper_back_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_upper_back_pain" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_spine_stiffness" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_spine_stiffness" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_bad_posture" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_bad_posture" android:textSize="26sp" android:textColor="@color/black" />
 
         <!-- Group: Balance -->
         <TextView
@@ -59,15 +59,15 @@
             android:layout_marginBottom="12dp"
             android:text="@string/group_balance"
             android:textColor="@color/gray_text"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textAllCaps="true"
             android:letterSpacing="0.1"
             android:textStyle="bold" />
 
-        <CheckBox android:id="@+id/cb_fall_prevention" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_fall_prevention" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_balance_issues" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_balance_issues" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_balance_disorders" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_balance_disorders" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_dizziness" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_dizziness" android:textSize="18sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_fall_prevention" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_fall_prevention" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_balance_issues" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_balance_issues" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_balance_disorders" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_balance_disorders" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_dizziness" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_dizziness" android:textSize="26sp" android:textColor="@color/black" />
 
         <!-- Group: Joints -->
         <TextView
@@ -76,16 +76,16 @@
             android:layout_marginBottom="12dp"
             android:text="@string/group_joints"
             android:textColor="@color/gray_text"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textAllCaps="true"
             android:letterSpacing="0.1"
             android:textStyle="bold" />
 
-        <CheckBox android:id="@+id/cb_arthritis" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_arthritis" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_knee_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_knee_pain" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_osteoporosis" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_osteoporosis" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_hip_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_hip_pain" android:textSize="18sp" android:textColor="@color/black" />
-        <CheckBox android:id="@+id/cb_ankle_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_ankle_pain" android:textSize="18sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_arthritis" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_arthritis" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_knee_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_knee_pain" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_osteoporosis" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_osteoporosis" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_hip_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_hip_pain" android:textSize="26sp" android:textColor="@color/black" />
+        <CheckBox android:id="@+id/cb_ankle_pain" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" android:background="@drawable/bg_checkbox_onboarding" android:button="@null" android:padding="18dp" android:text="@string/cond_ankle_pain" android:textSize="26sp" android:textColor="@color/black" />
 
     </LinearLayout>
 </ScrollView>

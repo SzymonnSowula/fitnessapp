@@ -6,13 +6,14 @@
 
     <TextView
         android:id="@+id/tv_header"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/recommendations_title"
-        android:textSize="22sp"
+        android:textSize="44sp"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:textColor="#004A99"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -25,8 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_header"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_recommendations"
@@ -43,24 +43,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_exercises_for_category"
+        android:textSize="26sp"
+        android:textColor="#64748B"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/tv_header"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_mic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="Nagrywanie głosu"
-        android:src="@drawable/ic_mic"
-        app:backgroundTint="#004A99"
-        app:tint="#FFFFFF"
-        app:fabSize="normal"
-        app:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

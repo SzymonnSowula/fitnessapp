@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:textColor="#004A99"
-        android:textSize="36sp"
+        android:textSize="44sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
         android:layout_marginTop="8dp"
         android:text="Wybierz poziom trudności"
         android:textColor="#334155"
-        android:textSize="22sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:text="Łatwy"
                         android:textColor="#FFFFFF"
-                        android:textSize="28sp"
+                        android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tv_easy_desc"
@@ -140,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:text="3 pary kart"
                         android:textColor="#D1FAE5"
-                        android:textSize="18sp"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -194,15 +194,15 @@
                         android:layout_height="wrap_content"
                         android:text="Średni"
                         android:textColor="#004A99"
-                        android:textSize="28sp"
+                        android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tv_medium_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="6 par kart"
-                        android:textColor="#3B82F6"
-                        android:textSize="18sp"
+                        android:textColor="#1E40AF"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -255,15 +255,15 @@
                         android:layout_height="wrap_content"
                         android:text="Trudny"
                         android:textColor="#004A99"
-                        android:textSize="28sp"
+                        android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tv_hard_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="8 par kart"
-                        android:textColor="#3B82F6"
-                        android:textSize="18sp"
+                        android:textColor="#1E40AF"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>

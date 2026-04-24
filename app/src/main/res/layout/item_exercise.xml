@@ -10,24 +10,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="24dp">
 
         <TextView
             android:id="@+id/tv_ex_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="#0F172A"
             android:text="Nazwa ćwiczenia"/>
 
         <TextView
             android:id="@+id/tv_ex_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            android:textSize="26sp"
+            android:textColor="#64748B"
+            android:textStyle="bold"
             android:text="Opis"/>
 
     </LinearLayout>

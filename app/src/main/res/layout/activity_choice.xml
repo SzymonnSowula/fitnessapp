@@ -107,15 +107,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ciało"
-                        android:textColor="#0F172A"
-                        android:textSize="40sp"
+                        android:textColor="#1E293B"
+                        android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Siła i równowaga"
-                        android:textColor="#64748B"
-                        android:textSize="22sp"
+                        android:textColor="#475569"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -166,15 +166,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Umysł"
-                        android:textColor="#0F172A"
-                        android:textSize="40sp"
+                        android:textColor="#1E293B"
+                        android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pamięć i koncentracja"
-                        android:textColor="#64748B"
-                        android:textSize="22sp"
+                        android:textColor="#475569"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -188,20 +188,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_mic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="220dp"
-        android:contentDescription="Nagrywanie głosu"
-        android:src="@drawable/ic_mic"
-        app:backgroundTint="#004A99"
-        app:tint="#FFFFFF"
-        app:fabSize="normal"
-        app:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

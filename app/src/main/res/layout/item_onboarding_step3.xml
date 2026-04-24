@@ -12,7 +12,7 @@
         android:layout_marginBottom="24dp"
         android:text="@string/onboarding_step_3_title"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="44sp"
         android:textStyle="bold" />
 
     <TextView
@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/onboarding_intensity_label"
+        android:textSize="26sp"
         android:textStyle="bold" />
 
     <RadioGroup
@@ -33,13 +34,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/onboarding_intensity_1" />
+            android:text="@string/onboarding_intensity_1"
+            android:textSize="26sp" />
 
         <RadioButton
             android:id="@+id/rb_intensity_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/onboarding_intensity_2" />
+            android:text="@string/onboarding_intensity_2"
+            android:textSize="26sp" />
     </RadioGroup>
 
     <TextView
@@ -47,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/onboarding_difficulty_label"
+        android:textSize="26sp"
         android:textStyle="bold" />
 
     <RadioGroup
@@ -59,13 +63,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/onboarding_difficulty_1" />
+            android:text="@string/onboarding_difficulty_1"
+            android:textSize="26sp" />
 
         <RadioButton
             android:id="@+id/rb_difficulty_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/onboarding_difficulty_2" />
+            android:text="@string/onboarding_difficulty_2"
+            android:textSize="26sp" />
     </RadioGroup>
 
 </LinearLayout>

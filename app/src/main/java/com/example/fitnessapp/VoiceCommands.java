@@ -275,10 +275,32 @@ public class VoiceCommands {
         GAME_COMMANDS.put("probowki", "game_liquid");
         GAME_COMMANDS.put("probówka", "game_liquid");
 
+        GAME_COMMANDS.put("łatwy", "easy");
+        GAME_COMMANDS.put("poziom łatwy", "easy");
+        GAME_COMMANDS.put("latwy", "easy");
+        GAME_COMMANDS.put("średni", "medium");
+        GAME_COMMANDS.put("poziom średni", "medium");
+        GAME_COMMANDS.put("sredni", "medium");
+        GAME_COMMANDS.put("trudny", "hard");
+        GAME_COMMANDS.put("poziom trudny", "hard");
+
         GAME_COMMANDS.put("gra 2048", "game_2048");
         GAME_COMMANDS.put("2048", "game_2048");
         GAME_COMMANDS.put("dwadzieścia cztery osiem", "game_2048");
         GAME_COMMANDS.put("dwadziescia cztery osiem", "game_2048");
+
+        GAME_COMMANDS.put("góra", "move_up");
+        GAME_COMMANDS.put("gora", "move_up");
+        GAME_COMMANDS.put("do góry", "move_up");
+        GAME_COMMANDS.put("do gory", "move_up");
+        GAME_COMMANDS.put("dół", "move_down");
+        GAME_COMMANDS.put("dol", "move_down");
+        GAME_COMMANDS.put("w dół", "move_down");
+        GAME_COMMANDS.put("w dol", "move_down");
+        GAME_COMMANDS.put("lewo", "move_left");
+        GAME_COMMANDS.put("w lewo", "move_left");
+        GAME_COMMANDS.put("prawo", "move_right");
+        GAME_COMMANDS.put("w prawo", "move_right");
 
         // ============ MOOD COMMANDS ============
         MOOD_COMMANDS.put("czuję się dobrze", "mood_happy");
@@ -332,13 +354,13 @@ public class VoiceCommands {
         String lowerText = text.toLowerCase().trim();
         String paddedText = " " + lowerText + " ";
 
-// Check command maps in order of priority
-    // MOOD commands checked first because they are specific phrases on MainActivity
-    String res = searchInMap(paddedText, MOOD_COMMANDS);
-    if (res == null) res = searchInMap(paddedText, NAVIGATION_COMMANDS);
-    if (res == null) res = searchInMap(paddedText, EXERCISE_COMMANDS);
-    if (res == null) res = searchInMap(paddedText, GAME_COMMANDS);
-    if (res == null) res = searchInMap(paddedText, GENERAL_COMMANDS);
+        // Check command maps in order of priority
+        // MOOD commands checked first because they are specific phrases on MainActivity
+        String res = searchInMap(paddedText, MOOD_COMMANDS);
+        if (res == null) res = searchInMap(paddedText, NAVIGATION_COMMANDS);
+        if (res == null) res = searchInMap(paddedText, EXERCISE_COMMANDS);
+        if (res == null) res = searchInMap(paddedText, GAME_COMMANDS);
+        if (res == null) res = searchInMap(paddedText, GENERAL_COMMANDS);
 
         return res;
     }
@@ -406,6 +428,10 @@ public class VoiceCommands {
             case "game_colors": return "Gra Kolory";
             case "game_liquid": return "Gra Płyny";
             case "game_2048": return "Gra 2048";
+            case "move_up": return "Ruch w górę";
+            case "move_down": return "Ruch w dół";
+            case "move_left": return "Ruch w lewo";
+            case "move_right": return "Ruch w prawo";
 
             // Mood
             case "mood_happy": return "Czuję się dobrze";

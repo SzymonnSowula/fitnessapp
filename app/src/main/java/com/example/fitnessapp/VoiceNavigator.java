@@ -66,20 +66,12 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
         if (command != null) {
             Log.d(TAG, "Matched command: " + command);
 
-            if (isNavigationCommand(command)) {
+            if (VoiceCommands.isNavigationCommand(command)) {
                 handleNavigationCommand(command);
             } else if (callback != null) {
                 callback.onVoiceCommand(command);
             }
         }
-    }
-
-    private boolean isNavigationCommand(String command) {
-        return command.equals("home") || command.equals("exercises") ||
-               command.equals("games") || command.equals("settings") ||
-               command.equals("back") || command.equals("exit") ||
-               command.equals("body") || command.equals("mind") ||
-               command.equals("profile") || command.equals("back_main");
     }
 
     public void handleNavigationCommand(String command) {
@@ -88,38 +80,32 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
         switch (command) {
             case "home":
             case "back_main":
-                navigateTo(ChoiceActivity.class);
                 speak("Przechodzę do strony głównej");
+                navigateTo(ChoiceActivity.class);
                 break;
             case "exercises":
-                navigateTo(MainActivity.class);
+            case "body":
                 speak("Przechodzę do ćwiczeń");
+                navigateTo(MainActivity.class);
                 break;
             case "games":
-                navigateTo(MindGamesActivity.class);
+            case "mind":
                 speak("Przechodzę do gier");
+                navigateTo(MindGamesActivity.class);
                 break;
             case "settings":
-                navigateTo(SettingsActivity.class);
                 speak("Przechodzę do ustawień");
-                break;
-            case "body":
-                navigateTo(MainActivity.class);
-                speak("Przechodzę do ćwiczeń");
-                break;
-            case "mind":
-                navigateTo(MindGamesActivity.class);
-                speak("Przechodzę do gier umysłowych");
-                break;
-            case "profile":
-                speak("Funkcja profilu nie jest jeszcze dostępna");
+                navigateTo(SettingsActivity.class);
                 break;
             case "back":
                 activity.onBackPressed();
                 break;
             case "exit":
                 speak("Zamykam aplikację");
-                new android.os.Handler().postDelayed(() -> activity.finish(), 1000);
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> activity.finishAffinity(), 1000);
+                break;
+            case "profile":
+                speak("Funkcja profilu nie jest jeszcze dostępna");
                 break;
         }
     }

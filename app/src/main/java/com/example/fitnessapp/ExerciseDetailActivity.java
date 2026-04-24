@@ -12,8 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,6 +53,9 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         TextView tvCategory = findViewById(R.id.tv_category);
         TextView tvDifficulty = findViewById(R.id.tv_difficulty);
         TextView tvIntensity = findViewById(R.id.tv_intensity);
+        TextView tvDescription = findViewById(R.id.tv_description);
+        TextView tvContraindicationsLabel = findViewById(R.id.tv_contraindications_label);
+        TextView tvContraindications = findViewById(R.id.tv_contraindications);
         TextView tvFlags = findViewById(R.id.tv_flags);
         TextView tvImpacts = findViewById(R.id.tv_impacts);
 
@@ -70,6 +71,16 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 tvCategory.setText(getString(R.string.exercise_category_fmt, currentExercise.category));
                 tvDifficulty.setText(getString(R.string.exercise_difficulty_fmt, (int) currentExercise.poziomTrudnosciNum));
                 tvIntensity.setText(getString(R.string.exercise_intensity_fmt, (int) currentExercise.intensywnoscNum));
+
+                if (currentExercise.opis != null && !currentExercise.opis.trim().isEmpty()) {
+                    tvDescription.setText(currentExercise.opis);
+                }
+
+                if (currentExercise.przeciwwskazania != null && !currentExercise.przeciwwskazania.trim().isEmpty() && !currentExercise.przeciwwskazania.equalsIgnoreCase("brak")) {
+                    tvContraindicationsLabel.setVisibility(View.VISIBLE);
+                    tvContraindications.setVisibility(View.VISIBLE);
+                    tvContraindications.setText(currentExercise.przeciwwskazania);
+                }
 
                 String flags = getString(R.string.exercise_flags_fmt,
                         currentExercise.wspomaganeKrzeslemBin > 0 ? getString(R.string.yes) : getString(R.string.no),

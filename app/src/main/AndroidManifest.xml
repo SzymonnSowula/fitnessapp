@@ -86,6 +86,9 @@
  <activity
  android:name=".GameInstructionActivity"
  android:exported="false" />
+<activity
+ android:name=".GameDifficultyActivity"
+ android:exported="false" />
 
 </application>
 

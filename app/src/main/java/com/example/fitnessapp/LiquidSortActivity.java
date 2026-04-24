@@ -23,10 +23,17 @@ import java.util.Stack;
 
 public class LiquidSortActivity extends AppCompatActivity {
 
+    public static final String EXTRA_DIFFICULTY = "difficulty";
+    public static final int DIFFICULTY_EASY = 0;
+    public static final int DIFFICULTY_MEDIUM = 1;
+    public static final int DIFFICULTY_HARD = 2;
+
     private GridLayout glTubes;
     private TextView tvLevel;
     private Button btnReset, btnNext;
     private int currentLevel = 1;
+    private int difficulty = DIFFICULTY_EASY;
+    private int baseLevel = 1;
     private List<TubeView> tubes = new ArrayList<>();
     private TubeView selectedTube = null;
     private VoiceNavigator voiceNavigator;
@@ -59,6 +66,24 @@ public class LiquidSortActivity extends AppCompatActivity {
         tvLevel = findViewById(R.id.tv_level);
         btnReset = findViewById(R.id.btn_reset);
         btnNext = findViewById(R.id.btn_next);
+
+        // Get difficulty from intent
+        difficulty = getIntent().getIntExtra(EXTRA_DIFFICULTY, DIFFICULTY_EASY);
+
+        // Set base level based on difficulty
+        baseLevel = 1;
+        switch (difficulty) {
+            case DIFFICULTY_EASY:
+                baseLevel = 1;
+                break;
+            case DIFFICULTY_MEDIUM:
+                baseLevel = 3;
+                break;
+            case DIFFICULTY_HARD:
+                baseLevel = 6;
+                break;
+        }
+        currentLevel = baseLevel;
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         btnReset.setOnClickListener(v -> setupLevel(currentLevel));

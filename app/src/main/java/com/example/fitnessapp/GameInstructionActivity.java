@@ -3,12 +3,11 @@ package com.example.fitnessapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class GameInstructionActivity extends AppCompatActivity {
 
@@ -28,9 +27,9 @@ public class GameInstructionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_instruction);
 
-ivGameIcon = findViewById(R.id.iv_game_icon);
- tvGameTitle = findViewById(R.id.tv_game_title);
- tvInstructionText = findViewById(R.id.tv_instruction_text);
+        ivGameIcon = findViewById(R.id.iv_game_icon);
+        tvGameTitle = findViewById(R.id.tv_game_title);
+        tvInstructionText = findViewById(R.id.tv_instruction_text);
 
         // Setup voice navigation
         voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
@@ -48,6 +47,12 @@ ivGameIcon = findViewById(R.id.iv_game_icon);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
+        // Setup help button
+        ImageView btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
+
         int gameType = getIntent().getIntExtra(EXTRA_GAME_TYPE, GAME_MEMORY);
         setupGameInstruction(gameType);
     }
@@ -61,7 +66,7 @@ ivGameIcon = findViewById(R.id.iv_game_icon);
             case "start":
             case "confirm":
             case "next":
-                // Start the game
+                // Navigate to difficulty selection
                 View btnStart = findViewById(R.id.btn_start);
                 if (btnStart != null) btnStart.performClick();
                 break;
@@ -70,70 +75,65 @@ ivGameIcon = findViewById(R.id.iv_game_icon);
                 voiceNavigator.speak(tvInstructionText.getText().toString());
                 break;
             case "help":
-                voiceNavigator.speak("Komendy: start lub następny - rozpocznij grę. Wstecz - wróć. Czytaj - przeczytaj instrukcję.");
+                voiceNavigator.speak("Komendy: start lub następny - przejdź do wyboru poziomu. Wstecz - wróć. Czytaj - przeczytaj instrukcję.");
                 break;
         }
     }
 
     private void setupGameInstruction(int gameType) {
+        // Hide difficulty card - not used in instruction screen
+        CardView cardDifficulty = findViewById(R.id.card_difficulty);
+        if (cardDifficulty != null) {
+            cardDifficulty.setVisibility(View.GONE);
+        }
+
+        // All games: btn_start goes to GameDifficultyActivity
+        findViewById(R.id.btn_start).setOnClickListener(v -> {
+            Intent intent = new Intent(this, GameDifficultyActivity.class);
+            intent.putExtra(GameDifficultyActivity.EXTRA_GAME_TYPE, gameType);
+            startActivity(intent);
+            finish();
+        });
+
         switch (gameType) {
             case GAME_MEMORY:
                 ivGameIcon.setImageResource(R.drawable.ic_brain);
-                ivGameIcon.setColorFilter(0xFF004A99);
+                ivGameIcon.setColorFilter(0xFF7C3AED);
                 tvGameTitle.setText("GRA PAMIĘĆ");
                 tvInstructionText.setText(
-                    "Znajdź wszystkie pary jednakowych kart.\n\n" +
-                    "Kliknij dwie karty - jeśli są takie same,\n" +
-                    "zostają odkryte.\n\n" +
-                    "Zapamiętaj położenie kart\n" +
-                    "i znajdź ich pary."
+                    "ZNAJDŹ WSZYSTKIE PARY JEDNAKOWYCH KART. " +
+                    "KLIKNIJ DWIE KARTY. JEŚLI SĄ TAKIE SAME, " +
+                    "ZOSTANĄ ODKRYTE. ZAPAMIĘTAJ POŁOŻENIE KART " +
+                    "I ZNAJDŹ ICH PARY."
                 );
-                findViewById(R.id.btn_start).setOnClickListener(v -> {
-                    startActivity(new Intent(this, EasyGamesActivity.class));
-                    finish();
-                });
-                voiceNavigator.speakDelayed("Gra Pamięć. Znajdź wszystkie pary jednakowych kart. Powiedz start aby rozpocząć.", 800);
+                voiceNavigator.speakDelayed("Gra Pamięć. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
                 break;
 
             case GAME_COLORS:
-                ivGameIcon.setImageResource(R.drawable.ic_onboarding_2);
-                ivGameIcon.setColorFilter(0xFF057A32);
+                ivGameIcon.setImageResource(R.drawable.ic_mood_happy);
+                ivGameIcon.setColorFilter(0xFF059669);
                 tvGameTitle.setText("GRA KOLORY");
                 tvInstructionText.setText(
-                    "Obserwuj sekwencję kolorów,\n" +
-                    "która będzie migać.\n\n" +
-                    "Gdy pojawi się napis DOBRZE,\n" +
-                    "powtórz sekwencję.\n\n" +
-                    "Klikaj kolory w kolejności,\n" +
-                    "którą zapamiętałeś."
+                    "OBSERWUJ SEKWENCJĘ KOLORÓW, " +
+                    "KTÓRA BĘDZIE MIGAĆ. " +
+                    "GDY POJAWI SIĘ NAPIS DOBRZE, " +
+                    "POWTÓRZ SEKWENCJĘ KLIKAJĄC " +
+                    "W KOLORY W ODPOWIEDNIEJ KOLEJNOŚCI."
                 );
-                findViewById(R.id.btn_start).setOnClickListener(v -> {
-                    Intent intent = new Intent(this, ColorTapActivity.class);
-                    intent.putExtra(ColorTapActivity.EXTRA_DIFFICULTY, ColorTapActivity.DIFFICULTY_EASY);
-                    startActivity(intent);
-                    finish();
-                });
-                voiceNavigator.speakDelayed("Gra Kolory. Obserwuj sekwencję kolorów, którą musisz powtórzyć. Powiedz start aby rozpocząć.", 800);
+                voiceNavigator.speakDelayed("Gra Kolory. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
                 break;
 
             case GAME_LIQUID:
-                ivGameIcon.setImageResource(R.drawable.ic_onboarding_1);
-                ivGameIcon.setColorFilter(0xFF994A00);
+                ivGameIcon.setImageResource(R.drawable.ic_plan);
+                ivGameIcon.setColorFilter(0xFF2563EB);
                 tvGameTitle.setText("GRA PŁYNY");
                 tvInstructionText.setText(
-                    "Sortuj kolory przelewając płyny\n" +
-                    "między probówkami.\n\n" +
-                    "Kliknij na probówkę, aby ją wybrać.\n" +
-                    "Następnie kliknij drugą probówkę,\n" +
-                    "aby przelać płyn.\n\n" +
-                    "Sortuj kolory tak, aby wszystkie\n" +
-                    "takie same znalazły się razem."
+                    "SORTUJ KOLORY PRZELEWAJĄC PŁYNY " +
+                    "MIĘDZY PROBÓWKAMI. KLIKNIJ NA PROBÓWKĘ, " +
+                    "ABY JĄ WYBRAĆ. NASTĘPNIE KLIKNIJ DRUGĄ PROBÓWKĘ, " +
+                    "ABY PRZELAĆ PŁYN."
                 );
-                findViewById(R.id.btn_start).setOnClickListener(v -> {
-                    startActivity(new Intent(this, LiquidSortActivity.class));
-                    finish();
-                });
-                voiceNavigator.speakDelayed("Gra Płyny. Sortuj kolory przelewając płyny między probówkami. Powiedz start aby rozpocząć.", 800);
+                voiceNavigator.speakDelayed("Gra Płyny. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
                 break;
         }
     }

@@ -63,8 +63,21 @@ public class ColorTapActivity extends AppCompatActivity {
 
         difficulty = getIntent().getIntExtra(EXTRA_DIFFICULTY, DIFFICULTY_EASY);
 
+        // Set appropriate starting level based on difficulty
+        switch (difficulty) {
+            case DIFFICULTY_EASY:
+                level = 1;
+                break;
+            case DIFFICULTY_MEDIUM:
+                level = 3;
+                break;
+            case DIFFICULTY_HARD:
+                level = 5;
+                break;
+        }
+
         tvScore.setText("Wynik: 0");
-        tvLevel.setText("Poziom 1");
+        tvLevel.setText("Poziom " + level);
 
         findViewById(R.id.btn_back_game).setOnClickListener(v -> finish());
         findViewById(R.id.btn_restart).setOnClickListener(v -> restartGame());

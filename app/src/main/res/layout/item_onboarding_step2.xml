@@ -15,19 +15,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             android:text="Zaznacz poniżej jakie formy ruchu są dla Ciebie dostępne"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="bold" />
 
+        <!-- Przycisk "Mogę ćwiczyć w każdej pozycji" -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_all_positions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#057A32">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="Mogę ćwiczyć w każdej pozycji"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
         <!-- Question 1 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_q1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#DBEAFE"
+            android:tag="unchecked">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,28 +72,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/onboarding_q1"
-                    android:textColor="@color/black"
+                    android:textColor="#004A99"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/sw_q1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleX="1.3"
-                    android:scaleY="1.3"
-                    app:thumbTint="@color/white"
-                    app:trackTint="@color/switch_track_selector" />
+                <ImageView
+                    android:id="@+id/iv_q1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/bg_indicator_inactive"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Question 2 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_q2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#DBEAFE"
+            android:tag="unchecked">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,28 +111,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/onboarding_q2"
-                    android:textColor="@color/black"
+                    android:textColor="#004A99"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/sw_q2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleX="1.3"
-                    android:scaleY="1.3"
-                    app:thumbTint="@color/white"
-                    app:trackTint="@color/switch_track_selector" />
+                <ImageView
+                    android:id="@+id/iv_q2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/bg_indicator_inactive"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Question 3 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_q3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#DBEAFE"
+            android:tag="unchecked">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,28 +150,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/onboarding_q3"
-                    android:textColor="@color/black"
+                    android:textColor="#004A99"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/sw_q3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleX="1.3"
-                    android:scaleY="1.3"
-                    app:thumbTint="@color/white"
-                    app:trackTint="@color/switch_track_selector" />
+                <ImageView
+                    android:id="@+id/iv_q3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/bg_indicator_inactive"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Question 4 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_q4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#DBEAFE"
+            android:tag="unchecked">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,28 +189,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/onboarding_q4"
-                    android:textColor="@color/black"
+                    android:textColor="#004A99"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/sw_q4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleX="1.3"
-                    android:scaleY="1.3"
-                    app:thumbTint="@color/white"
-                    app:trackTint="@color/switch_track_selector" />
+                <ImageView
+                    android:id="@+id/iv_q4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/bg_indicator_inactive"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Question 5 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_q5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#DBEAFE"
+            android:tag="unchecked">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,18 +228,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/onboarding_q5"
-                    android:textColor="@color/black"
+                    android:textColor="#004A99"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/sw_q5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleX="1.3"
-                    android:scaleY="1.3"
-                    app:thumbTint="@color/white"
-                    app:trackTint="@color/switch_track_selector" />
+                <ImageView
+                    android:id="@+id/iv_q5"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/bg_indicator_inactive"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

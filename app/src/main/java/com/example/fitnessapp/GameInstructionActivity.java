@@ -21,19 +21,16 @@ public class GameInstructionActivity extends AppCompatActivity {
     private ImageView ivGameIcon;
     private TextView tvGameTitle;
     private TextView tvInstructionText;
-    private View fabMic;
     private VoiceNavigator voiceNavigator;
-    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_instruction);
 
-        ivGameIcon = findViewById(R.id.iv_game_icon);
-        tvGameTitle = findViewById(R.id.tv_game_title);
-        tvInstructionText = findViewById(R.id.tv_instruction_text);
-        fabMic = findViewById(R.id.fab_mic);
+ivGameIcon = findViewById(R.id.iv_game_icon);
+ tvGameTitle = findViewById(R.id.tv_game_title);
+ tvInstructionText = findViewById(R.id.tv_instruction_text);
 
         // Setup voice navigation
         voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {

@@ -14,13 +14,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import android.content.SharedPreferences;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,6 +48,11 @@ public class OnboardingActivity extends AppCompatActivity {
     private int intensity = 1, difficulty = 1;
     private String goal = "siła";
     private Set<String> conditions = new HashSet<>();
+
+    // Trackables dla step 2 (checkbox card views)
+    private CardView cardQ1, cardQ2, cardQ3, cardQ4, cardQ5;
+    private ImageView ivQ1, ivQ2, ivQ3, ivQ4, ivQ5;
+    private CardView btnAllPositions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +94,75 @@ public class OnboardingActivity extends AppCompatActivity {
         });
     }
 
+    private void setupStep2ClickHandlers(View step2View) {
+        // Przycisk "Mogę ćwiczyć w każdej pozycji"
+        btnAllPositions = step2View.findViewById(R.id.btn_all_positions);
+        
+        cardQ1 = step2View.findViewById(R.id.card_q1);
+        cardQ2 = step2View.findViewById(R.id.card_q2);
+        cardQ3 = step2View.findViewById(R.id.card_q3);
+        cardQ4 = step2View.findViewById(R.id.card_q4);
+        cardQ5 = step2View.findViewById(R.id.card_q5);
+
+        ivQ1 = step2View.findViewById(R.id.iv_q1);
+        ivQ2 = step2View.findViewById(R.id.iv_q2);
+        ivQ3 = step2View.findViewById(R.id.iv_q3);
+        ivQ4 = step2View.findViewById(R.id.iv_q4);
+        ivQ5 = step2View.findViewById(R.id.iv_q5);
+
+        // Przycisk zaznacza wszystkie opcje
+        btnAllPositions.setOnClickListener(v -> {
+            canStand = true;
+            canExerciseFloor = true;
+            needsChair = true;
+            canExerciseBed = true;
+            canExerciseSitting = true;
+            updateCheckboxCard(cardQ1, ivQ1, canStand);
+            updateCheckboxCard(cardQ2, ivQ2, canExerciseFloor);
+            updateCheckboxCard(cardQ3, ivQ3, needsChair);
+            updateCheckboxCard(cardQ4, ivQ4, canExerciseBed);
+            updateCheckboxCard(cardQ5, ivQ5, canExerciseSitting);
+        });
+
+        // Klikalne karty
+        cardQ1.setOnClickListener(v -> {
+            canStand = !canStand;
+            updateCheckboxCard(cardQ1, ivQ1, canStand);
+        });
+
+        cardQ2.setOnClickListener(v -> {
+            canExerciseFloor = !canExerciseFloor;
+            updateCheckboxCard(cardQ2, ivQ2, canExerciseFloor);
+        });
+
+        cardQ3.setOnClickListener(v -> {
+            needsChair = !needsChair;
+            updateCheckboxCard(cardQ3, ivQ3, needsChair);
+        });
+
+        cardQ4.setOnClickListener(v -> {
+            canExerciseBed = !canExerciseBed;
+            updateCheckboxCard(cardQ4, ivQ4, canExerciseBed);
+        });
+
+        cardQ5.setOnClickListener(v -> {
+            canExerciseSitting = !canExerciseSitting;
+            updateCheckboxCard(cardQ5, ivQ5, canExerciseSitting);
+        });
+    }
+
+    private void updateCheckboxCard(CardView card, ImageView indicator, boolean isChecked) {
+        if (isChecked) {
+            card.setCardBackgroundColor(0xFF057A32); // Success green
+            indicator.setImageResource(R.drawable.bg_indicator_active);
+            card.setTag("checked");
+        } else {
+            card.setCardBackgroundColor(0xFFDBEAFE); // Light blue
+            indicator.setImageResource(R.drawable.bg_indicator_inactive);
+            card.setTag("unchecked");
+        }
+    }
+
     private void saveCurrentStepData() {
         OnboardingAdapter.OnboardingViewHolder holder = (OnboardingAdapter.OnboardingViewHolder) 
                 ((RecyclerView) viewPager.getChildAt(0)).findViewHolderForAdapterPosition(currentStep);
@@ -101,11 +175,13 @@ public class OnboardingActivity extends AppCompatActivity {
                 if (etName != null) userName = etName.getText().toString().trim();
                 break;
             case 1:
-                canStand = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q1)).isChecked();
-                canExerciseFloor = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q2)).isChecked();
-                needsChair = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q3)).isChecked();
-                canExerciseBed = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q4)).isChecked();
-                canExerciseSitting = ((SwitchMaterial) holder.itemView.findViewById(R.id.sw_q5)).isChecked();
+                // Dla step 2 dane są już aktualizowane przez click handlery
+                // Wczytaj aktualne wartości z tagów kart
+                canStand = "checked".equals(cardQ1.getTag());
+                canExerciseFloor = "checked".equals(cardQ2.getTag());
+                needsChair = "checked".equals(cardQ3.getTag());
+                canExerciseBed = "checked".equals(cardQ4.getTag());
+                canExerciseSitting = "checked".equals(cardQ5.getTag());
                 break;
             case 2:
                 int checkedGoalId = ((RadioGroup) holder.itemView.findViewById(R.id.rg_goal)).getCheckedRadioButtonId();
@@ -163,8 +239,6 @@ public class OnboardingActivity extends AppCompatActivity {
             FirebaseFirestore.getInstance().collection("users").document(user.getUid())
                     .update(updates)
                     .addOnFailureListener(e -> {
-                        // Błąd zapisu do Firestore nie powinien blokować użytkownika, 
-                        // bo mamy dane lokalnie, ale warto to zalogować
                         android.util.Log.e("Onboarding", "Błąd synchronizacji Firestore: " + e.getMessage());
                     });
         }
@@ -201,14 +275,16 @@ public class OnboardingActivity extends AppCompatActivity {
         @NonNull
         @Override
         public OnboardingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new OnboardingViewHolder(
-                    LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false)
-            );
+            View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+            return new OnboardingViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull OnboardingViewHolder holder, int position) {
-            if (position == 3) {
+            if (position == 1) {
+                // Step 2 - setup click handlers
+                setupStep2ClickHandlers(holder.itemView);
+            } else if (position == 3) {
                 CheckBox cbNoConditions = holder.itemView.findViewById(R.id.cb_no_conditions);
                 ViewGroup container = holder.itemView.findViewById(R.id.conditions_container);
                 cbNoConditions.setOnCheckedChangeListener((buttonView, isChecked) -> {

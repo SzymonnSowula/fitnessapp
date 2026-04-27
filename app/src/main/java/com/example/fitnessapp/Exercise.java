@@ -10,6 +10,7 @@ public class Exercise {
 
     public String name;
     public float wplywNaSileNum;
+    public float wplywNaRownowageNum;
     public float wplywNaElastycznoscNum;
     public float wplywNaKardioNum;
     public float wplywNaPostaweNum;
@@ -26,6 +27,17 @@ public class Exercise {
     // NOWE POLA POTRZEBNE DO FILTROWANIA I WYŚWIETLANIA:
     public String opis;
     public String przeciwwskazania;
+    public String potrzebnySprzet;
+    public String ruchGlowny;
+    public String zalecaneSchorzenia;
+
+    public String getRuchKey() {
+        if (ruchGlowny == null || ruchGlowny.isEmpty()) return String.valueOf(id);
+        String[] words = ruchGlowny.toLowerCase().replaceAll("[^a-ząćęłńóśźż\\s]", "").split("\\s+");
+        if (words.length >= 2) return words[0] + " " + words[1];
+        if (words.length == 1) return words[0];
+        return String.valueOf(id);
+    }
 
     public float[] toFeatureArray() {
         return new float[]{

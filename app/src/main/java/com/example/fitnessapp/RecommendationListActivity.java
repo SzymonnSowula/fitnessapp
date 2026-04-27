@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +28,7 @@ public class RecommendationListActivity extends AppCompatActivity {
     private TextView tvEmpty;
     private ExerciseAdapter adapter;
     private VoiceNavigator voiceNavigator;
+    private List<Exercise> currentExercises = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,10 +65,8 @@ public class RecommendationListActivity extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
         if (category == null) category = "mieszana";
 
-        float maxDifficulty = getIntent().getFloatExtra("maxDifficulty", 3.0f);
-        float maxIntensity = getIntent().getFloatExtra("maxIntensity", 3.0f);
-        float prefDifficulty = getIntent().getFloatExtra("prefDifficulty", 2.0f);
-        float prefIntensity = getIntent().getFloatExtra("prefIntensity", 2.0f);
+        float maxDifficulty = getIntent().getFloatExtra("maxDifficulty", 2.0f);
+        float maxIntensity = getIntent().getFloatExtra("maxIntensity", 2.0f);
 
         SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", Context.MODE_PRIVATE);
         Set<String> userConditions = prefs.getStringSet("conditions", new HashSet<>());
@@ -80,65 +77,79 @@ public class RecommendationListActivity extends AppCompatActivity {
         tvEmpty.setVisibility(View.GONE);
 
         new Thread(() -> {
-            List<Exercise> list = db.exerciseDao().getByCategorySortedByMood(finalCategory, prefDifficulty, prefIntensity);
+            List<Exercise> allExercises = db.exerciseDao().getAll();
+            
+            ExerciseRecommender.UserProfile profile = new ExerciseRecommender.UserProfile();
+            profile.cel = finalCategory;
+            profile.intensywnosc = (int)maxIntensity;
+            profile.trudnosc = (int)maxDifficulty;
+            profile.schorzenia = userConditions;
+            
+            // SYNCHRONIZACJA KLUCZY Z ONBOARDINGIEM
+            profile.mozeStac = prefs.getBoolean("can_stand", true);
+            profile.mozePodloge = prefs.getBoolean("can_exercise_floor", false);
+            profile.krzeslo = prefs.getBoolean("needs_chair", false);
+            profile.lozko = prefs.getBoolean("can_exercise_bed", false);
+            profile.mozeSiedzac = prefs.getBoolean("can_exercise_sitting", true);
 
-            if (list == null || list.isEmpty()) {
-                list = db.exerciseDao().getByCategory(finalCategory);
-            }
+            List<Exercise> recommended = ExerciseRecommender.recommend(allExercises, profile, 5);
+            currentExercises = recommended;
 
-            if (list != null && !list.isEmpty()) {
-                List<Exercise> filtered = new ArrayList<>();
-                for (Exercise e : list) {
-                    if (e.poziomTrudnosciNum <= maxDifficulty && e.intensywnoscNum <= maxIntensity) {
-
-                        boolean isSafe = true;
-
-                        if (e.przeciwwskazania != null && !e.przeciwwskazania.trim().isEmpty() && !e.przeciwwskazania.equalsIgnoreCase("brak")) {
-                            for (String condition : userConditions) {
-                                if (e.przeciwwskazania.toLowerCase().contains(condition.toLowerCase())) {
-                                    isSafe = false;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (isSafe) {
-                            filtered.add(e);
-                        }
-                    }
-                }
-                list = filtered;
-            }
-
-            List<Exercise> finalList = list;
             runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
-                if (finalList == null || finalList.isEmpty()) {
+                if (recommended.isEmpty()) {
                     tvEmpty.setVisibility(View.VISIBLE);
-                    tvEmpty.setText(getString(R.string.no_exercises_for_category, finalCategory));
+                    tvEmpty.setText(R.string.no_exercises_found);
                 } else {
                     recyclerView.setVisibility(View.VISIBLE);
-                    adapter.update(finalList);
-                    voiceNavigator.speakDelayed("Znaleziono " + finalList.size() + " ćwiczeń w kategorii " + finalCategory, 500);
+                    adapter.update(recommended);
+                    voiceNavigator.speakDelayed("Przygotowałam 5 najlepszych ćwiczeń. Możesz powiedzieć 'czytaj', aby poznać listę.", 500);
                 }
             });
         }).start();
     }
 
     private void handleVoiceCommand(String command) {
-        switch (command) {
-            case "back":
-                onBackPressed();
-                break;
-            case "exit":
-                finish();
-                break;
-            case "stop":
-                voiceNavigator.stopSpeaking();
-                break;
-            case "help":
-                voiceNavigator.speak("Użyj przycisku mikrofonu lub powiedz \"następne\" aby przewinąć listę.");
-                break;
+        if (command == null) return;
+        String cmd = command.toLowerCase();
+        
+        if (cmd.contains("czytaj") || cmd.contains("read")) {
+            readExercises();
+        } else if (cmd.contains("następne") || cmd.contains("next")) {
+            scrollNext();
+        } else if (cmd.contains("back") || cmd.contains("powrót")) {
+            onBackPressed();
+        } else if (cmd.contains("exit") || cmd.contains("wyjdź")) {
+            finish();
+        } else if (cmd.contains("stop")) {
+            voiceNavigator.stopSpeaking();
+        } else if (cmd.contains("help") || cmd.contains("pomoc")) {
+            voiceNavigator.speak("Powiedz 'czytaj', aby usłyszeć listę, lub 'następne', aby przewinąć.");
+        }
+    }
+
+    private void readExercises() {
+        if (currentExercises.isEmpty()) {
+            voiceNavigator.speak("Lista jest pusta.");
+            return;
+        }
+        StringBuilder sb = new StringBuilder("Twoje ćwiczenia to: ");
+        for (int i = 0; i < currentExercises.size(); i++) {
+            sb.append(i + 1).append(". ").append(currentExercises.get(i).name).append(". ");
+        }
+        voiceNavigator.speak(sb.toString());
+    }
+
+    private void scrollNext() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (layoutManager != null) {
+            int lastVisible = layoutManager.findLastVisibleItemPosition();
+            if (lastVisible < adapter.getItemCount() - 1) {
+                recyclerView.smoothScrollToPosition(lastVisible + 1);
+                voiceNavigator.speak("Przewijam listę.");
+            } else {
+                voiceNavigator.speak("To już koniec listy.");
+            }
         }
     }
 
@@ -154,9 +165,7 @@ public class RecommendationListActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (voiceNavigator != null) {
-            voiceNavigator.cleanup();
-        }
+        if (voiceNavigator != null) voiceNavigator.cleanup();
     }
 
     private static class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
@@ -183,8 +192,7 @@ public class RecommendationListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ExerciseViewHolder holder, int position) {
-            Exercise e = data.get(position);
-            holder.bind(e, clickListener);
+            holder.bind(data.get(position), clickListener);
         }
 
         @Override
@@ -203,9 +211,8 @@ public class RecommendationListActivity extends AppCompatActivity {
 
         void bind(Exercise e, ExerciseAdapter.OnExerciseClick click) {
             tvName.setText(e.name);
-            String cat = e.category == null ? "" : e.category;
-            tvSubtitle.setText(itemView.getContext().getString(R.string.exercise_subtitle_fmt,
-                    cat, (int)e.poziomTrudnosciNum, (int)e.intensywnoscNum));
+            tvSubtitle.setText(itemView.getContext().getString(R.string.exercise_subtitle_fmt, 
+                e.category != null ? e.category : "", (int)e.poziomTrudnosciNum, (int)e.intensywnoscNum));
             itemView.setOnClickListener(v -> click.onClick(e));
         }
     }

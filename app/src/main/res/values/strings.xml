@@ -98,6 +98,7 @@
     <!-- New for recommendations & details -->
     <string name="recommendations_title">Rekomendacje</string>
     <string name="no_exercises_for_category">Nie znaleziono ćwiczeń w kategorii: %1$s</string>
+    <string name="no_exercises_found">Brak ćwiczeń spełniających Twoje kryteria bezpieczeństwa.</string>
     <string name="exercise_subtitle_fmt">Kategoria: %1$s • Trudność: %2$d • Intensywność: %3$d</string>
     <string name="exercise_details_title">Szczegóły ćwiczenia</string>
     <string name="exercise_category_fmt">Kategoria: %1$s</string>

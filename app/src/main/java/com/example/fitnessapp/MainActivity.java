@@ -14,6 +14,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Random;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,6 +92,15 @@ voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
         if (btnHelp != null) {
             btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
         }
+
+        // Mic FAB button - tap to start listening
+        FloatingActionButton fabMic = findViewById(R.id.fab_mic);
+        if (fabMic != null) {
+            fabMic.setOnClickListener(v -> {
+                VoiceManager.getInstance().startListening();
+                voiceNavigator.speak("Słucham. Powiedz czego potrzebujesz.");
+            });
+        }
     }
 
     private void handleVoiceCommand(String command) {
@@ -118,6 +130,56 @@ voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
                 break;
             case "help":
                 voiceNavigator.speak("Powiedz 'dobrze' aby wybrać trudniejsze ćwiczenia, 'zmęczony' dla umiarkowanych, lub 'nie dobrze' dla łatwych.");
+                break;
+            case "time":
+                String time = new java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+                voiceNavigator.speak("Jest teraz godzina " + time.replace(":", " ") + ".");
+                break;
+            case "date":
+                String date = new java.text.SimpleDateFormat("EEEE, d MMMM", new java.util.Locale("pl", "PL")).format(new java.util.Date());
+                voiceNavigator.speak("Dzisiaj jest " + date + ".");
+                break;
+            case "motivation":
+                String[] motivacje = {
+                    "Każdy krok się liczy. Nawet mały ruch to postęp!",
+                    "Ćwiczenia to najlepszy prezent, jaki możesz dać swojemu ciału.",
+                    "Masz dziś dużo energii. Wykorzystaj ją!",
+                    "Ruch to zdrowie. Dbaj o siebie każdego dnia!",
+                    "Jesteś silniejszy niż myślisz!"
+                };
+                voiceNavigator.speak(motivacje[new java.util.Random().nextInt(motivacje.length)]);
+                break;
+            case "advice":
+                String[] porady = {
+                    "Pamiętaj o nawodnieniu. Wypijaj co najmniej 8 szklanek wody dziennie.",
+                    "Regularne ćwiczenia poprawiają nastrój i sen.",
+                    "Rozciągaj się codziennie przez 10 minut.",
+                    "Spaceruj codziennie chociaż 30 minut.",
+                    "Dbaj o prawidłową postawę podczas siedzenia."
+                };
+                voiceNavigator.speak(porady[new java.util.Random().nextInt(porady.length)]);
+                break;
+            case "weather":
+                voiceNavigator.speak("Aktualnie nie mogę sprawdzić pogody, ale zachęcam do wyjścia na świeże powietrze!");
+                break;
+            case "quiet_mode":
+                VoiceManager.getInstance().setQuietMode(true);
+                voiceNavigator.speak("Wyciszam mikrofon. Okresowo będę nasłuchiwać cicho.");
+                break;
+            case "louder":
+                VoiceManager.getInstance().setSpeechRate(0.85f);
+                voiceNavigator.speak("Zwiększam głośność mowy.");
+                break;
+            case "slower":
+                VoiceManager.getInstance().setSpeechRate(0.65f);
+                voiceNavigator.speak("Zwalniam mowę.");
+                break;
+            case "faster":
+                VoiceManager.getInstance().setSpeechRate(0.85f);
+                voiceNavigator.speak("Przyspieszam mowę.");
+                break;
+            case "wake":
+                voiceNavigator.speak("Tak? Słucham Cię uważnie. Powiedz czego potrzebujesz.");
                 break;
         }
     }

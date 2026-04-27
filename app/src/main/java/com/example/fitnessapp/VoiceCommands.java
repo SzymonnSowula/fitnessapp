@@ -169,8 +169,8 @@ public class VoiceCommands {
         EXERCISE_COMMANDS.put("nastepne cwiczenie", "next_exercise");
         EXERCISE_COMMANDS.put("kolejne ćwiczenie", "next_exercise");
         EXERCISE_COMMANDS.put("idź do następnego", "next_exercise");
-        NAVIGATION_COMMANDS.put("poprzednie ćwiczenie", "previous_exercise");
-        NAVIGATION_COMMANDS.put("poprzednie cwiczenie", "previous_exercise");
+        EXERCISE_COMMANDS.put("poprzednie ćwiczenie", "previous_exercise");
+        EXERCISE_COMMANDS.put("poprzednie cwiczenie", "previous_exercise");
 
         EXERCISE_COMMANDS.put("start", "start");
         EXERCISE_COMMANDS.put("rozpocznij", "start");
@@ -342,6 +342,60 @@ public class VoiceCommands {
         MOOD_COMMANDS.put("okropnie", "mood_very_sad");
         MOOD_COMMANDS.put("źle", "mood_very_sad");
         MOOD_COMMANDS.put("zle", "mood_very_sad");
+
+        // ============ MAIN SCREEN COMMANDS (no navigation needed) ============
+        GENERAL_COMMANDS.put("która godzina", "time");
+        GENERAL_COMMANDS.put("jaka godzina", "time");
+        GENERAL_COMMANDS.put("czas", "time");
+        GENERAL_COMMANDS.put("jaki mamy dzień", "date");
+        GENERAL_COMMANDS.put("jaki dzien", "date");
+        GENERAL_COMMANDS.put("co dzisiaj", "date");
+        GENERAL_COMMANDS.put("jaki dzień tygodnia", "date");
+        GENERAL_COMMANDS.put("dzień tygodnia", "date");
+
+        GENERAL_COMMANDS.put("motywacja", "motivation");
+        GENERAL_COMMANDS.put("powiedz coś motywującego", "motivation");
+        GENERAL_COMMANDS.put("motywuj", "motivation");
+        GENERAL_COMMANDS.put("inspiruj", "motivation");
+        GENERAL_COMMANDS.put("pozytywna myśl", "motivation");
+        GENERAL_COMMANDS.put("pozytywna mysl", "motivation");
+
+        GENERAL_COMMANDS.put("porada", "advice");
+        GENERAL_COMMANDS.put("porady", "advice");
+        GENERAL_COMMANDS.put("zdrowie", "advice");
+        GENERAL_COMMANDS.put("zdrowotna", "advice");
+        GENERAL_COMMANDS.put("jak się czuję", "health_check");
+        GENERAL_COMMANDS.put("jak sie czuje", "health_check");
+        GENERAL_COMMANDS.put("stan zdrowia", "health_check");
+
+        GENERAL_COMMANDS.put("pogoda", "weather");
+        GENERAL_COMMANDS.put("jaka pogoda", "weather");
+        GENERAL_COMMANDS.put("prognoza", "weather");
+        GENERAL_COMMANDS.put("czy będzie deszcz", "weather");
+        GENERAL_COMMANDS.put("czy bedzie deszcz", "weather");
+
+        GENERAL_COMMANDS.put("cisza", "quiet_mode");
+        GENERAL_COMMANDS.put("przestań", "quiet_mode");
+        GENERAL_COMMANDS.put("przestan", "quiet_mode");
+        GENERAL_COMMANDS.put("wycisz", "quiet_mode");
+        GENERAL_COMMANDS.put("wyciszenie", "quiet_mode");
+
+        GENERAL_COMMANDS.put("głośniej", "louder");
+        GENERAL_COMMANDS.put("glosniej", "louder");
+        GENERAL_COMMANDS.put("mów głośniej", "louder");
+        GENERAL_COMMANDS.put("mow glosniej", "louder");
+        GENERAL_COMMANDS.put("zwolnij", "slower");
+        GENERAL_COMMANDS.put("wolniej", "slower");
+        GENERAL_COMMANDS.put("przyspiesz", "faster");
+
+        GENERAL_COMMANDS.put("hej", "wake");
+        GENERAL_COMMANDS.put("hey", "wake");
+        GENERAL_COMMANDS.put("hei", "wake");
+        GENERAL_COMMANDS.put("hej asystent", "wake");
+        GENERAL_COMMANDS.put("hej asystentce", "wake");
+        GENERAL_COMMANDS.put("słuchaj", "wake");
+        GENERAL_COMMANDS.put("słucham", "wake");
+        GENERAL_COMMANDS.put("tu jestem", "wake");
     }
 
     /**
@@ -437,6 +491,19 @@ public class VoiceCommands {
             case "mood_happy": return "Czuję się dobrze";
             case "mood_sad": return "Czuję się średnio";
             case "mood_very_sad": return "Czuję się źle";
+
+            // Main screen commands
+            case "time": return "Która godzina?";
+            case "date": return "Jaki mamy dzień?";
+            case "motivation": return "Powiedz coś motywującego";
+            case "advice": return "Daj poradę zdrowotną";
+            case "health_check": return "Sprawdź stan zdrowia";
+            case "weather": return "Jaka jest pogoda?";
+            case "quiet_mode": return "Wycisz mikrofon";
+            case "louder": return "Mów głośniej";
+            case "slower": return "Zwolnij mowę";
+            case "faster": return "Przyspiesz mowę";
+            case "wake": return "Wzbudź asystenta";
 
             default: return "Nieznana komenda";
         }

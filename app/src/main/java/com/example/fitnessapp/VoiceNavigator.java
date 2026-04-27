@@ -21,7 +21,7 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
 
     public void setup() {
         VoiceManager.getInstance().addCallback(this);
-        startListening();
+        // Don't auto-start listening - user taps FAB to speak
     }
 
     public void cleanup() {

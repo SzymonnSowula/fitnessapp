@@ -3,6 +3,8 @@ package com.example.fitnessapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,6 +25,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     private static final String KEY_TTS_ENABLED = "tts_enabled";
     private static final String KEY_LANGUAGE = "language";
     private static final String KEY_SPEECH_ENABLED = "speech_enabled";
+    private static final String KEY_QUIET_MODE = "quiet_mode";
 
     private static VoiceManager instance;
     private static volatile boolean isInitialized = false;
@@ -33,6 +36,8 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     private boolean ttsReady = false;
     private boolean isListeningDesired = false;
     private boolean isSpeakingNow = false;
+    private boolean isInQuietMode = false;
+    private boolean isManualMode = true; // Manual mode by default - tap to listen
 
     private final CopyOnWriteArraySet<VoiceCallback> callbacks = new CopyOnWriteArraySet<>();
     private String currentLanguage = "pl-PL";
@@ -40,7 +45,18 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     // Retry mechanism for speech recognition
     private static final int MAX_RETRIES = 3;
     private int currentRetryCount = 0;
-    private static final long RETRY_DELAY_MS = 1500;
+    private static final long RETRY_DELAY_MS = 2000;
+    private static final long QUIET_RESTART_DELAY_MS = 3000;
+    private static final long NORMAL_RESTART_DELAY_MS = 1000;
+
+    // Restart delay adjusted based on results
+    private long lastRestartDelay = NORMAL_RESTART_DELAY_MS;
+
+    // Tone generator for listening feedback
+    private ToneGenerator toneGenerator;
+
+    // Pending TTS message to speak after init
+    private String pendingSpeak = null;
 
     public interface VoiceCallback {
         void onSpeechResult(String text, boolean isFinal);
@@ -69,6 +85,14 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
         if (isInitialized) return;
         this.appContext = context.getApplicationContext();
         this.tts = new TextToSpeech(appContext, this);
+
+        // Initialize tone generator for listening feedback
+        try {
+            this.toneGenerator = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 50);
+        } catch (Exception e) {
+            Log.w(TAG, "Could not create ToneGenerator: " + e.getMessage());
+        }
+
         isInitialized = true;
         Log.d(TAG, "VoiceManager initializing...");
     }
@@ -86,9 +110,9 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 currentLanguage = "pl-PL";
             }
 
-            // Slightly slower speech rate for seniors
-            tts.setSpeechRate(0.85f);
-            tts.setPitch(1.0f);
+            // Slower speech rate for seniors with slightly higher pitch for clarity
+            tts.setSpeechRate(0.8f);
+            tts.setPitch(1.1f);
 
             tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                 @Override
@@ -101,16 +125,19 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 @Override
                 public void onDone(String utteranceId) {
                     isSpeakingNow = false;
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        if (isListeningDesired) restartListening();
-                    }, 600);
+                    // Only restart listening if in auto mode and desired
+                    if (isListeningDesired && !isManualMode) {
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            if (isListeningDesired) restartListening();
+                        }, getRestartDelay());
+                    }
                     for (VoiceCallback cb : callbacks) cb.onTTSDone();
                 }
 
                 @Override
                 public void onError(String utteranceId) {
                     isSpeakingNow = false;
-                    if (isListeningDesired) {
+                    if (isListeningDesired && !isManualMode) {
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             restartListening();
                         }, RETRY_DELAY_MS);
@@ -119,10 +146,9 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
 
                 @Override
                 public void onError(String utteranceId, int errorCode) {
-                    // Handle TTS error - required for older API
                     isSpeakingNow = false;
                     Log.e(TAG, "TTS Error: " + errorCode);
-                    if (isListeningDesired) {
+                    if (isListeningDesired && !isManualMode) {
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             restartListening();
                         }, RETRY_DELAY_MS);
@@ -132,9 +158,43 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
 
             ttsReady = true;
             for (VoiceCallback cb : callbacks) cb.onTTSReady();
+
+            // Speak pending message if any
+            if (pendingSpeak != null) {
+                speak(pendingSpeak);
+                pendingSpeak = null;
+            } else {
+                speak("Asystent głosowy jest gotowy. Dotknij ekranu i mów, lub powiedz hej aby aktywować nasłuchiwanie.");
+            }
+
             Log.d(TAG, "TTS initialized successfully with language: " + currentLanguage);
         } else {
             Log.e(TAG, "TTS initialization failed with status: " + status);
+        }
+    }
+
+    private long getRestartDelay() {
+        return isInQuietMode ? QUIET_RESTART_DELAY_MS : NORMAL_RESTART_DELAY_MS;
+    }
+
+    private void playListeningBeep() {
+        if (isInQuietMode) return;
+        try {
+            if (toneGenerator != null) {
+                toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP, 100);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Error playing tone: " + e.getMessage());
+        }
+    }
+
+    private void playSuccessBeep() {
+        try {
+            if (toneGenerator != null) {
+                toneGenerator.startTone(ToneGenerator.TONE_PROP_ACK, 80);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Error playing success tone: " + e.getMessage());
         }
     }
 
@@ -143,6 +203,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
             @Override public void onReadyForSpeech(Bundle params) {
                 Log.d(TAG, "Mic Ready for speech");
                 currentRetryCount = 0;
+                playListeningBeep();
                 for (VoiceCallback cb : callbacks) cb.onListeningStarted();
             }
 
@@ -163,28 +224,29 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
 
                 for (VoiceCallback cb : callbacks) cb.onSpeechError(error, msg);
 
-                // Don't restart on critical errors
+                // Don't restart on critical errors or if not desired
                 if (!isListeningDesired) return;
 
-                // Handle specific errors differently
+                // Check for wake word "hej" in partial results - but we can't here, so just restart
+
                 if (error == SpeechRecognizer.ERROR_NO_MATCH ||
                     error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
-                    // These are normal - just restart listening
+                    // Normal silence - restart after delay
                     if (!isSpeakingNow) {
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             if (isListeningDesired) restartListening();
-                        }, 800);
+                        }, isInQuietMode ? QUIET_RESTART_DELAY_MS : 800);
                     }
                 } else if (error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
-                    // Wait longer before retry
                     if (!isSpeakingNow && currentRetryCount < MAX_RETRIES) {
                         currentRetryCount++;
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             if (isListeningDesired) restartListening();
                         }, RETRY_DELAY_MS);
                     }
+                } else if (error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
+                    speak("Brak uprawnień do mikrofonu. Sprawdź ustawienia aplikacji.");
                 } else {
-                    // Other errors - retry with delay
                     if (!isSpeakingNow) {
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             if (isListeningDesired) restartListening();
@@ -200,22 +262,51 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                     if (matches != null && !matches.isEmpty()) {
                         String text = matches.get(0);
                         Log.d(TAG, "Recognized: " + text);
-                        for (VoiceCallback cb : callbacks) cb.onSpeechResult(text, true);
+
+                        // Check for wake word
+                        String lower = text.toLowerCase().trim();
+                        if (lower.contains("hej") || lower.contains("hey") || lower.contains("hei")) {
+                            playSuccessBeep();
+                            speak("Słucham. Co mogę dla Ciebie zrobić?");
+                            // Continue listening for actual command
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                if (isListeningDesired) restartListening();
+                            }, 500);
+                        } else {
+                            playSuccessBeep();
+                            for (VoiceCallback cb : callbacks) cb.onSpeechResult(text, true);
+                        }
+                    } else {
+                        // No matches - restart
+                        if (isListeningDesired && !isSpeakingNow) {
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                if (isListeningDesired) restartListening();
+                            }, 300);
+                        }
+                    }
+                } else {
+                    // Null results - restart
+                    if (isListeningDesired && !isSpeakingNow) {
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            if (isListeningDesired) restartListening();
+                        }, 300);
                     }
                 }
                 currentRetryCount = 0;
-                if (isListeningDesired && !isSpeakingNow) {
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        if (isListeningDesired) restartListening();
-                    }, 300);
-                }
             }
 
             @Override
             public void onPartialResults(Bundle partialResults) {
                 java.util.ArrayList<String> matches = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 if (matches != null && !matches.isEmpty()) {
-                    for (VoiceCallback cb : callbacks) cb.onSpeechResult(matches.get(0), false);
+                    String text = matches.get(0);
+                    // Check if partial contains wake word
+                    String lower = text.toLowerCase();
+                    if (lower.contains("hej") || lower.contains("hey") || lower.contains("hei")) {
+                        playSuccessBeep();
+                        speak("Słucham!");
+                    }
+                    for (VoiceCallback cb : callbacks) cb.onSpeechResult(text, false);
                 }
             }
 
@@ -223,54 +314,60 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
         };
     }
 
+    /**
+     * Start listening for speech. In manual mode this is triggered by user tap.
+     * In auto mode this runs continuously.
+     */
     public void startListening() {
         isListeningDesired = true;
         restartListening();
     }
 
+    /**
+     * Restart the speech recognizer. Creates new instance if needed.
+     */
     public void restartListening() {
         if (!isListeningDesired || isSpeakingNow) return;
 
         new Handler(Looper.getMainLooper()).post(() -> {
             try {
-                if (speechRecognizer != null) {
-                    try {
-                        speechRecognizer.destroy();
-                    } catch (Exception e) {
-                        Log.w(TAG, "Error destroying recognizer: " + e.getMessage());
+                // Check if recognizer exists
+                boolean needsNew = (speechRecognizer == null);
+
+                if (needsNew) {
+                    if (!SpeechRecognizer.isRecognitionAvailable(appContext)) {
+                        Log.e(TAG, "Speech recognition not available on this device");
+                        speak("Rozpoznawanie mowy niedostępne na tym urządzeniu.");
+                        return;
                     }
-                    speechRecognizer = null;
-                }
 
-                if (!SpeechRecognizer.isRecognitionAvailable(appContext)) {
-                    Log.e(TAG, "Speech recognition not available on this device");
-                    return;
-                }
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                        speechRecognizer = SpeechRecognizer.createOnDeviceSpeechRecognizer(appContext);
+                    } else {
+                        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(appContext);
+                    }
 
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                    speechRecognizer = SpeechRecognizer.createOnDeviceSpeechRecognizer(appContext);
-                } else {
-                    speechRecognizer = SpeechRecognizer.createSpeechRecognizer(appContext);
-                }
+                    if (speechRecognizer == null) {
+                        Log.e(TAG, "Failed to create speech recognizer");
+                        return;
+                    }
 
-                if (speechRecognizer == null) {
-                    Log.e(TAG, "Failed to create speech recognizer");
-                    return;
+                    speechRecognizer.setRecognitionListener(createRecognitionListener());
                 }
-
-                speechRecognizer.setRecognitionListener(createRecognitionListener());
 
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pl-PL");
                 intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, appContext.getPackageName());
                 intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true);
-                intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+                intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+                intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
 
                 speechRecognizer.startListening(intent);
                 Log.d(TAG, "Recognizer started, waiting for speech...");
             } catch (Exception e) {
                 Log.e(TAG, "Failed to start recognizer: " + e.getMessage(), e);
+                destroyRecognizer();
                 if (isListeningDesired && !isSpeakingNow) {
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         if (isListeningDesired) restartListening();
@@ -278,6 +375,17 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 }
             }
         });
+    }
+
+    private void destroyRecognizer() {
+        if (speechRecognizer != null) {
+            try {
+                speechRecognizer.destroy();
+            } catch (Exception e) {
+                Log.w(TAG, "Error destroying recognizer: " + e.getMessage());
+            }
+            speechRecognizer = null;
+        }
     }
 
     private void pauseListeningTemporarily() {
@@ -295,12 +403,18 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     public void stopListening() {
         isListeningDesired = false;
         pauseListeningTemporarily();
+        destroyRecognizer();
         for (VoiceCallback cb : callbacks) cb.onListeningStopped();
     }
 
     public void speak(String text) {
-        if (!ttsReady || !isTTSEnabled()) {
-            Log.w(TAG, "TTS not ready or disabled, skipping: " + text);
+        if (!ttsReady) {
+            Log.w(TAG, "TTS not ready, queuing: " + text);
+            pendingSpeak = text;
+            return;
+        }
+        if (!isTTSEnabled()) {
+            Log.w(TAG, "TTS disabled, skipping: " + text);
             return;
         }
         isSpeakingNow = true;
@@ -318,7 +432,6 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
         if (!ttsReady || !isTTSEnabled()) return;
         isSpeakingNow = true;
         pauseListeningTemporarily();
-        // For longer text, add a short delay before speaking
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             try {
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, UUID.randomUUID().toString());
@@ -345,7 +458,23 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     }
 
     public boolean isListening() {
-        return isListeningDesired && speechRecognizer != null;
+        return isListeningDesired;
+    }
+
+    public boolean isInQuietMode() {
+        return isInQuietMode;
+    }
+
+    public void setQuietMode(boolean enabled) {
+        isInQuietMode = enabled;
+        appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(KEY_QUIET_MODE, enabled)
+            .apply();
+    }
+
+    public void setManualMode(boolean manual) {
+        isManualMode = manual;
     }
 
     private String getSpeechErrorMessage(int error) {
@@ -400,6 +529,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     public void cleanup() {
         stopListening();
         stopSpeech();
+        destroyRecognizer();
         if (tts != null) {
             try {
                 tts.shutdown();
@@ -407,11 +537,11 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 Log.w(TAG, "Error shutting down TTS: " + e.getMessage());
             }
         }
-        if (speechRecognizer != null) {
+        if (toneGenerator != null) {
             try {
-                speechRecognizer.destroy();
+                toneGenerator.release();
             } catch (Exception e) {
-                Log.w(TAG, "Error destroying recognizer: " + e.getMessage());
+                Log.w(TAG, "Error releasing tone generator: " + e.getMessage());
             }
         }
     }

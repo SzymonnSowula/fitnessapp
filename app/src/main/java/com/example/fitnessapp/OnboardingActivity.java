@@ -104,8 +104,22 @@ public class OnboardingActivity extends AppCompatActivity {
         editor.putBoolean("needs_chair", needsChair);
         editor.putBoolean("can_exercise_bed", canExerciseBed);
         editor.putBoolean("can_exercise_sitting", canExerciseSitting);
-        editor.putString("goal", goal);
+        editor.putString("user_goal", goal);
         editor.putStringSet("conditions", conditions);
+
+        // Ustawienie domyślnych limitów intensywności i trudności na podstawie profilu
+        float maxIntensity = 2.0f;
+        float maxDifficulty = 2.0f;
+        if (!canStand || needsChair || !conditions.isEmpty()) {
+            maxIntensity = 1.0f;
+            maxDifficulty = 1.0f;
+        } else if (canStand && canExerciseFloor && canExerciseSitting && canExerciseBed && conditions.isEmpty()) {
+            maxIntensity = 3.0f;
+            maxDifficulty = 3.0f;
+        }
+        editor.putFloat("maxIntensity", maxIntensity);
+        editor.putFloat("maxDifficulty", maxDifficulty);
+
         editor.apply();
 
         startActivity(new Intent(OnboardingActivity.this, ChoiceActivity.class));

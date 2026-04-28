@@ -38,7 +38,7 @@ public class HardGamesActivity extends AppCompatActivity {
         CardView cardColorsHard = findViewById(R.id.card_colors_hard);
         cardColorsHard.setOnClickListener(v -> {
             Intent intent = new Intent(HardGamesActivity.this, ColorTapActivity.class);
-            intent.putExtra(ColorTapActivity.EXTRA_DIFFICULTY, ColorTapActivity.DIFFICULTY_HARD);
+            intent.putExtra(ColorTapActivity.EXTRA_DIFFICULTY, GameConstants.DIFFICULTY_HARD);
             startActivity(intent);
         });
     }

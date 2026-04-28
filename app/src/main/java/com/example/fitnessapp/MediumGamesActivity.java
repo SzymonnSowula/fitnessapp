@@ -38,7 +38,7 @@ public class MediumGamesActivity extends AppCompatActivity {
         CardView cardColorsMedium = findViewById(R.id.card_colors_medium);
         cardColorsMedium.setOnClickListener(v -> {
             Intent intent = new Intent(MediumGamesActivity.this, ColorTapActivity.class);
-            intent.putExtra(ColorTapActivity.EXTRA_DIFFICULTY, ColorTapActivity.DIFFICULTY_MEDIUM);
+            intent.putExtra(ColorTapActivity.EXTRA_DIFFICULTY, GameConstants.DIFFICULTY_MEDIUM);
             startActivity(intent);
         });
     }

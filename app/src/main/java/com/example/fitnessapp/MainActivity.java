@@ -216,23 +216,30 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    private static final String KEY_CSV_VERSION = "csv_version";
+
     private void loadExerciseDatabase() {
         try {
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            int currentCsvVersion = CsvImporter.CSV_VERSION;
+            int savedCsvVersion = prefs.getInt(KEY_CSV_VERSION, 0);
+
             int count = db.exerciseDao().getCount();
             Log.d(TAG, "Aktualna liczba ćwiczeń w bazie: " + count);
 
-            if (count > 0) {
-                Log.d(TAG, "Baza zawiera " + count + " ćwiczeń. Pomijam import CSV.");
+            if (count > 0 && savedCsvVersion == currentCsvVersion) {
+                Log.d(TAG, "Baza zawiera " + count + " ćwiczeń i wersja CSV się nie zmieniła. Pomijam import.");
                 dbReady = true;
                 return;
             }
 
-            Log.d(TAG, "Baza jest pusta. Importuję ćwiczenia z CSV...");
+            Log.d(TAG, "Importuję ćwiczenia z CSV (wersja " + currentCsvVersion + ")...");
             List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
             if (!exercises.isEmpty()) {
                 db.exerciseDao().replaceAll(exercises);
                 int newCount = db.exerciseDao().getCount();
                 Log.d(TAG, "Zaimportowano " + exercises.size() + " ćwiczeń. Nowy stan bazy: " + newCount);
+                prefs.edit().putInt(KEY_CSV_VERSION, currentCsvVersion).apply();
                 dbReady = true;
             } else {
                 Log.e(TAG, "Nie zaimportowano żadnych ćwiczeń!");

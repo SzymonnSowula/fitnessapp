@@ -215,7 +215,7 @@ public class MemoryGameActivity extends AppCompatActivity {
         com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_game_win, null);
         builder.setView(dialogView);
-        android.app.AlertDialog dialog = builder.create();
+        androidx.appcompat.app.AlertDialog dialog = builder.create();
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }

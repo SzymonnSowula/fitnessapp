@@ -37,7 +37,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     private boolean isListeningDesired = false;
     private boolean isSpeakingNow = false;
     private boolean isInQuietMode = false;
-    private boolean isManualMode = true; // Manual mode by default - tap to listen
+    private boolean isManualMode = false; // Auto mode by default - continuous listening
 
     private final CopyOnWriteArraySet<VoiceCallback> callbacks = new CopyOnWriteArraySet<>();
     private String currentLanguage = "pl-PL";
@@ -393,7 +393,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pl-PL");
                 intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, appContext.getPackageName());
-                intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true);
+                intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, false);
                 intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
                 intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
 

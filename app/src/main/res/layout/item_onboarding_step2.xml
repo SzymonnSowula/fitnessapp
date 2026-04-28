@@ -75,14 +75,6 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_standing"
-                        app:tint="#004A99"
-                        android:contentDescription="Pozycja stojąca"
-                        android:layout_marginEnd="16dp" />
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -137,14 +129,6 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_floor"
-                        app:tint="#004A99"
-                        android:contentDescription="Pozycja na podłodze"
-                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -201,14 +185,6 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_chair"
-                        app:tint="#004A99"
-                        android:contentDescription="Pozycja na krześle"
-                        android:layout_marginEnd="16dp" />
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -264,14 +240,6 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_bed"
-                        app:tint="#004A99"
-                        android:contentDescription="Pozycja na łóżku"
-                        android:layout_marginEnd="16dp" />
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -326,14 +294,6 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_sitting"
-                        app:tint="#004A99"
-                        android:contentDescription="Pozycja siedząca"
-                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"

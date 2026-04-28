@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"
             android:gravity="center"
-            android:text="Jak masz na imię?"
+            android:text="@string/onboarding_step1_question"
             android:textColor="@color/black"
             android:textSize="44sp"
             android:textStyle="bold" />

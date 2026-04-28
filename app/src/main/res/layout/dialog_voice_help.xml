@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:background="#FFFFFF">
+    android:padding="24dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="KOMENDY GŁOSOWE"
+        android:text="@string/vh_title"
         android:textColor="#004A99"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -36,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NAWIGACJA"
+                android:text="@string/vh_navigation_title"
                 android:textColor="#004A99"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -45,7 +44,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• główna - strona główna\n• wstecz - wróć\n• ćwiczenia - przejdź do ćwiczeń\n• gry - przejdź do gier\n• ustawienia - otwórz ustawienia"
+                android:text="@string/vh_navigation_desc"
                 android:textColor="#1E293B"
                 android:textSize="20sp"
                 android:lineSpacingMultiplier="1.3"
@@ -54,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OGÓLNE"
+                android:text="@string/vh_general_title"
                 android:textColor="#004A99"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -63,7 +62,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• pomoc - pokaż listę\n• stop - zatrzymaj mówienie\n• czytaj - przeczytaj ekran\n• powtórz - powtórz wiadomość"
+                android:text="@string/vh_general_desc"
                 android:textColor="#1E293B"
                 android:textSize="20sp"
                 android:lineSpacingMultiplier="1.3"
@@ -72,7 +71,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ĆWICZENIA"
+                android:text="@string/vh_exercises_title"
                 android:textColor="#004A99"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -81,7 +80,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• następne ćwiczenie - przejdź dalej\n• start lub zaczynamy - rozpocznij\n• zakończ lub koniec - zakończ trening\n• czytaj opis - przeczytaj opis ćwiczenia"
+                android:text="@string/vh_exercises_desc"
                 android:textColor="#1E293B"
                 android:textSize="16sp"
                 android:lineSpacingMultiplier="1.3"
@@ -90,7 +89,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GRY"
+                android:text="@string/vh_games_title"
                 android:textColor="#004A99"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -99,7 +98,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• łatwy, średni, trudny - wybierz poziom\n• start - rozpocznij grę\n• nowa gra - zacznij od nowa"
+                android:text="@string/vh_games_desc"
                 android:textColor="#1E293B"
                 android:textSize="20sp"
                 android:lineSpacingMultiplier="1.3"

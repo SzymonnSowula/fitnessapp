@@ -1,25 +1,8 @@
 <resources>
     <string name="app_name">fitnessapp</string>
-    <string name="onboarding_step_1_title">Podstawowe dane</string>
     <string name="onboarding_step_1_desc">Podaj nam swoje imię, abyśmy mogli się do Ciebie zwracać.</string>
     <string name="onboarding_name_hint">Twoje imię / nazwa</string>
 
-    <string name="onboarding_step_2_title">Ograniczenia ruchowe</string>
-    <string name="onboarding_q1">Czy możesz stać bez podparcia?</string>
-    <string name="onboarding_q2">Czy możesz ćwiczyć na podłodze / klęczeć?</string>
-    <string name="onboarding_q3">Czy potrzebujesz krzesła lub podparcia?</string>
-    <string name="onboarding_q4">Czy możesz ćwiczyć leżąc w łóżku?</string>
-    <string name="onboarding_q5">Czy możesz ćwiczyć w pozycji siedzącej?</string>
-
-    <string name="onboarding_step_3_title">Parametry ćwiczeń</string>
-    <string name="onboarding_intensity_label">Intensywność ćwiczeń:</string>
-    <string name="onboarding_intensity_1">Bardzo niska (łóżko, Tai Chi, delikatne)</string>
-    <string name="onboarding_intensity_2">Niska (standardowe lub lżejsze)</string>
-    <string name="onboarding_difficulty_label">Poziom trudności:</string>
-    <string name="onboarding_difficulty_1">Tylko łatwe</string>
-    <string name="onboarding_difficulty_2">Łatwe + średnie</string>
-
-    <string name="onboarding_step_4_title">Cel ćwiczeń</string>
     <string name="onboarding_goal_strength">Siła</string>
     <string name="onboarding_goal_balance">Równowaga</string>
     <string name="onboarding_goal_mobility">Mobilność</string>
@@ -27,7 +10,6 @@
     <string name="onboarding_goal_posture">Postura</string>
     <string name="onboarding_goal_mixed">Mieszana</string>
 
-    <string name="onboarding_step_5_title">Schorzenia i problemy zdrowotne</string>
     <string name="onboarding_no_conditions">Brak schorzeń</string>
     
     <string name="group_back">Plecy i kręgosłup</string>
@@ -49,31 +31,9 @@
     <string name="cond_hip_pain">Ból bioder</string>
     <string name="cond_ankle_pain">Ból kostek</string>
 
-    <string name="group_muscles">Mięśnie – nogi i biodra</string>
-    <string name="cond_weak_legs">Słabe nogi</string>
-    <string name="cond_weak_hips">Słabe biodra</string>
-    <string name="cond_weak_glutes">Słabe pośladki</string>
-    <string name="cond_weak_calves">Słabe łydki / kostki</string>
-
-    <string name="group_upper">Górna część ciała</string>
-    <string name="cond_weak_arms">Słabe ramiona / barki</string>
-    <string name="cond_neck_pain">Ból karku / napięcie szyi</string>
-    <string name="cond_weak_back">Słabe plecy</string>
-
-    <string name="group_core">Core i kondycja</string>
-    <string name="cond_weak_core">Słaby core / brzuch</string>
-    <string name="cond_weak_fitness">Słaba kondycja</string>
-    <string name="cond_limited_mobility">Ograniczona mobilność</string>
-
-    <string name="group_special">Specjalne</string>
-    <string name="cond_recovery">Rekonwalescencja (po operacji)</string>
-    <string name="cond_long_lying">Długotrwałe leżenie / zakrzepica</string>
-    <string name="cond_instability">Niestabilność / poważna niestabilność</string>
-    
     <string name="welcome_personalized">Witaj %s!</string>
     <string name="finish">Zakończ</string>
     <string name="next">Dalej</string>
-    <string name="start_now">Zacznij teraz</string>
     <string name="assistant_title">Asystent Aktywności</string>
     <string name="login_google">Zaloguj się przez Google</string>
     <string name="or">lub</string>
@@ -83,17 +43,6 @@
     <string name="password_hint">Wpisz hasło</string>
     <string name="login_btn">Zaloguj się</string>
     <string name="register_btn">Zarejestruj się</string>
-    <string name="main_page_title">Witaj w Asystencie Aktywności!</string>
-    <string name="main_page_desc">To jest Twój panel sterowania.</string>
-    <string name="settings_title">Ustawienia</string>
-    <string name="change_name">Zmień imię</string>
-    <string name="change_password">Zmień hasło</string>
-    <string name="notification_settings">Ustawienia przypomnień</string>
-    <string name="logout">Wyczyść konto i zacznij od nowa</string>
-    <string name="add_condition">Dodaj schorzenie</string>
-    <string name="nav_start">Start</string>
-    <string name="nav_assistant">Asystent</string>
-    <string name="nav_settings">Ustawienia</string>
 
     <!-- New for recommendations & details -->
     <string name="recommendations_title">Rekomendacje</string>
@@ -112,4 +61,48 @@
     <string name="contraindications_label">Przeciwwskazania:</string>
     <string name="no_description">Brak opisu ćwiczenia.</string>
     <string name="none">Brak.</string>
+
+    <!-- Voice help dialog -->
+    <string name="vh_title">KOMENDY GŁOSOWE</string>
+    <string name="vh_navigation_title">NAWIGACJA</string>
+    <string name="vh_navigation_desc">• główna - strona główna\n• wstecz - wróć\n• ćwiczenia - przejdź do ćwiczeń\n• gry - przejdź do gier\n• ustawienia - otwórz ustawienia</string>
+    <string name="vh_general_title">OGÓLNE</string>
+    <string name="vh_general_desc">• pomoc - pokaż listę\n• stop - zatrzymaj mówienie\n• czytaj - przeczytaj ekran\n• powtórz - powtórz wiadomość</string>
+    <string name="vh_exercises_title">ĆWICZENIA</string>
+    <string name="vh_exercises_desc">• następne ćwiczenie - przejdź dalej\n• start lub zaczynamy - rozpocznij\n• zakończ lub koniec - zakończ trening\n• czytaj opis - przeczytaj opis ćwiczenia</string>
+    <string name="vh_games_title">GRY</string>
+    <string name="vh_games_desc">• łatwy, średni, trudny - wybierz poziom\n• start - rozpocznij grę\n• nowa gra - zacznij od nowa</string>
+
+    <!-- Exercise item -->
+    <string name="exercise_name_placeholder">Nazwa ćwiczenia</string>
+    <string name="exercise_desc_placeholder">Opis</string>
+
+    <!-- Onboarding step 1 -->
+    <string name="onboarding_step1_question">Jak masz na imię?</string>
+
+    <!-- Onboarding step 2 -->
+    <string name="onboarding_step2_title">W JAKICH POZYCJACH\nMOŻESZ ĆWICZYĆ?</string>
+    <string name="onboarding_step2_subtitle">Zaznacz wszystkie pozycje, w których czujesz się komfortowo</string>
+    <string name="onboarding_step2_select_all">Wszystkie pozycje</string>
+    <string name="position_standing">Stojąc</string>
+    <string name="position_standing_desc">Bez podparcia lub z lekkim podparciem</string>
+    <string name="position_floor">Na podłodze</string>
+    <string name="position_floor_desc">Klęcząc lub leżąc na macie</string>
+    <string name="position_chair">Z krzesłem</string>
+    <string name="position_chair_desc">Ćwiczę z wykorzystaniem krzesła jako podpory</string>
+    <string name="position_bed">Leżąc w łóżku</string>
+    <string name="position_bed_desc">Delikatne ćwiczenia rehabilitacyjne</string>
+    <string name="position_sitting">Siedząc</string>
+    <string name="position_sitting_desc">Ćwiczenia w pozycji siedzącej</string>
+
+    <!-- Onboarding step 4 -->
+    <string name="onboarding_step4_title">Co jest Twoim głównym celem?</string>
+
+    <!-- Onboarding step 5 -->
+    <string name="onboarding_step5_title">Czy masz jakieś schorzenia lub problemy zdrowotne?</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_exercises">ćwiczenia</string>
+    <string name="nav_settings_label">Ustawienia</string>
 </resources>

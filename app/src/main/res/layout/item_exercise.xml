@@ -19,7 +19,7 @@
             android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="#0F172A"
-            android:text="Nazwa ćwiczenia"/>
+            android:text="@string/exercise_name_placeholder"/>
 
         <TextView
             android:id="@+id/tv_ex_subtitle"
@@ -29,7 +29,7 @@
             android:textSize="26sp"
             android:textColor="#64748B"
             android:textStyle="bold"
-            android:text="Opis"/>
+            android:text="@string/exercise_desc_placeholder"/>
 
     </LinearLayout>
 

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
-            android:text="Co jest Twoim głównym celem?"
+            android:text="@string/onboarding_step4_title"
             android:textColor="@color/black"
             android:textSize="44sp"
             android:textStyle="bold"

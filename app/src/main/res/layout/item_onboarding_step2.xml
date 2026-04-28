@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="W JAKICH POZYCJACH\nMOŻESZ ĆWICZYĆ?"
+            android:text="@string/onboarding_step2_title"
             android:textColor="#004A99"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zaznacz wszystkie pozycje, w których czujesz się komfortowo"
+            android:text="@string/onboarding_step2_subtitle"
             android:textColor="#64748B"
             android:textSize="16sp"
             android:gravity="center"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="20dp"
-            android:text="Wszystkie pozycje"
+            android:text="@string/onboarding_step2_select_all"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#004A99"
@@ -91,7 +91,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Stojąc"
+                            android:text="@string/position_standing"
                             android:textColor="#1E293B"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -99,7 +99,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Bez podparcia lub z lekkim podparciem"
+                            android:text="@string/position_standing_desc"
                             android:textColor="#64748B"
                             android:textSize="14sp"
                             android:layout_marginTop="2dp" />
@@ -152,7 +152,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Na podłodze"
+                            android:text="@string/position_floor"
                             android:textColor="#1E293B"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -160,7 +160,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Klęcząc lub leżąc na macie"
+                            android:text="@string/position_floor_desc"
                             android:textColor="#64748B"
                             android:textSize="14sp"
                             android:layout_marginTop="2dp" />
@@ -213,7 +213,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Z krzesłem"
+                            android:text="@string/position_chair"
                             android:textColor="#1E293B"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -221,7 +221,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Ćwiczę z wykorzystaniem krzesła jako podpory"
+                            android:text="@string/position_chair_desc"
                             android:textColor="#64748B"
                             android:textSize="14sp"
                             android:layout_marginTop="2dp" />
@@ -274,7 +274,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Leżąc w łóżku"
+                            android:text="@string/position_bed"
                             android:textColor="#1E293B"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -282,7 +282,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Delikatne ćwiczenia rehabilitacyjne"
+                            android:text="@string/position_bed_desc"
                             android:textColor="#64748B"
                             android:textSize="14sp"
                             android:layout_marginTop="2dp" />
@@ -335,7 +335,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Siedząc"
+                            android:text="@string/position_sitting"
                             android:textColor="#1E293B"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -343,7 +343,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Ćwiczenia w pozycji siedzącej"
+                            android:text="@string/position_sitting_desc"
                             android:textColor="#64748B"
                             android:textSize="14sp"
                             android:layout_marginTop="2dp" />

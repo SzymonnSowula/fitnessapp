@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp"
-            android:text="Czy masz jakieś schorzenia lub problemy zdrowotne?"
+            android:text="@string/onboarding_step5_title"
             android:textColor="@color/black"
             android:textSize="44sp"
             android:textStyle="bold" />

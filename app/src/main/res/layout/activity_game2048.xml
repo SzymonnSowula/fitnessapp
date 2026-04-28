@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     android:padding="20dp">
 
@@ -62,49 +61,42 @@
         android:textSize="26sp"
         android:fontFamily="sans-serif-medium" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TableLayout
+        android:id="@+id/grid_table"
+        android:layout_width="320dp"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal"
+        android:background="@color/light_gray_bg"
+        android:padding="6dp"
+        android:shrinkColumns="*"
+        android:stretchColumns="*">
 
-        <TableLayout
-            android:id="@+id/grid_table"
-            android:layout_width="320dp"
-            android:layout_height="320dp"
-            android:background="@color/light_gray_bg"
-            android:padding="6dp"
-            android:shrinkColumns="*"
-            android:stretchColumns="*">
-
-            <TableRow android:layout_weight="1">
-                <TextView android:id="@+id/cell_00" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_01" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_02" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_03" style="@style/GameCell" />
-            </TableRow>
-            <TableRow android:layout_weight="1">
-                <TextView android:id="@+id/cell_10" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_11" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_12" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_13" style="@style/GameCell" />
-            </TableRow>
-            <TableRow android:layout_weight="1">
-                <TextView android:id="@+id/cell_20" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_21" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_22" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_23" style="@style/GameCell" />
-            </TableRow>
-            <TableRow android:layout_weight="1">
-                <TextView android:id="@+id/cell_30" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_31" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_32" style="@style/GameCell" />
-                <TextView android:id="@+id/cell_33" style="@style/GameCell" />
-            </TableRow>
-        </TableLayout>
-
-    </LinearLayout>
+        <TableRow android:layout_weight="1">
+            <TextView android:id="@+id/cell_00" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_01" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_02" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_03" style="@style/GameCell" />
+        </TableRow>
+        <TableRow android:layout_weight="1">
+            <TextView android:id="@+id/cell_10" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_11" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_12" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_13" style="@style/GameCell" />
+        </TableRow>
+        <TableRow android:layout_weight="1">
+            <TextView android:id="@+id/cell_20" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_21" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_22" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_23" style="@style/GameCell" />
+        </TableRow>
+        <TableRow android:layout_weight="1">
+            <TextView android:id="@+id/cell_30" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_31" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_32" style="@style/GameCell" />
+            <TextView android:id="@+id/cell_33" style="@style/GameCell" />
+        </TableRow>
+    </TableLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,6 +124,7 @@
 
         <Button
             android:id="@+id/btn_left"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:text="◀"
@@ -141,6 +134,7 @@
 
         <Button
             android:id="@+id/btn_down"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="48dp"
@@ -152,6 +146,7 @@
 
         <Button
             android:id="@+id/btn_right"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:text="▶"

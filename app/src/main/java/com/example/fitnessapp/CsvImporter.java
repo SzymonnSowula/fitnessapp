@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CsvImporter {
     private static final String TAG = "CsvImporter";
@@ -41,7 +42,7 @@ public class CsvImporter {
                 e.name = columns[0];
                 
                 // Mapowanie kategorii
-                String rawCategory = columns[3].toLowerCase();
+                String rawCategory = columns[3].toLowerCase(Locale.ROOT);
                 if (rawCategory.contains("sila") || rawCategory.contains("siła")) e.category = "sila";
                 else if (rawCategory.contains("kardio")) e.category = "kardio";
                 else if (rawCategory.contains("elastyczn") || rawCategory.contains("mobiln")) e.category = "mobilnosc";
@@ -113,7 +114,7 @@ public class CsvImporter {
 
     private static float parseInfluence(String val) {
         if (val == null) return 1.0f;
-        val = val.toLowerCase();
+        val = val.toLowerCase(Locale.ROOT);
         if (val.contains("wysoki") || val.contains("wysoka") || val.contains("trudny")) return 3.0f;
         if (val.contains("średni") || val.contains("średnia") || val.contains("sredni")) return 2.0f;
         if (val.contains("niski") || val.contains("niska") || val.contains("łatwy") || val.contains("latwy")) return 1.0f;
@@ -123,7 +124,7 @@ public class CsvImporter {
 
     private static float parseBinary(String val) {
         if (val == null) return 0.0f;
-        val = val.toLowerCase();
+        val = val.toLowerCase(Locale.ROOT);
         if (val.equals("tak") || val.equals("tak (opcjonalnie)") || val.equals("opcjonalnie")) return 1.0f;
         return 0.0f;
     }

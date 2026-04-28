@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class ExerciseRecommender {
@@ -109,7 +110,7 @@ public class ExerciseRecommender {
 
     private static double getGoalImpact(Exercise ex, String cel) {
         if (cel == null) return 1.0;
-        switch (cel.toLowerCase()) {
+        switch (cel.toLowerCase(Locale.ROOT)) {
             case "sila": case "siła": return ex.wplywNaSileNum;
             case "rownowaga": case "równowaga": return ex.wplywNaRownowageNum;
             case "mobilnosc": case "mobilność": return ex.wplywNaElastycznoscNum;
@@ -122,16 +123,16 @@ public class ExerciseRecommender {
 
     private static double computeSchorzeniaScore(Exercise ex, Set<String> userSchorzenia) {
         if (userSchorzenia == null || userSchorzenia.isEmpty() || ex.zalecaneSchorzenia == null) return 0;
-        String zalecane = ex.zalecaneSchorzenia.toLowerCase();
+        String zalecane = ex.zalecaneSchorzenia.toLowerCase(Locale.ROOT);
         int matches = 0;
-        for (String s : userSchorzenia) { if (zalecane.contains(s.toLowerCase())) matches++; }
+        for (String s : userSchorzenia) { if (zalecane.contains(s.toLowerCase(Locale.ROOT))) matches++; }
         return matches == 0 ? 0 : 0.5 + (0.1 * matches);
     }
 
     private static boolean isContraindicated(Exercise ex, Set<String> userSchorzenia) {
         if (ex.przeciwwskazania == null || ex.przeciwwskazania.equalsIgnoreCase("brak")) return false;
-        String contra = ex.przeciwwskazania.toLowerCase();
-        for (String s : userSchorzenia) { if (contra.contains(s.toLowerCase())) return true; }
+        String contra = ex.przeciwwskazania.toLowerCase(Locale.ROOT);
+        for (String s : userSchorzenia) { if (contra.contains(s.toLowerCase(Locale.ROOT))) return true; }
         return false;
     }
 

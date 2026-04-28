@@ -297,7 +297,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                         Log.d(TAG, "Recognized: " + text);
 
                         // Check for wake word - must be at start of text for activation
-                        String lower = text.toLowerCase().trim();
+                        String lower = text.toLowerCase(Locale.ROOT).trim();
                         boolean isWakeWord = lower.startsWith("hej") || lower.startsWith("hey") || lower.startsWith("hei");
 
                         if (isWakeWord) {

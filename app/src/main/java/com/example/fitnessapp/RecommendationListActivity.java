@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class RecommendationListActivity extends AppCompatActivity {
@@ -111,7 +112,7 @@ public class RecommendationListActivity extends AppCompatActivity {
 
     private void handleVoiceCommand(String command) {
         if (command == null) return;
-        String cmd = command.toLowerCase();
+        String cmd = command.toLowerCase(Locale.ROOT);
         
         if (cmd.contains("czytaj") || cmd.contains("read")) {
             readExercises();
@@ -179,9 +180,19 @@ public class RecommendationListActivity extends AppCompatActivity {
         }
 
         void update(List<Exercise> newData) {
+            int oldSize = data.size();
             data.clear();
             data.addAll(newData);
-            notifyDataSetChanged();
+            if (oldSize == 0 && newData.size() > 0) {
+                notifyItemRangeInserted(0, newData.size());
+            } else if (oldSize > 0 && newData.size() == 0) {
+                notifyItemRangeRemoved(0, oldSize);
+            } else if (oldSize == newData.size()) {
+                notifyItemRangeChanged(0, oldSize);
+            } else {
+                // notifyDataSetChanged is necessary because the item count changed
+                notifyDataSetChanged();
+            }
         }
 
         @Override

@@ -304,7 +304,7 @@ public class MemoryGameActivity extends AppCompatActivity {
 
         void updateItemHeight(int containerHeight) {
             this.itemHeight = containerHeight / rows;
-            notifyDataSetChanged();
+            notifyItemRangeChanged(0, getItemCount());
         }
 
         boolean isCardFlipped(int position) {

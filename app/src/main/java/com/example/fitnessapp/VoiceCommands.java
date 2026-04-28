@@ -3,6 +3,7 @@ package com.example.fitnessapp;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -405,7 +406,7 @@ public class VoiceCommands {
     public static String matchCommand(String text) {
         if (text == null || text.trim().isEmpty()) return null;
 
-        String lowerText = text.toLowerCase().trim();
+        String lowerText = text.toLowerCase(Locale.ROOT).trim();
         String paddedText = " " + lowerText + " ";
 
         // Check command maps in order of priority

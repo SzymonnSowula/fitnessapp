@@ -347,6 +347,7 @@ public static class TubeView extends View {
         private RectF rect = new RectF();
         private RectF bottomRect = new RectF();
         private android.graphics.Path tubePath = new android.graphics.Path();
+        private final android.graphics.Path glowPath = new android.graphics.Path();
         private boolean isCompleted = false;
         private boolean isSelected = false;
 
@@ -398,7 +399,7 @@ public void animateSelection(boolean selected) {
                 glowPaint.setColor(0xFF00FF00); // Neon green
                 glowPaint.setAlpha(180);
 
-                android.graphics.Path glowPath = new android.graphics.Path();
+                glowPath.reset();
                 glowPath.moveTo(left, topBound);
                 glowPath.lineTo(left, bottomBound - tubeWidth / 2);
                 rect.set(left, bottomBound - tubeWidth, right, bottomBound);

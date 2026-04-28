@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class SingleExerciseActivity extends AppCompatActivity {
@@ -109,7 +110,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
 
     private void handleVoiceCommand(String command) {
         if (command == null) return;
-        switch (command.toLowerCase()) {
+        switch (command.toLowerCase(Locale.ROOT)) {
             case "next": case "następne": if (currentIndex < exercises.size() - 1) btnNext.performClick(); break;
             case "back": case "powrót": onBackPressed(); break;
             case "read": case "czytaj": voiceNavigator.speak(tvDescription.getText().toString()); break;

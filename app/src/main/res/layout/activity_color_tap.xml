@@ -74,98 +74,95 @@
  app:layout_constraintEnd_toEndOf="parent"
  app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
- <!-- Game Grid using Nested LinearLayouts for 2x2 -->
- <LinearLayout
- android:id="@+id/container_grid"
- android:layout_width="match_parent"
- android:layout_height="0dp"
- android:layout_margin="16dp"
- android:orientation="vertical"
- app:layout_constraintTop_toBottomOf="@id/tv_instruction"
- app:layout_constraintBottom_toTopOf="@id/indicator_container">
+<!-- Game Grid using ConstraintLayout to avoid nested weights -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/container_grid"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_margin="16dp"
+    app:layout_constraintTop_toBottomOf="@id/tv_instruction"
+    app:layout_constraintBottom_toTopOf="@id/indicator_container">
 
- <LinearLayout
- android:layout_width="match_parent"
- android:layout_height="0dp"
- android:layout_weight="1"
- android:orientation="horizontal">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tile_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#004A99"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tile_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tile_2">
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_onboarding_2"
+            app:tint="#FFFFFF33" />
+    </androidx.cardview.widget.CardView>
 
- <androidx.cardview.widget.CardView
- android:id="@+id/tile_1"
- android:layout_width="0dp"
- android:layout_height="match_parent"
- android:layout_weight="1"
- android:layout_margin="12dp"
- app:cardCornerRadius="32dp"
- app:cardElevation="4dp"
- app:cardBackgroundColor="#004A99">
- <ImageView
- android:layout_width="48dp"
- android:layout_height="48dp"
- android:layout_gravity="center"
- android:src="@drawable/ic_onboarding_2"
- app:tint="#FFFFFF33" />
- </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tile_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#057A32"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tile_4"
+        app:layout_constraintStart_toEndOf="@id/tile_1"
+        app:layout_constraintEnd_toEndOf="parent">
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_indicator_active"
+            android:backgroundTint="#FFFFFF33" />
+    </androidx.cardview.widget.CardView>
 
- <androidx.cardview.widget.CardView
- android:id="@+id/tile_2"
- android:layout_width="0dp"
- android:layout_height="match_parent"
- android:layout_weight="1"
- android:layout_margin="12dp"
- app:cardCornerRadius="32dp"
- app:cardElevation="4dp"
- app:cardBackgroundColor="#057A32">
- <View
- android:layout_width="48dp"
- android:layout_height="48dp"
- android:layout_gravity="center"
- android:background="@drawable/bg_indicator_active"
- android:backgroundTint="#FFFFFF33" />
- </androidx.cardview.widget.CardView>
- </LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tile_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#994A00"
+        app:layout_constraintTop_toBottomOf="@id/tile_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tile_4">
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_checkbox_onboarding"
+            android:backgroundTint="#FFFFFF33" />
+    </androidx.cardview.widget.CardView>
 
- <LinearLayout
- android:layout_width="match_parent"
- android:layout_height="0dp"
- android:layout_weight="1"
- android:orientation="horizontal">
-
- <androidx.cardview.widget.CardView
- android:id="@+id/tile_3"
- android:layout_width="0dp"
- android:layout_height="match_parent"
- android:layout_weight="1"
- android:layout_margin="12dp"
- app:cardCornerRadius="32dp"
- app:cardElevation="4dp"
- app:cardBackgroundColor="#994A00">
- <View
- android:layout_width="48dp"
- android:layout_height="48dp"
- android:layout_gravity="center"
- android:background="@drawable/bg_checkbox_onboarding"
- android:backgroundTint="#FFFFFF33" />
- </androidx.cardview.widget.CardView>
-
- <androidx.cardview.widget.CardView
- android:id="@+id/tile_4"
- android:layout_width="0dp"
- android:layout_height="match_parent"
- android:layout_weight="1"
- android:layout_margin="12dp"
- app:cardCornerRadius="32dp"
- app:cardElevation="4dp"
- app:cardBackgroundColor="#6355B2">
- <ImageView
- android:layout_width="48dp"
- android:layout_height="48dp"
- android:layout_gravity="center"
- android:src="@drawable/ic_onboarding_1"
- app:tint="#FFFFFF33" />
- </androidx.cardview.widget.CardView>
- </LinearLayout>
- </LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tile_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#6355B2"
+        app:layout_constraintTop_toBottomOf="@id/tile_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tile_3"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_onboarding_1"
+            app:tint="#FFFFFF33" />
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
  <!-- Step Indicators -->
  <LinearLayout

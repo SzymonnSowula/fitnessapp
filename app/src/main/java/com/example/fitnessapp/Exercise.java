@@ -3,6 +3,8 @@ package com.example.fitnessapp;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Locale;
+
 @Entity(tableName = "exercises")
 public class Exercise {
     @PrimaryKey(autoGenerate = true)
@@ -33,7 +35,7 @@ public class Exercise {
 
     public String getRuchKey() {
         if (ruchGlowny == null || ruchGlowny.isEmpty()) return String.valueOf(id);
-        String[] words = ruchGlowny.toLowerCase().replaceAll("[^a-ząćęłńóśźż\\s]", "").split("\\s+");
+        String[] words = ruchGlowny.toLowerCase(Locale.ROOT).replaceAll("[^a-ząćęłńóśźż\\s]", "").split("\\s+");
         if (words.length >= 2) return words[0] + " " + words[1];
         if (words.length == 1) return words[0];
         return String.valueOf(id);

@@ -16,6 +16,10 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -185,17 +189,46 @@ public class SingleExerciseActivity extends AppCompatActivity {
     }
 
     private void setupVideoView() {
-        videoView.setVideoURI(Uri.parse("file:///android_asset/exercise_placeholder.mp4"));
-        MediaController mediaController = new MediaController(this);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-        videoView.setOnPreparedListener(mp -> {
-            mp.setLooping(true);
-            if (videoPosition > 0) {
-                videoView.seekTo(videoPosition);
+        new Thread(() -> {
+            try {
+                File videoFile = copyAssetToCache(this, "exercise_placeholder.mp4", "exercise_placeholder.mp4");
+                runOnUiThread(() -> {
+                    videoView.setVideoURI(Uri.fromFile(videoFile));
+                    MediaController mediaController = new MediaController(this);
+                    mediaController.setAnchorView(videoView);
+                    videoView.setMediaController(mediaController);
+                    videoView.setOnPreparedListener(mp -> {
+                        mp.setLooping(true);
+                        if (videoPosition > 0) {
+                            videoView.seekTo(videoPosition);
+                        }
+                        videoView.start();
+                    });
+                });
+            } catch (IOException e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Nie można wczytać wideo", Toast.LENGTH_SHORT).show();
+                    videoView.setVisibility(View.GONE);
+                });
             }
-            videoView.start();
-        });
+        }).start();
+    }
+
+    private File copyAssetToCache(Context context, String assetName, String outFileName) throws IOException {
+        File outFile = new File(context.getCacheDir(), outFileName);
+        if (outFile.exists()) {
+            return outFile;
+        }
+        try (InputStream is = context.getAssets().open(assetName);
+             FileOutputStream fos = new FileOutputStream(outFile)) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, read);
+            }
+            fos.flush();
+        }
+        return outFile;
     }
 
     @Override

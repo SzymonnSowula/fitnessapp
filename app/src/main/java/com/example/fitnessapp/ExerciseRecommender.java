@@ -78,6 +78,13 @@ public class ExerciseRecommender {
                 score *= 0.6; 
             }
 
+            // Dla dobrego samopoczucia (3) silnie faworyzujemy ćwiczenia o maksymalnej intensywności.
+            // Ćwiczenia z niższą intensywnością są depriorytetyzowane (kara -70% do wyniku),
+            // aby zachować różnorodność, ale jednocześnie mocniej promować wysoki wysiłek.
+            if (profile.samopoczucie == 3 && ex.intensywnoscNum < 3) {
+                score *= 0.3;
+            }
+
             candidates.add(new ScoredExercise(ex, score));
         }
 

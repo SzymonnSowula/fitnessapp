@@ -3,16 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     android:padding="32dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/vh_title"
-        android:textColor="#004A99"
+        android:textColor="#1E293B"
         android:textSize="36sp"
         android:textStyle="bold"
         android:gravity="center"
+        android:lineSpacingMultiplier="1.3"
         android:letterSpacing="0.05" />
 
     <View
@@ -23,8 +25,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="400dp">
+        android:layout_height="400dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,17 +38,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_navigation_title"
-                android:textColor="#004A99"
+                android:textColor="#1E293B"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:layout_marginTop="8dp" />
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_navigation_desc"
                 android:textColor="#1E293B"
-                android:textSize="24sp"
+                android:textSize="22sp"
+                android:textStyle="bold"
                 android:lineSpacingMultiplier="1.3"
                 android:layout_marginTop="8dp" />
 
@@ -54,17 +58,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_general_title"
-                android:textColor="#004A99"
+                android:textColor="#1E293B"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="24dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_general_desc"
                 android:textColor="#1E293B"
-                android:textSize="24sp"
+                android:textSize="22sp"
+                android:textStyle="bold"
                 android:lineSpacingMultiplier="1.3"
                 android:layout_marginTop="8dp" />
 
@@ -72,17 +78,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_exercises_title"
-                android:textColor="#004A99"
+                android:textColor="#1E293B"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="24dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_exercises_desc"
                 android:textColor="#1E293B"
-                android:textSize="24sp"
+                android:textSize="22sp"
+                android:textStyle="bold"
                 android:lineSpacingMultiplier="1.3"
                 android:layout_marginTop="8dp" />
 
@@ -90,17 +98,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_games_title"
-                android:textColor="#004A99"
+                android:textColor="#1E293B"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+                android:lineSpacingMultiplier="1.3"
+                android:layout_marginTop="24dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/vh_games_desc"
                 android:textColor="#1E293B"
-                android:textSize="24sp"
+                android:textSize="22sp"
+                android:textStyle="bold"
                 android:lineSpacingMultiplier="1.3"
                 android:layout_marginTop="8dp" />
 

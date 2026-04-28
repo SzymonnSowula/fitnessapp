@@ -2,13 +2,17 @@ package com.example.fitnessapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +37,8 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private ProgressBar progressExercise;
     private Button btnNext, btnFinish;
     private VoiceNavigator voiceNavigator;
+    private VideoView videoView;
+    private int videoPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_single_exercise);
 
         initViews();
+        setupVideoView();
         voiceNavigator = new VoiceNavigator(this, command -> runOnUiThread(() -> handleVoiceCommand(command)));
         voiceNavigator.setup();
         voiceNavigator.startListening();
@@ -131,6 +138,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
         tvContraindications = findViewById(R.id.tv_contraindications);
         btnNext = findViewById(R.id.btn_next);
         btnFinish = findViewById(R.id.btn_finish);
+        videoView = findViewById(R.id.video_view);
     }
 
     private void showExercise(int index) {
@@ -174,6 +182,42 @@ public class SingleExerciseActivity extends AppCompatActivity {
 
     private String getDifficultyText(int v) {
         return v <= 1 ? "Łatwe" : (v <= 2 ? "Średnie" : "Trudne");
+    }
+
+    private void setupVideoView() {
+        videoView.setVideoURI(Uri.parse("file:///android_asset/exercise_placeholder.mp4"));
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
+        videoView.setOnPreparedListener(mp -> {
+            mp.setLooping(true);
+            if (videoPosition > 0) {
+                videoView.seekTo(videoPosition);
+            }
+            videoView.start();
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (videoView != null) {
+            new Handler().postDelayed(() -> {
+                if (videoView != null) {
+                    videoView.seekTo(videoPosition);
+                    videoView.start();
+                }
+            }, 300);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (videoView != null) {
+            videoPosition = videoView.getCurrentPosition();
+            videoView.pause();
+        }
     }
 
     @Override

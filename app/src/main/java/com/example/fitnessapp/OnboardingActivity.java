@@ -184,7 +184,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 ImageView ivQ3 = holder.itemView.findViewById(R.id.iv_q3);
                 ImageView ivQ4 = holder.itemView.findViewById(R.id.iv_q4);
                 ImageView ivQ5 = holder.itemView.findViewById(R.id.iv_q5);
-                CardView btnAllPositions = holder.itemView.findViewById(R.id.btn_all_positions);
+                View btnAllPositions = holder.itemView.findViewById(R.id.btn_all_positions);
 
                 updateCheckboxCard(cardQ1, ivQ1, canStand);
                 updateCheckboxCard(cardQ2, ivQ2, canExerciseFloor);

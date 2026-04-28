@@ -3,11 +3,14 @@ package com.example.fitnessapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class GameInstructionActivity extends AppCompatActivity {
 
@@ -21,7 +24,9 @@ public class GameInstructionActivity extends AppCompatActivity {
     private ImageView ivGameIcon;
     private TextView tvGameTitle;
     private TextView tvInstructionText;
+    private FloatingActionButton fabMic;
     private VoiceNavigator voiceNavigator;
+    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,10 @@ public class GameInstructionActivity extends AppCompatActivity {
         ivGameIcon = findViewById(R.id.iv_game_icon);
         tvGameTitle = findViewById(R.id.tv_game_title);
         tvInstructionText = findViewById(R.id.tv_instruction_text);
+        fabMic = findViewById(R.id.fab_mic);
+
+        // Load pulse animation
+        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
 
         // Setup voice navigation
         voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
@@ -38,13 +47,30 @@ public class GameInstructionActivity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
-        });
 
-        // Start listening when activity is shown
-        new android.os.Handler().postDelayed(() -> {
-            voiceNavigator.setup();
-            voiceNavigator.startListening();
-        }, 500);
+            @Override
+            public void onListeningStateChanged(boolean isListening) {
+                runOnUiThread(() -> {
+                    if (fabMic != null) {
+                        if (isListening) {
+                            fabMic.startAnimation(pulseAnimation);
+                        } else {
+                            fabMic.clearAnimation();
+                        }
+                    }
+                });
+            }
+        });
+        voiceNavigator.setup();
+
+        // FAB click to start/stop listening
+        fabMic.setOnClickListener(v -> {
+            if (VoiceManager.getInstance().isListening()) {
+                voiceNavigator.stopListening();
+            } else {
+                voiceNavigator.startListening();
+            }
+        });
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
@@ -80,19 +106,16 @@ public class GameInstructionActivity extends AppCompatActivity {
     }
 
     private void setupGameInstruction(int gameType) {
-        // Hide difficulty card - not used in instruction screen
-        CardView cardDifficulty = findViewById(R.id.card_difficulty);
-        if (cardDifficulty != null) {
-            cardDifficulty.setVisibility(View.GONE);
-        }
-
         // All games: btn_start goes to GameDifficultyActivity
-        findViewById(R.id.btn_start).setOnClickListener(v -> {
-            Intent intent = new Intent(this, GameDifficultyActivity.class);
-            intent.putExtra(GameDifficultyActivity.EXTRA_GAME_TYPE, gameType);
-            startActivity(intent);
-            finish();
-        });
+        View btnStart = findViewById(R.id.btn_start);
+        if (btnStart != null) {
+            btnStart.setOnClickListener(v -> {
+                Intent intent = new Intent(this, GameDifficultyActivity.class);
+                intent.putExtra(GameDifficultyActivity.EXTRA_GAME_TYPE, gameType);
+                startActivity(intent);
+                finish();
+            });
+        }
 
         switch (gameType) {
             case GAME_MEMORY:

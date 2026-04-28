@@ -24,7 +24,7 @@ public class VoiceCommands {
         GENERAL_COMMANDS.put("co mogę powiedzieć", "help");
         GENERAL_COMMANDS.put("co moge powiedziec", "help");
         GENERAL_COMMANDS.put("co mogę mówić", "help");
-        GENERAL_COMMANDS.put("co moge Mowic", "help");
+        GENERAL_COMMANDS.put("co moge mowic", "help");
         GENERAL_COMMANDS.put("asystent", "help");
         GENERAL_COMMANDS.put("wszystkie komendy", "help");
         GENERAL_COMMANDS.put("listy komend", "help");

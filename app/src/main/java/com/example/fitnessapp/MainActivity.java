@@ -1,17 +1,18 @@
 package com.example.fitnessapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.util.List;
 import java.util.Random;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase db;
     private volatile boolean dbReady = false;
     private VoiceNavigator voiceNavigator;
+    private FloatingActionButton fabMic;
+    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +42,6 @@ public class MainActivity extends AppCompatActivity {
         if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
             androidx.core.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO}, 1);
         }
-
-        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
-            @Override
-            public void onVoiceCommand(String command) {
-                runOnUiThread(() -> handleVoiceCommand(command));
-            }
-        });
-        voiceNavigator.setup();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -69,6 +64,52 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Błąd ładowania systemu rekomendacji", Toast.LENGTH_SHORT).show();
         }
 
+        // Load pulse animation
+        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
+
+        // Setup voice navigator with listening state callback
+        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
+            @Override
+            public void onVoiceCommand(String command) {
+                runOnUiThread(() -> handleVoiceCommand(command));
+            }
+
+            @Override
+            public void onListeningStateChanged(boolean isListening) {
+                runOnUiThread(() -> {
+                    if (fabMic != null) {
+                        if (isListening) {
+                            fabMic.startAnimation(pulseAnimation);
+                        } else {
+                            fabMic.clearAnimation();
+                        }
+                    }
+                });
+            }
+        });
+        voiceNavigator.setup();
+
+        voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
+
+        // Help button listener
+        ImageButton btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
+
+        // Mic FAB button - tap to start/stop listening
+        fabMic = findViewById(R.id.fab_mic);
+        if (fabMic != null) {
+            fabMic.setOnClickListener(v -> {
+                if (VoiceManager.getInstance().isListening()) {
+                    voiceNavigator.stopListening();
+                } else {
+                    voiceNavigator.startListening();
+                    voiceNavigator.speak("Słucham. Powiedz czego potrzebujesz.");
+                }
+            });
+        }
+
         findViewById(R.id.card_mood_happy).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SingleExerciseActivity.class);
             intent.putExtra(SingleExerciseActivity.EXTRA_MOOD_TYPE, SingleExerciseActivity.MOOD_HAPPY);
@@ -84,23 +125,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(SingleExerciseActivity.EXTRA_MOOD_TYPE, SingleExerciseActivity.MOOD_VERY_SAD);
             startActivity(intent);
         });
-
-voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
-
-        // Help button listener
-        ImageButton btnHelp = findViewById(R.id.btn_help);
-        if (btnHelp != null) {
-            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
-        }
-
-        // Mic FAB button - tap to start listening
-        FloatingActionButton fabMic = findViewById(R.id.fab_mic);
-        if (fabMic != null) {
-            fabMic.setOnClickListener(v -> {
-                VoiceManager.getInstance().startListening();
-                voiceNavigator.speak("Słucham. Powiedz czego potrzebujesz.");
-            });
-        }
     }
 
     private void handleVoiceCommand(String command) {
@@ -202,7 +226,13 @@ voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
             int count = db.exerciseDao().getCount();
             Log.d(TAG, "Aktualna liczba ćwiczeń w bazie: " + count);
 
-            Log.d(TAG, "Odświeżam bazę ćwiczeń z CSV...");
+            if (count > 0) {
+                Log.d(TAG, "Baza zawiera " + count + " ćwiczeń. Pomijam import CSV.");
+                dbReady = true;
+                return;
+            }
+
+            Log.d(TAG, "Baza jest pusta. Importuję ćwiczenia z CSV...");
             List<Exercise> exercises = CsvImporter.loadExercisesFromCsv(this);
             if (!exercises.isEmpty()) {
                 db.exerciseDao().replaceAll(exercises);

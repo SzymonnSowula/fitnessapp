@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +29,8 @@ public class MemoryGameActivity extends AppCompatActivity {
     private CardAdapter adapter;
     private boolean isLocked = false;
     private VoiceNavigator voiceNavigator;
+    private FloatingActionButton fabMic;
+    private Animation pulseAnimation;
 
     private final int[] cardImages = {
             R.drawable.ic_heart,
@@ -51,9 +55,27 @@ public class MemoryGameActivity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
+
+            @Override
+            public void onListeningStateChanged(boolean isListening) {
+                runOnUiThread(() -> updateListeningVisual(isListening));
+            }
         });
 
         voiceNavigator.setup();
+
+        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
+        fabMic = findViewById(R.id.fab_mic);
+        if (fabMic != null) {
+            fabMic.setOnClickListener(v -> {
+                if (VoiceManager.getInstance().isListening()) {
+                    voiceNavigator.stopListening();
+                } else {
+                    voiceNavigator.startListening();
+                    voiceNavigator.speak("Słucham.");
+                }
+            });
+        }
 
         rvCards = findViewById(R.id.rv_cards);
         tvScore = findViewById(R.id.tv_score);
@@ -69,6 +91,16 @@ public class MemoryGameActivity extends AppCompatActivity {
         findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(currentColumns, currentRows));
 
         voiceNavigator.speakDelayed("Gra Memory. Znajdź pary jednakowych kart.", 500);
+    }
+
+    private void updateListeningVisual(boolean isListening) {
+        if (fabMic != null) {
+            if (isListening) {
+                fabMic.startAnimation(pulseAnimation);
+            } else {
+                fabMic.clearAnimation();
+            }
+        }
     }
 
     private void handleVoiceCommand(String command) {
@@ -161,7 +193,7 @@ public class MemoryGameActivity extends AppCompatActivity {
 
             if (adapter.getCardImage(pos1) == adapter.getCardImage(pos2)) {
                 score += 10;
-                tvScore.setText(String.valueOf(score));
+                if (tvScore != null) tvScore.setText(String.valueOf(score));
                 adapter.removeCards(pos1, pos2);
 
                 if (adapter.isAllRemoved()) {
@@ -180,7 +212,7 @@ public class MemoryGameActivity extends AppCompatActivity {
     private void showWinDialog() {
         voiceNavigator.speak("Brawo! Ukończyłeś grę w " + moves + " ruchach.");
 
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_game_win, null);
         builder.setView(dialogView);
         android.app.AlertDialog dialog = builder.create();
@@ -197,11 +229,10 @@ public class MemoryGameActivity extends AppCompatActivity {
         int nextCols = currentColumns;
         int nextRows = currentRows;
 
+        // Memory progression: 2x3 → 3x4 → 4x4 → 4x5
         if (currentColumns == 2 && currentRows == 3) {
             nextCols = 3; nextRows = 4; canIncrease = true;
         } else if (currentColumns == 3 && currentRows == 4) {
-            nextCols = 2; nextRows = 4; canIncrease = true;
-        } else if (currentColumns == 2 && currentRows == 4) {
             nextCols = 4; nextRows = 4; canIncrease = true;
         } else if (currentColumns == 4 && currentRows == 4) {
             nextCols = 4; nextRows = 5; canIncrease = true;

@@ -2,7 +2,10 @@ package com.example.fitnessapp;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,22 +20,22 @@ import java.util.List;
 public class ColorTapActivity extends AppCompatActivity {
 
     public static final String EXTRA_DIFFICULTY = "difficulty";
-    public static final int DIFFICULTY_EASY = 0;
-    public static final int DIFFICULTY_MEDIUM = 1;
-    public static final int DIFFICULTY_HARD = 2;
 
     private View containerGrid;
     private TextView tvScore, tvLevel, tvResult, tvInstruction, tvTitle;
     private LinearLayout indicatorContainer;
     private int score = 0;
     private int level = 1;
-    private int difficulty = DIFFICULTY_EASY;
+    private int difficulty = GameConstants.DIFFICULTY_EASY;
 
     private List<Integer> colorSequence = new ArrayList<>();
     private List<Integer> userSequence = new ArrayList<>();
     private List<CardView> colorCards = new ArrayList<>();
     private boolean isShowingSequence = false;
     private VoiceNavigator voiceNavigator;
+    private FloatingActionButton fabMic;
+    private Animation pulseAnimation;
+    private Vibrator vibrator;
 
     private final int[] colors = {
             0xFF004A99, // blue
@@ -51,8 +54,28 @@ public class ColorTapActivity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
+
+            @Override
+            public void onListeningStateChanged(boolean isListening) {
+                runOnUiThread(() -> updateListeningVisual(isListening));
+            }
         });
         voiceNavigator.setup();
+
+        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
+        fabMic = findViewById(R.id.fab_mic);
+        if (fabMic != null) {
+            fabMic.setOnClickListener(v -> {
+                if (VoiceManager.getInstance().isListening()) {
+                    voiceNavigator.stopListening();
+                } else {
+                    voiceNavigator.startListening();
+                    voiceNavigator.speak("Słucham.");
+                }
+            });
+        }
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         containerGrid = findViewById(R.id.container_grid);
         tvScore = findViewById(R.id.tv_score);
@@ -61,17 +84,17 @@ public class ColorTapActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.tv_title);
         indicatorContainer = findViewById(R.id.indicator_container);
 
-        difficulty = getIntent().getIntExtra(EXTRA_DIFFICULTY, DIFFICULTY_EASY);
+        difficulty = getIntent().getIntExtra(EXTRA_DIFFICULTY, GameConstants.DIFFICULTY_EASY);
 
         // Set appropriate starting level based on difficulty
         switch (difficulty) {
-            case DIFFICULTY_EASY:
+            case GameConstants.DIFFICULTY_EASY:
                 level = 1;
                 break;
-            case DIFFICULTY_MEDIUM:
+            case GameConstants.DIFFICULTY_MEDIUM:
                 level = 3;
                 break;
-            case DIFFICULTY_HARD:
+            case GameConstants.DIFFICULTY_HARD:
                 level = 5;
                 break;
         }
@@ -135,9 +158,9 @@ public class ColorTapActivity extends AppCompatActivity {
 
         int minLength = 2, maxLength = 4, delay = 1000;
         switch (difficulty) {
-            case DIFFICULTY_EASY: minLength = 2; maxLength = 4; delay = 1200; break;
-            case DIFFICULTY_MEDIUM: minLength = 3; maxLength = 6; delay = 900; break;
-            case DIFFICULTY_HARD: minLength = 4; maxLength = 8; delay = 700; break;
+            case GameConstants.DIFFICULTY_EASY: minLength = GameConstants.COLOR_EASY_MIN_LENGTH; maxLength = GameConstants.COLOR_EASY_MAX_LENGTH; delay = GameConstants.COLOR_EASY_DELAY_MS; break;
+            case GameConstants.DIFFICULTY_MEDIUM: minLength = GameConstants.COLOR_MEDIUM_MIN_LENGTH; maxLength = GameConstants.COLOR_MEDIUM_MAX_LENGTH; delay = GameConstants.COLOR_MEDIUM_DELAY_MS; break;
+            case GameConstants.DIFFICULTY_HARD: minLength = GameConstants.COLOR_HARD_MIN_LENGTH; maxLength = GameConstants.COLOR_HARD_MAX_LENGTH; delay = GameConstants.COLOR_HARD_DELAY_MS; break;
         }
 
         int sequenceLength = Math.min(minLength + level - 1, maxLength);
@@ -182,9 +205,22 @@ private void flashColor(int index) {
         }, 400);
     }
 
+    private void updateListeningVisual(boolean isListening) {
+        if (fabMic != null) {
+            if (isListening) {
+                fabMic.startAnimation(pulseAnimation);
+            } else {
+                fabMic.clearAnimation();
+            }
+        }
+    }
+
     private void onColorTapped(int index) {
         userSequence.add(index);
         flashColor(index);
+        if (vibrator != null) {
+            vibrator.vibrate(50);
+        }
         updateIndicators();
 
         int checkIndex = userSequence.size() - 1;

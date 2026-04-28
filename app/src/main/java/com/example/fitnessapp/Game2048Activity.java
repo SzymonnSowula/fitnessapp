@@ -3,12 +3,16 @@ package com.example.fitnessapp;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class Game2048Activity extends AppCompatActivity {
 
@@ -17,6 +21,8 @@ public class Game2048Activity extends AppCompatActivity {
     private int score = 0;
     private TextView tvScore;
     private VoiceNavigator voiceNavigator;
+    private FloatingActionButton fabMic;
+    private Animation pulseAnimation;
 
     private final int[] cellColors = {
             0xFFEEE4DA, 0xFFEDE0C8, 0xFFF2B179, 0xFFF59563,
@@ -31,16 +37,16 @@ public class Game2048Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game2048);
 
-        int difficulty = getIntent().getIntExtra("EXTRA_DIFFICULTY", GameDifficultyActivity.DIFFICULTY_HARD);
+        int difficulty = getIntent().getIntExtra("EXTRA_DIFFICULTY", GameConstants.DIFFICULTY_HARD);
         switch (difficulty) {
-            case GameDifficultyActivity.DIFFICULTY_EASY:
-                targetScore = 512;
+            case GameConstants.DIFFICULTY_EASY:
+                targetScore = GameConstants.TARGET_2048_EASY;
                 break;
-            case GameDifficultyActivity.DIFFICULTY_MEDIUM:
-                targetScore = 1024;
+            case GameConstants.DIFFICULTY_MEDIUM:
+                targetScore = GameConstants.TARGET_2048_MEDIUM;
                 break;
-            case GameDifficultyActivity.DIFFICULTY_HARD:
-                targetScore = 2048;
+            case GameConstants.DIFFICULTY_HARD:
+                targetScore = GameConstants.TARGET_2048_HARD;
                 break;
         }
 
@@ -49,8 +55,26 @@ public class Game2048Activity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
+
+            @Override
+            public void onListeningStateChanged(boolean isListening) {
+                runOnUiThread(() -> updateListeningVisual(isListening));
+            }
         });
         voiceNavigator.setup();
+
+        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
+        fabMic = findViewById(R.id.fab_mic);
+        if (fabMic != null) {
+            fabMic.setOnClickListener(v -> {
+                if (VoiceManager.getInstance().isListening()) {
+                    voiceNavigator.stopListening();
+                } else {
+                    voiceNavigator.startListening();
+                    voiceNavigator.speak("Słucham.");
+                }
+            });
+        }
 
         tvScore = findViewById(R.id.tv_score);
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
@@ -65,6 +89,16 @@ public class Game2048Activity extends AppCompatActivity {
         restartGame();
 
         voiceNavigator.speakDelayed("Gra 2048. Twój cel to " + targetScore + ". Przesuwaj kafelki aby łączyć te same liczby.", 500);
+    }
+
+    private void updateListeningVisual(boolean isListening) {
+        if (fabMic != null) {
+            if (isListening) {
+                fabMic.startAnimation(pulseAnimation);
+            } else {
+                fabMic.clearAnimation();
+            }
+        }
     }
 
     private void initCells() {
@@ -219,7 +253,22 @@ public class Game2048Activity extends AppCompatActivity {
         if (hasWon) {
             Toast.makeText(this, "Gratulacje! Cel osiągnięty!", Toast.LENGTH_LONG).show();
             voiceNavigator.speak("Gratulacje! Cel " + targetScore + " osiągnięty! Wygrałeś!");
+        } else if (!hasEmpty && !canMove()) {
+            Toast.makeText(this, "Koniec gry! Nie ma więcej ruchów.", Toast.LENGTH_LONG).show();
+            voiceNavigator.speak("Koniec gry! Nie ma więcej możliwych ruchów. Twój wynik to " + score + ".");
         }
+    }
+
+    private boolean canMove() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                int val = grid[i][j];
+                if (val == 0) return true;
+                if (j < 3 && val == grid[i][j + 1]) return true;
+                if (i < 3 && val == grid[i + 1][j]) return true;
+            }
+        }
+        return false;
     }
 
     @Override

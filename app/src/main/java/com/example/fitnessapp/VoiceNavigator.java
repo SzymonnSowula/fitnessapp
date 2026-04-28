@@ -9,9 +9,12 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     private static final String TAG = "VoiceNavigator";
     private Activity activity;
     private VoiceCallback callback;
+    private android.os.Handler pendingHandler;
+    private Runnable pendingSpeech;
 
     public interface VoiceCallback {
         void onVoiceCommand(String command);
+        default void onListeningStateChanged(boolean isListening) {} // Optional - for visual feedback
     }
 
     public VoiceNavigator(Activity activity, VoiceCallback callback) {
@@ -27,6 +30,15 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     public void cleanup() {
         VoiceManager.getInstance().removeCallback(this);
         stopListening();
+        cancelPendingSpeech();
+    }
+
+    public void cancelPendingSpeech() {
+        if (pendingHandler != null && pendingSpeech != null) {
+            pendingHandler.removeCallbacks(pendingSpeech);
+            pendingHandler = null;
+            pendingSpeech = null;
+        }
     }
 
     public void startListening() {
@@ -42,9 +54,10 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     }
 
     public void speakDelayed(String text, long delayMs) {
-        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
-            () -> speak(text), delayMs
-        );
+        cancelPendingSpeech();
+        pendingHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+        pendingSpeech = () -> speak(text);
+        pendingHandler.postDelayed(pendingSpeech, delayMs);
     }
 
     public void stopSpeaking() {
@@ -101,8 +114,17 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
                 activity.onBackPressed();
                 break;
             case "exit":
-                speak("Zamykam aplikację");
-                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> activity.finishAffinity(), 1000);
+                speak("Czy na pewno chcesz wyjść z aplikacji?");
+                ConfirmationHelper.showExitConfirmation(activity, new ConfirmationHelper.ConfirmationCallback() {
+                    @Override
+                    public void onConfirm() {
+                        activity.finishAffinity();
+                    }
+                    @Override
+                    public void onCancel() {
+                        speak("Zostajesz w aplikacji.");
+                    }
+                });
                 break;
             case "profile":
                 speak("Funkcja profilu nie jest jeszcze dostępna");
@@ -145,5 +167,13 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     @Override
     public void onListeningStopped() {
         Log.d(TAG, "Listening stopped");
+    }
+
+    @Override
+    public void onListeningStateChanged(boolean isListening) {
+        Log.d(TAG, "Listening state changed: " + isListening);
+        if (callback != null) {
+            callback.onListeningStateChanged(isListening);
+        }
     }
 }

@@ -65,6 +65,20 @@ voiceNavigator.speakDelayed("Co chcesz poćwiczyć? Wybierz Ciało lub Umysł.",
             case "repeat":
                 voiceNavigator.speak("Co chcesz poćwiczyć? Wybierz obszar treningu: Ciało dla siły i równowagi, Umysł dla pamięci i koncentracji.");
                 break;
+            case "body":
+            case "exercises":
+                voiceNavigator.speak("Przechodzę do ćwiczeń.");
+                new android.os.Handler().postDelayed(() -> {
+                    startActivity(new Intent(ChoiceActivity.this, MainActivity.class));
+                }, 1000);
+                break;
+            case "mind":
+            case "games":
+                voiceNavigator.speak("Przechodzę do gier umysłowych.");
+                new android.os.Handler().postDelayed(() -> {
+                    startActivity(new Intent(ChoiceActivity.this, MindGamesActivity.class));
+                }, 1000);
+                break;
         }
     }
 

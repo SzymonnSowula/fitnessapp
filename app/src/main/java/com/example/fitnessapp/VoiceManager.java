@@ -52,6 +52,12 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     // Restart delay adjusted based on results
     private long lastRestartDelay = NORMAL_RESTART_DELAY_MS;
 
+    // Error debounce - prevents constant restart on repeated errors
+    private static final int MAX_CONSECUTIVE_ERRORS = 3;
+    private int consecutiveErrorCount = 0;
+    private boolean isInErrorCooldown = false;
+    private static final long ERROR_COOLDOWN_MS = 5000;
+
     // Tone generator for listening feedback
     private ToneGenerator toneGenerator;
 
@@ -66,6 +72,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
         void onTTSDone();
         void onListeningStarted();
         void onListeningStopped();
+        default void onListeningStateChanged(boolean isListening) {} // For visual feedback
     }
 
     public static VoiceManager getInstance() {
@@ -204,7 +211,11 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 Log.d(TAG, "Mic Ready for speech");
                 currentRetryCount = 0;
                 playListeningBeep();
-                for (VoiceCallback cb : callbacks) cb.onListeningStarted();
+                consecutiveErrorCount = 0; // Reset error count on successful ready
+                for (VoiceCallback cb : callbacks) {
+                    cb.onListeningStarted();
+                    cb.onListeningStateChanged(true);
+                }
             }
 
             @Override public void onBeginningOfSpeech() {}
@@ -214,7 +225,10 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
             @Override public void onBufferReceived(byte[] buffer) {}
 
             @Override public void onEndOfSpeech() {
-                for (VoiceCallback cb : callbacks) cb.onListeningStopped();
+                for (VoiceCallback cb : callbacks) {
+                    cb.onListeningStopped();
+                    cb.onListeningStateChanged(false);
+                }
             }
 
             @Override
@@ -227,29 +241,48 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 // Don't restart on critical errors or if not desired
                 if (!isListeningDesired) return;
 
-                // Check for wake word "hej" in partial results - but we can't here, so just restart
+                // Increment consecutive error counter
+                consecutiveErrorCount++;
 
+                // Check if we should enter error cooldown (debounce)
+                if (consecutiveErrorCount >= MAX_CONSECUTIVE_ERRORS) {
+                    isInErrorCooldown = true;
+                    Log.d(TAG, "Entering error cooldown after " + consecutiveErrorCount + " errors");
+                    // Notify callbacks about error cooldown
+                    for (VoiceCallback cb : callbacks) cb.onListeningStateChanged(false);
+                    // Announce cooldown to user with TTS
+                    speak("Chwilowa przerwa. Spróbuj ponownie za chwilę.");
+                    // Schedule exit from cooldown
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        isInErrorCooldown = false;
+                        consecutiveErrorCount = 0;
+                        Log.d(TAG, "Error cooldown ended");
+                    }, ERROR_COOLDOWN_MS);
+                    return;
+                }
+
+                // Normal restart logic for first few errors
                 if (error == SpeechRecognizer.ERROR_NO_MATCH ||
                     error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
                     // Normal silence - restart after delay
-                    if (!isSpeakingNow) {
+                    if (!isSpeakingNow && !isInErrorCooldown) {
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            if (isListeningDesired) restartListening();
+                            if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, isInQuietMode ? QUIET_RESTART_DELAY_MS : 800);
                     }
                 } else if (error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
                     if (!isSpeakingNow && currentRetryCount < MAX_RETRIES) {
                         currentRetryCount++;
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            if (isListeningDesired) restartListening();
+                            if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, RETRY_DELAY_MS);
                     }
                 } else if (error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
                     speak("Brak uprawnień do mikrofonu. Sprawdź ustawienia aplikacji.");
                 } else {
-                    if (!isSpeakingNow) {
+                    if (!isSpeakingNow && !isInErrorCooldown) {
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            if (isListeningDesired) restartListening();
+                            if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, RETRY_DELAY_MS);
                     }
                 }
@@ -263,32 +296,37 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                         String text = matches.get(0);
                         Log.d(TAG, "Recognized: " + text);
 
-                        // Check for wake word
+                        // Check for wake word - must be at start of text for activation
                         String lower = text.toLowerCase().trim();
-                        if (lower.contains("hej") || lower.contains("hey") || lower.contains("hei")) {
+                        boolean isWakeWord = lower.startsWith("hej") || lower.startsWith("hey") || lower.startsWith("hei");
+
+                        if (isWakeWord) {
                             playSuccessBeep();
                             speak("Słucham. Co mogę dla Ciebie zrobić?");
-                            // Continue listening for actual command
-                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                if (isListeningDesired) restartListening();
-                            }, 500);
+                            // Don't auto-restart here - TTS will trigger restart via onDone callback
                         } else {
                             playSuccessBeep();
                             for (VoiceCallback cb : callbacks) cb.onSpeechResult(text, true);
+                            // After processing a command, restart listening for next command
+                            if (isListeningDesired && !isSpeakingNow && !isInErrorCooldown) {
+                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                    if (isListeningDesired && !isInErrorCooldown) restartListening();
+                                }, 1000);
+                            }
                         }
                     } else {
                         // No matches - restart
-                        if (isListeningDesired && !isSpeakingNow) {
+                        if (isListeningDesired && !isSpeakingNow && !isInErrorCooldown) {
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                if (isListeningDesired) restartListening();
+                                if (isListeningDesired && !isInErrorCooldown) restartListening();
                             }, 300);
                         }
                     }
                 } else {
                     // Null results - restart
-                    if (isListeningDesired && !isSpeakingNow) {
+                    if (isListeningDesired && !isSpeakingNow && !isInErrorCooldown) {
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            if (isListeningDesired) restartListening();
+                            if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, 300);
                     }
                 }
@@ -300,12 +338,8 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 java.util.ArrayList<String> matches = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 if (matches != null && !matches.isEmpty()) {
                     String text = matches.get(0);
-                    // Check if partial contains wake word
-                    String lower = text.toLowerCase();
-                    if (lower.contains("hej") || lower.contains("hey") || lower.contains("hei")) {
-                        playSuccessBeep();
-                        speak("Słucham!");
-                    }
+                    // Just pass partial results to callbacks - don't speak for wake word here
+                    // Wake word detection happens in onResults for final confirmation
                     for (VoiceCallback cb : callbacks) cb.onSpeechResult(text, false);
                 }
             }
@@ -327,7 +361,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
      * Restart the speech recognizer. Creates new instance if needed.
      */
     public void restartListening() {
-        if (!isListeningDesired || isSpeakingNow) return;
+        if (!isListeningDesired || isSpeakingNow || isInErrorCooldown) return;
 
         new Handler(Looper.getMainLooper()).post(() -> {
             try {
@@ -402,6 +436,8 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
 
     public void stopListening() {
         isListeningDesired = false;
+        isInErrorCooldown = false;
+        consecutiveErrorCount = 0;
         pauseListeningTemporarily();
         destroyRecognizer();
         for (VoiceCallback cb : callbacks) cb.onListeningStopped();

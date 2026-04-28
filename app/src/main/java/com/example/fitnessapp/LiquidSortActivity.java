@@ -7,6 +7,8 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -24,19 +26,18 @@ import java.util.Stack;
 public class LiquidSortActivity extends AppCompatActivity {
 
     public static final String EXTRA_DIFFICULTY = "difficulty";
-    public static final int DIFFICULTY_EASY = 0;
-    public static final int DIFFICULTY_MEDIUM = 1;
-    public static final int DIFFICULTY_HARD = 2;
 
     private GridLayout glTubes;
     private TextView tvLevel;
     private Button btnReset, btnNext;
     private int currentLevel = 1;
-    private int difficulty = DIFFICULTY_EASY;
+    private int difficulty = GameConstants.DIFFICULTY_EASY;
     private int baseLevel = 1;
     private List<TubeView> tubes = new ArrayList<>();
     private TubeView selectedTube = null;
     private VoiceNavigator voiceNavigator;
+    private FloatingActionButton fabMic;
+    private Animation pulseAnimation;
 
     private static final int TUBE_CAPACITY = 4;
     private static final int[] COLORS = {
@@ -59,8 +60,26 @@ public class LiquidSortActivity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
+
+            @Override
+            public void onListeningStateChanged(boolean isListening) {
+                runOnUiThread(() -> updateListeningVisual(isListening));
+            }
         });
         voiceNavigator.setup();
+
+        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
+        fabMic = findViewById(R.id.fab_mic);
+        if (fabMic != null) {
+            fabMic.setOnClickListener(v -> {
+                if (VoiceManager.getInstance().isListening()) {
+                    voiceNavigator.stopListening();
+                } else {
+                    voiceNavigator.startListening();
+                    voiceNavigator.speak("Słucham.");
+                }
+            });
+        }
 
         glTubes = findViewById(R.id.gl_tubes);
         tvLevel = findViewById(R.id.tv_level);
@@ -68,19 +87,19 @@ public class LiquidSortActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
 
         // Get difficulty from intent
-        difficulty = getIntent().getIntExtra(EXTRA_DIFFICULTY, DIFFICULTY_EASY);
+        difficulty = getIntent().getIntExtra(EXTRA_DIFFICULTY, GameConstants.DIFFICULTY_EASY);
 
         // Set base level based on difficulty
         baseLevel = 1;
         switch (difficulty) {
-            case DIFFICULTY_EASY:
-                baseLevel = 1;
+            case GameConstants.DIFFICULTY_EASY:
+                baseLevel = GameConstants.LIQUID_EASY_BASE_LEVEL;
                 break;
-            case DIFFICULTY_MEDIUM:
-                baseLevel = 3;
+            case GameConstants.DIFFICULTY_MEDIUM:
+                baseLevel = GameConstants.LIQUID_MEDIUM_BASE_LEVEL;
                 break;
-            case DIFFICULTY_HARD:
-                baseLevel = 6;
+            case GameConstants.DIFFICULTY_HARD:
+                baseLevel = GameConstants.LIQUID_HARD_BASE_LEVEL;
                 break;
         }
         currentLevel = baseLevel;
@@ -123,6 +142,16 @@ public class LiquidSortActivity extends AppCompatActivity {
             case "repeat":
                 voiceNavigator.speak("Gra Płyny. Poziom " + currentLevel + ". " + getGameStateVoiceDescription());
                 break;
+        }
+    }
+
+    private void updateListeningVisual(boolean isListening) {
+        if (fabMic != null) {
+            if (isListening) {
+                fabMic.startAnimation(pulseAnimation);
+            } else {
+                fabMic.clearAnimation();
+            }
         }
     }
 

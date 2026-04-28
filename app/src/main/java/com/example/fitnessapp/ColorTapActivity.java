@@ -5,14 +5,12 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +31,6 @@ public class ColorTapActivity extends AppCompatActivity {
     private List<CardView> colorCards = new ArrayList<>();
     private boolean isShowingSequence = false;
     private VoiceNavigator voiceNavigator;
-    private FloatingActionButton fabMic;
-    private Animation pulseAnimation;
     private Vibrator vibrator;
 
     private final int[] colors = {
@@ -54,26 +50,9 @@ public class ColorTapActivity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
-
-            @Override
-            public void onListeningStateChanged(boolean isListening) {
-                runOnUiThread(() -> updateListeningVisual(isListening));
-            }
         });
         voiceNavigator.setup();
-
-        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
-        fabMic = findViewById(R.id.fab_mic);
-        if (fabMic != null) {
-            fabMic.setOnClickListener(v -> {
-                if (VoiceManager.getInstance().isListening()) {
-                    voiceNavigator.stopListening();
-                } else {
-                    voiceNavigator.startListening();
-                    voiceNavigator.speak("Słucham.");
-                }
-            });
-        }
+        voiceNavigator.startListening();
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
@@ -203,16 +182,6 @@ private void flashColor(int index) {
             card.setCardBackgroundColor(colors[index]);
             card.setAlpha(1.0f);
         }, 400);
-    }
-
-    private void updateListeningVisual(boolean isListening) {
-        if (fabMic != null) {
-            if (isListening) {
-                fabMic.startAnimation(pulseAnimation);
-            } else {
-                fabMic.clearAnimation();
-            }
-        }
     }
 
     private void onColorTapped(int index) {

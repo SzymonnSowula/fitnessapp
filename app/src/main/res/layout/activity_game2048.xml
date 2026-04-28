@@ -171,16 +171,4 @@
         android:textAllCaps="false"
         app:cornerRadius="16dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_mic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_mic"
-        android:contentDescription="Włącz mikrofon"
-        app:tint="@color/white"
-        app:backgroundTint="#004A99"
-        app:fabSize="normal" />
-
 </LinearLayout>

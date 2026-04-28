@@ -156,16 +156,4 @@
  app:layout_constraintEnd_toEndOf="parent"
  app:layout_constraintBottom_toBottomOf="parent" />
 
- <com.google.android.material.floatingactionbutton.FloatingActionButton
- android:id="@+id/fab_mic"
- android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:layout_margin="16dp"
- android:src="@drawable/ic_mic"
- app:tint="@color/white"
- app:backgroundTint="#004A99"
- app:fabSize="normal"
- app:layout_constraintBottom_toTopOf="@id/btn_back"
- app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

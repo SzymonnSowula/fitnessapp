@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 import java.util.Random;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase db;
     private volatile boolean dbReady = false;
     private VoiceNavigator voiceNavigator;
-    private FloatingActionButton fabMic;
-    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,30 +54,15 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Błąd ładowania systemu rekomendacji", Toast.LENGTH_SHORT).show();
         }
 
-        // Load pulse animation
-        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
-
         // Setup voice navigator with listening state callback
         voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
             @Override
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
-
-            @Override
-            public void onListeningStateChanged(boolean isListening) {
-                runOnUiThread(() -> {
-                    if (fabMic != null) {
-                        if (isListening) {
-                            fabMic.startAnimation(pulseAnimation);
-                        } else {
-                            fabMic.clearAnimation();
-                        }
-                    }
-                });
-            }
         });
         voiceNavigator.setup();
+        voiceNavigator.startListening();
 
         voiceNavigator.speakDelayed("Witaj! Jak się dzisiaj czujesz?", 500);
 
@@ -90,19 +70,6 @@ public class MainActivity extends AppCompatActivity {
         ImageButton btnHelp = findViewById(R.id.btn_help);
         if (btnHelp != null) {
             btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
-        }
-
-        // Mic FAB button - tap to start/stop listening
-        fabMic = findViewById(R.id.fab_mic);
-        if (fabMic != null) {
-            fabMic.setOnClickListener(v -> {
-                if (VoiceManager.getInstance().isListening()) {
-                    voiceNavigator.stopListening();
-                } else {
-                    voiceNavigator.startListening();
-                    voiceNavigator.speak("Słucham. Powiedz czego potrzebujesz.");
-                }
-            });
         }
 
         findViewById(R.id.card_mood_happy).setOnClickListener(v -> {

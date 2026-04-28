@@ -1,13 +1,8 @@
 package com.example.fitnessapp;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Base class for activities that use voice navigation.
@@ -16,8 +11,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public abstract class BaseVoiceActivity extends AppCompatActivity {
 
     protected VoiceNavigator voiceNavigator;
-    private FloatingActionButton fabMic;
-    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +18,6 @@ public abstract class BaseVoiceActivity extends AppCompatActivity {
     }
 
     protected void setupVoiceNavigation() {
-        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
-
         voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
             @Override
             public void onVoiceCommand(String command) {
@@ -39,28 +30,11 @@ public abstract class BaseVoiceActivity extends AppCompatActivity {
             }
         });
         voiceNavigator.setup();
-
-        fabMic = findViewById(R.id.fab_mic);
-        if (fabMic != null) {
-            fabMic.setOnClickListener(v -> {
-                if (VoiceManager.getInstance().isListening()) {
-                    voiceNavigator.stopListening();
-                } else {
-                    voiceNavigator.startListening();
-                    voiceNavigator.speak("Słucham.");
-                }
-            });
-        }
+        voiceNavigator.startListening();
     }
 
     private void updateListeningVisual(boolean isListening) {
-        if (fabMic != null) {
-            if (isListening) {
-                fabMic.startAnimation(pulseAnimation);
-            } else {
-                fabMic.clearAnimation();
-            }
-        }
+        // No FAB mic visual feedback since mic button was removed from layouts
     }
 
     protected void speak(String text) {

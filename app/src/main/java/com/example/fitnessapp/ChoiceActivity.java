@@ -7,7 +7,6 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ChoiceActivity extends AppCompatActivity {
 
@@ -30,6 +29,7 @@ public class ChoiceActivity extends AppCompatActivity {
             }
         });
         voiceNavigator.setup();
+        voiceNavigator.startListening();
 
         NavbarHelper.initNavbar(this);
 

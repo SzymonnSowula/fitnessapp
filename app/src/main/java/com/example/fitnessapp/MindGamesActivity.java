@@ -23,9 +23,10 @@ public class MindGamesActivity extends AppCompatActivity {
  }
  });
 
- voiceNavigator.setup();
+  voiceNavigator.setup();
+  voiceNavigator.startListening();
 
-NavbarHelper.initNavbar(this);
+ NavbarHelper.initNavbar(this);
 
         // Help button listener
         ImageButton btnHelp = findViewById(R.id.btn_help);

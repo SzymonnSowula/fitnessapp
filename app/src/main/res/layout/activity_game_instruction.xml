@@ -21,8 +21,8 @@
     <!-- Help Button -->
     <ImageButton
         android:id="@+id/btn_help"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_margin="16dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_help"
@@ -101,19 +101,6 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <!-- Floating Mic Button FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_mic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:src="@drawable/ic_mic"
-        android:contentDescription="Włącz mikrofon"
-        app:backgroundTint="#004A99"
-        app:tint="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@id/btn_start"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btn_start"

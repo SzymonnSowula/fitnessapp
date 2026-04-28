@@ -3,8 +3,6 @@ package com.example.fitnessapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -13,7 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -25,8 +22,6 @@ public class SettingsActivity extends AppCompatActivity {
     private SwitchCompat switchVoiceEnabled;
     private SeekBar seekbarSpeechRate;
     private VoiceNavigator voiceNavigator;
-    private FloatingActionButton fabMic;
-    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,30 +33,13 @@ public class SettingsActivity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
-
-            @Override
-            public void onListeningStateChanged(boolean isListening) {
-                runOnUiThread(() -> updateListeningVisual(isListening));
-            }
         });
 
         // Inicjalizacja Navbar
         NavbarHelper.initNavbar(this);
 
         voiceNavigator.setup();
-
-        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
-        fabMic = findViewById(R.id.fab_mic);
-        if (fabMic != null) {
-            fabMic.setOnClickListener(v -> {
-                if (VoiceManager.getInstance().isListening()) {
-                    voiceNavigator.stopListening();
-                } else {
-                    voiceNavigator.startListening();
-                    voiceNavigator.speak("Słucham.");
-                }
-            });
-        }
+        voiceNavigator.startListening();
 
         initVoiceSettings();
         initAccountSettings();
@@ -123,16 +101,6 @@ public class SettingsActivity extends AppCompatActivity {
         findViewById(R.id.layout_speech_rate).setOnClickListener(v -> {
             VoiceManager.getInstance().speak("Przykład mowy. Czy teraz jest lepiej?");
         });
-    }
-
-    private void updateListeningVisual(boolean isListening) {
-        if (fabMic != null) {
-            if (isListening) {
-                fabMic.startAnimation(pulseAnimation);
-            } else {
-                fabMic.clearAnimation();
-            }
-        }
     }
 
     private float getSpeechRateFloat(int progress) {

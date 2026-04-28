@@ -42,6 +42,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
         initViews();
         voiceNavigator = new VoiceNavigator(this, command -> runOnUiThread(() -> handleVoiceCommand(command)));
         voiceNavigator.setup();
+        voiceNavigator.startListening();
 
         if (getSupportActionBar() != null) getSupportActionBar().hide();
 

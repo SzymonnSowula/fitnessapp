@@ -3,14 +3,12 @@ package com.example.fitnessapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class GameDifficultyActivity extends AppCompatActivity {
 
@@ -28,8 +26,6 @@ public class GameDifficultyActivity extends AppCompatActivity {
     private ImageView ivGameIcon;
     private TextView tvGameTitle, tvEasyDesc, tvMediumDesc, tvHardDesc;
     private VoiceNavigator voiceNavigator;
-    private FloatingActionButton fabMic;
-    private Animation pulseAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,41 +43,16 @@ public class GameDifficultyActivity extends AppCompatActivity {
         cardEasy = findViewById(R.id.card_easy);
         cardMedium = findViewById(R.id.card_medium);
         cardHard = findViewById(R.id.card_hard);
-        fabMic = findViewById(R.id.fab_mic);
 
-        // Load pulse animation
-        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
-
-        // Setup voice navigation with listening state callback
+        // Setup voice navigation
         voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
             @Override
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
-
-            @Override
-            public void onListeningStateChanged(boolean isListening) {
-                runOnUiThread(() -> {
-                    if (fabMic != null) {
-                        if (isListening) {
-                            fabMic.startAnimation(pulseAnimation);
-                        } else {
-                            fabMic.clearAnimation();
-                        }
-                    }
-                });
-            }
         });
         voiceNavigator.setup();
-
-        // FAB click to start/stop listening
-        fabMic.setOnClickListener(v -> {
-            if (VoiceManager.getInstance().isListening()) {
-                voiceNavigator.stopListening();
-            } else {
-                voiceNavigator.startListening();
-            }
-        });
+        voiceNavigator.startListening();
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 

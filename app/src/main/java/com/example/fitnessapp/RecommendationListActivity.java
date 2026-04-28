@@ -45,6 +45,7 @@ public class RecommendationListActivity extends AppCompatActivity {
         });
 
         voiceNavigator.setup();
+        voiceNavigator.startListening();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

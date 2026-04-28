@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,8 +34,6 @@ public class LiquidSortActivity extends AppCompatActivity {
     private List<TubeView> tubes = new ArrayList<>();
     private TubeView selectedTube = null;
     private VoiceNavigator voiceNavigator;
-    private FloatingActionButton fabMic;
-    private Animation pulseAnimation;
 
     private static final int TUBE_CAPACITY = 4;
     private static final int[] COLORS = {
@@ -60,26 +56,9 @@ public class LiquidSortActivity extends AppCompatActivity {
             public void onVoiceCommand(String command) {
                 runOnUiThread(() -> handleVoiceCommand(command));
             }
-
-            @Override
-            public void onListeningStateChanged(boolean isListening) {
-                runOnUiThread(() -> updateListeningVisual(isListening));
-            }
         });
         voiceNavigator.setup();
-
-        pulseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_pulse);
-        fabMic = findViewById(R.id.fab_mic);
-        if (fabMic != null) {
-            fabMic.setOnClickListener(v -> {
-                if (VoiceManager.getInstance().isListening()) {
-                    voiceNavigator.stopListening();
-                } else {
-                    voiceNavigator.startListening();
-                    voiceNavigator.speak("Słucham.");
-                }
-            });
-        }
+        voiceNavigator.startListening();
 
         glTubes = findViewById(R.id.gl_tubes);
         tvLevel = findViewById(R.id.tv_level);
@@ -142,16 +121,6 @@ public class LiquidSortActivity extends AppCompatActivity {
             case "repeat":
                 voiceNavigator.speak("Gra Płyny. Poziom " + currentLevel + ". " + getGameStateVoiceDescription());
                 break;
-        }
-    }
-
-    private void updateListeningVisual(boolean isListening) {
-        if (fabMic != null) {
-            if (isListening) {
-                fabMic.startAnimation(pulseAnimation);
-            } else {
-                fabMic.clearAnimation();
-            }
         }
     }
 

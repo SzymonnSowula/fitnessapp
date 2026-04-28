@@ -80,6 +80,7 @@
                         android:layout_height="48dp"
                         android:src="@drawable/ic_standing"
                         app:tint="#004A99"
+                        android:contentDescription="Pozycja stojąca"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout
@@ -110,6 +111,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
+                        android:importantForAccessibility="no"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -141,6 +143,7 @@
                         android:layout_height="48dp"
                         android:src="@drawable/ic_floor"
                         app:tint="#004A99"
+                        android:contentDescription="Pozycja na podłodze"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout
@@ -171,6 +174,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
+                        android:importantForAccessibility="no"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -202,6 +206,7 @@
                         android:layout_height="48dp"
                         android:src="@drawable/ic_chair"
                         app:tint="#004A99"
+                        android:contentDescription="Pozycja na krześle"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout
@@ -232,6 +237,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
+                        android:importantForAccessibility="no"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -263,6 +269,7 @@
                         android:layout_height="48dp"
                         android:src="@drawable/ic_bed"
                         app:tint="#004A99"
+                        android:contentDescription="Pozycja na łóżku"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout
@@ -293,6 +300,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
+                        android:importantForAccessibility="no"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -324,6 +332,7 @@
                         android:layout_height="48dp"
                         android:src="@drawable/ic_sitting"
                         app:tint="#004A99"
+                        android:contentDescription="Pozycja siedząca"
                         android:layout_marginEnd="16dp" />
 
                     <LinearLayout
@@ -354,6 +363,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
+                        android:importantForAccessibility="no"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

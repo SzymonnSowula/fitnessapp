@@ -23,7 +23,8 @@
             android:src="@drawable/ic_back"
             app:tint="#004A99"
             android:scaleType="fitCenter"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:contentDescription="Przycisk powrotu" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -95,6 +96,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/ic_brain"
                         app:tint="#7C3AED" />
                 </FrameLayout>
@@ -154,6 +156,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/ic_brain"
                         app:tint="#EA580C" />
                 </FrameLayout>
@@ -213,6 +216,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/ic_mood_happy"
                         app:tint="#059669" />
                 </FrameLayout>

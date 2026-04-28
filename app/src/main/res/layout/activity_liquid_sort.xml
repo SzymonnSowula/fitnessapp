@@ -101,6 +101,7 @@
  app:tint="@color/white"
  app:backgroundTint="#004A99"
  app:fabSize="normal"
- android:layout_gravity="bottom|end" />
+ app:layout_constraintBottom_toBottomOf="parent"
+ app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

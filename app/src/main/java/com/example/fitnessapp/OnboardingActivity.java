@@ -150,7 +150,8 @@ public class OnboardingActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull OnboardingViewHolder holder, int position) {
-            if (position == 0) {
+            final int pos = holder.getBindingAdapterPosition();
+            if (pos == 0) {
                 // Step 1 – imię
                 EditText etName = holder.itemView.findViewById(R.id.et_name);
                 etName.setText(userName);
@@ -166,7 +167,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 };
                 etName.addTextChangedListener(holder.nameWatcher);
 
-            } else if (position == 1) {
+            } else if (pos == 1) {
                 // Step 2 – pozycje
                 MaterialCardView cardQ1 = holder.itemView.findViewById(R.id.card_q1);
                 MaterialCardView cardQ2 = holder.itemView.findViewById(R.id.card_q2);
@@ -220,7 +221,7 @@ public class OnboardingActivity extends AppCompatActivity {
                     updateCheckboxCard(cardQ5, ivQ5, canExerciseSitting);
                 });
 
-            } else if (position == 2) {
+            } else if (pos == 2) {
                 // Step 3 – cel
                 RadioGroup rgGoal = holder.itemView.findViewById(R.id.rg_goal);
                 int goalId;
@@ -242,7 +243,7 @@ public class OnboardingActivity extends AppCompatActivity {
                     else if (checkedId == R.id.rb_goal_mixed) goal = "mieszana";
                 });
 
-            } else if (position == 3) {
+            } else if (pos == 3) {
                 // Step 4 – schorzenia
                 CheckBox cbNoConditions = holder.itemView.findViewById(R.id.cb_no_conditions);
                 ViewGroup container = holder.itemView.findViewById(R.id.conditions_container);

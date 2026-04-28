@@ -8,11 +8,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
+// Zauważ: usunięty import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private EditText etEmail, etPassword;
     private Button btnDoRegister;
     private TextView tvBackToLogin;
@@ -22,13 +21,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        mAuth = FirebaseAuth.getInstance();
-
+        // Inicjalizacja widoków
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         btnDoRegister = findViewById(R.id.btn_do_register);
         tvBackToLogin = findViewById(R.id.tv_back_to_login);
 
+        // 1. Logika przycisku REJESTRACJI (Tymczasowa / Symulacja)
         btnDoRegister.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -43,18 +42,14 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(this, "Rejestracja pomyślna!", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            String errorMessage = (task.getException() != null) ? task.getException().getMessage() : "Nieznany błąd";
-                            Toast.makeText(this, "Błąd: " + errorMessage, Toast.LENGTH_LONG).show();
-                        }
-                    });
+            // TYMCZASOWA REJESTRACJA LOKALNA:
+            // Udajemy, że rejestracja się powiodła. Gdy stworzymy lokalną bazę danych (Room),
+            // w tym miejscu dodamy kod zapisujący użytkownika do pamięci telefonu.
+            Toast.makeText(this, "Konto lokalne utworzone! Możesz się zalogować.", Toast.LENGTH_LONG).show();
+            finish(); // Zamyka ekran rejestracji i wraca do logowania
         });
 
+        // 2. Powrót do logowania
         tvBackToLogin.setOnClickListener(v -> {
             finish();
         });

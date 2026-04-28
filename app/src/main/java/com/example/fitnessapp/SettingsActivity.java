@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -142,10 +141,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initAccountSettings() {
-        // Wylogowanie
+        // Wylogowanie – lokalne czyszczenie danych
         Button btnLogout = findViewById(R.id.btn_logout_settings);
         btnLogout.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
             getSharedPreferences("FitnessAppPrefs", MODE_PRIVATE).edit().clear().apply();
             startActivity(new Intent(SettingsActivity.this, SplashActivity.class));
             finishAffinity();

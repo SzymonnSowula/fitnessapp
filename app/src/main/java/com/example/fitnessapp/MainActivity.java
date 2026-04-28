@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.List;
 import java.util.Random;
 
@@ -22,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private FirebaseAuth mAuth;
     private static final String PREFS_NAME = "FitnessAppPrefs";
     private static final String KEY_USER_NAME = "user_name";
 
@@ -42,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
             androidx.core.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO}, 1);
         }
-
-        mAuth = FirebaseAuth.getInstance();
 
         TextView tvWelcome = findViewById(R.id.tv_welcome_title);
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -264,12 +259,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, SplashActivity.class));
-            finish();
-        }
-    }
+
 }

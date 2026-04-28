@@ -1,9 +1,11 @@
 package com.example.fitnessapp;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.TextView;
+
+// Dodajemy prawidłowy import dla AlertDialog z AndroidX
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.button.MaterialButton;
@@ -18,13 +20,14 @@ public class ConfirmationHelper {
     public static void showExitConfirmation(Activity activity, ConfirmationCallback callback) {
         if (activity == null || activity.isFinishing()) return;
 
-        com.google.android.material.dialog.MaterialAlertDialogBuilder builder =
-            new com.google.android.material.dialog.MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
 
         View dialogView = activity.getLayoutInflater().inflate(R.layout.dialog_exit_confirmation, null);
         builder.setView(dialogView);
 
-        android.app.AlertDialog dialog = builder.create();
+        // POPRAWKA: Używamy teraz AlertDialog z androidx.appcompat.app
+        AlertDialog dialog = builder.create();
+
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }

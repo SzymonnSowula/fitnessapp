@@ -10,14 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class EditConditionsActivity extends AppCompatActivity {
@@ -82,41 +75,21 @@ public class EditConditionsActivity extends AppCompatActivity {
 
     private void saveConditions() {
         conditions.clear();
-        boolean noneChecked = true;
         for (int i = 0; i < container.getChildCount(); i++) {
             View child = container.getChildAt(i);
             if (child instanceof CheckBox) {
                 CheckBox cb = (CheckBox) child;
                 if (cb.isChecked() && cb.getId() != R.id.cb_no_conditions) {
                     conditions.add(cb.getText().toString());
-                    noneChecked = false;
                 }
             }
         }
 
-        // Save to SharedPreferences
+        // Save to SharedPreferences only
         SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", Context.MODE_PRIVATE);
         prefs.edit().putStringSet("conditions", conditions).apply();
 
-        // Sync with Firestore
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("conditions", new ArrayList<>(conditions));
-
-            FirebaseFirestore.getInstance().collection("users").document(user.getUid())
-                    .update(updates)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Zapisano zmiany", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Błąd zapisu w chmurze, ale dane zapisano lokalnie", Toast.LENGTH_LONG).show();
-                        finish();
-                    });
-        } else {
-            Toast.makeText(this, "Zapisano zmiany lokalnie", Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        Toast.makeText(this, "Zapisano zmiany", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

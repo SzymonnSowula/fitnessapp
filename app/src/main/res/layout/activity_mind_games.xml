@@ -23,7 +23,8 @@
         android:src="@drawable/ic_back"
         app:tint="#004A99"
         android:scaleType="fitCenter"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:contentDescription="Wstecz" />
 
     <ImageButton
         android:id="@+id/btn_help"
@@ -107,6 +108,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
+                        android:contentDescription="Ikona gry memory"
                         android:src="@drawable/ic_brain"
                         app:tint="#7C3AED" />
                 </FrameLayout>
@@ -167,6 +169,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
+                        android:contentDescription="Ikona gry kolory"
                         android:src="@drawable/ic_mood_happy"
                         app:tint="#059669" />
                 </FrameLayout>
@@ -227,6 +230,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
+                        android:contentDescription="Ikona gry płyny"
                         android:src="@drawable/ic_plan"
                         app:tint="#2563EB" />
                 </FrameLayout>
@@ -287,6 +291,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
+                        android:contentDescription="Ikona gry 2048"
                         android:src="@drawable/ic_onboarding_3"
                         app:tint="#EA580C" />
                 </FrameLayout>

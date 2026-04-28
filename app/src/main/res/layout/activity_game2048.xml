@@ -21,7 +21,8 @@
             android:src="@drawable/ic_back"
             app:tint="#004A99"
             android:scaleType="fitCenter"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:contentDescription="Wstecz" />
 
         <TextView
             android:layout_width="0dp"
@@ -177,6 +178,7 @@
         android:layout_gravity="end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_mic"
+        android:contentDescription="Włącz mikrofon"
         app:tint="@color/white"
         app:backgroundTint="#004A99"
         app:fabSize="normal" />

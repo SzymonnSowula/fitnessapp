@@ -93,6 +93,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
+                        android:contentDescription="Ikona ciała"
                         android:src="@drawable/ic_heart"
                         app:tint="#004A99" />
                 </FrameLayout>
@@ -152,6 +153,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
+                        android:contentDescription="Ikona umysłu"
                         android:src="@drawable/ic_brain"
                         app:tint="#7C3AED" />
                 </FrameLayout>

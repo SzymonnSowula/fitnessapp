@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -179,6 +180,7 @@ public class RecommendationListActivity extends AppCompatActivity {
             this.clickListener = clickListener;
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         void update(List<Exercise> newData) {
             int oldSize = data.size();
             data.clear();

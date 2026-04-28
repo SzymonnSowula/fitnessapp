@@ -34,6 +34,7 @@
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints="name"
                 android:background="@android:color/transparent"
                 android:gravity="center"
                 android:hint="@string/onboarding_name_hint"

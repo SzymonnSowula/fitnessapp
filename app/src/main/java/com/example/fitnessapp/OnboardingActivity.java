@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import com.google.android.material.card.MaterialCardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -107,18 +108,9 @@ public class OnboardingActivity extends AppCompatActivity {
         editor.putString("user_goal", goal);
         editor.putStringSet("conditions", conditions);
 
-        // Ustawienie domyślnych limitów intensywności i trudności na podstawie profilu
-        float maxIntensity = 2.0f;
-        float maxDifficulty = 2.0f;
-        if (!canStand || needsChair || !conditions.isEmpty()) {
-            maxIntensity = 1.0f;
-            maxDifficulty = 1.0f;
-        } else if (canStand && canExerciseFloor && canExerciseSitting && canExerciseBed && conditions.isEmpty()) {
-            maxIntensity = 3.0f;
-            maxDifficulty = 3.0f;
-        }
-        editor.putFloat("maxIntensity", maxIntensity);
-        editor.putFloat("maxDifficulty", maxDifficulty);
+        // Pełny zakres intensywności i trudności – ograniczenie według nastroju w rekomendatorze
+        editor.putFloat("maxIntensity", 3.0f);
+        editor.putFloat("maxDifficulty", 3.0f);
 
         editor.apply();
 
@@ -126,13 +118,15 @@ public class OnboardingActivity extends AppCompatActivity {
         finish();
     }
 
-    private void updateCheckboxCard(CardView card, ImageView indicator, boolean isChecked) {
+    private void updateCheckboxCard(MaterialCardView card, ImageView indicator, boolean isChecked) {
         if (isChecked) {
-            card.setCardBackgroundColor(0xFF057A32); // Success green
+            card.setCardBackgroundColor(0xFFF0FDF4); // Jasnozielone tło
+            card.setStrokeColor(0xFF057A32);         // Zielony border
             indicator.setImageResource(R.drawable.bg_indicator_active);
             card.setTag("checked");
         } else {
-            card.setCardBackgroundColor(0xFFDBEAFE); // Light blue
+            card.setCardBackgroundColor(0xFFFFFFFF); // Białe tło
+            card.setStrokeColor(0xFFDBEAFE);         // Jasnoniebieski border
             indicator.setImageResource(R.drawable.bg_indicator_inactive);
             card.setTag("unchecked");
         }
@@ -174,11 +168,11 @@ public class OnboardingActivity extends AppCompatActivity {
 
             } else if (position == 1) {
                 // Step 2 – pozycje
-                CardView cardQ1 = holder.itemView.findViewById(R.id.card_q1);
-                CardView cardQ2 = holder.itemView.findViewById(R.id.card_q2);
-                CardView cardQ3 = holder.itemView.findViewById(R.id.card_q3);
-                CardView cardQ4 = holder.itemView.findViewById(R.id.card_q4);
-                CardView cardQ5 = holder.itemView.findViewById(R.id.card_q5);
+                MaterialCardView cardQ1 = holder.itemView.findViewById(R.id.card_q1);
+                MaterialCardView cardQ2 = holder.itemView.findViewById(R.id.card_q2);
+                MaterialCardView cardQ3 = holder.itemView.findViewById(R.id.card_q3);
+                MaterialCardView cardQ4 = holder.itemView.findViewById(R.id.card_q4);
+                MaterialCardView cardQ5 = holder.itemView.findViewById(R.id.card_q5);
                 ImageView ivQ1 = holder.itemView.findViewById(R.id.iv_q1);
                 ImageView ivQ2 = holder.itemView.findViewById(R.id.iv_q2);
                 ImageView ivQ3 = holder.itemView.findViewById(R.id.iv_q3);

@@ -15,9 +15,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="W jakich pozycjach\nmożesz ćwiczyć?"
+            android:text="W JAKICH POZYCJACH\nMOŻESZ ĆWICZYĆ?"
             android:textColor="#004A99"
-            android:textSize="36sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:gravity="center"
             android:lineSpacingMultiplier="1.1"
@@ -28,21 +28,23 @@
             android:layout_height="wrap_content"
             android:text="Zaznacz wszystkie pozycje, w których czujesz się komfortowo"
             android:textColor="#64748B"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="20dp" />
 
         <!-- "Select All" Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_all_positions"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="20dp"
             android:text="Wszystkie pozycje"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#057A32"
+            android:textColor="#004A99"
+            app:strokeColor="#004A99"
+            app:strokeWidth="2dp"
             app:cornerRadius="16dp" />
 
         <!-- Position Cards Container -->
@@ -52,17 +54,18 @@
             android:orientation="vertical">
 
             <!-- Standing -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_q1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#DBEAFE"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeWidth="2dp"
+                app:strokeColor="#DBEAFE"
                 android:tag="unchecked">
 
                 <LinearLayout
@@ -70,14 +73,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:src="@drawable/ic_standing"
                         app:tint="#004A99"
-                        android:layout_marginEnd="20dp" />
+                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -89,8 +92,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Stojąc"
-                            android:textColor="#004A99"
-                            android:textSize="24sp"
+                            android:textColor="#1E293B"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -98,31 +101,32 @@
                             android:layout_height="wrap_content"
                             android:text="Bez podparcia lub z lekkim podparciem"
                             android:textColor="#64748B"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_q1"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Floor/Kneeling -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_q2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#DBEAFE"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeWidth="2dp"
+                app:strokeColor="#DBEAFE"
                 android:tag="unchecked">
 
                 <LinearLayout
@@ -130,14 +134,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:src="@drawable/ic_floor"
                         app:tint="#004A99"
-                        android:layout_marginEnd="20dp" />
+                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -149,8 +153,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Na podłodze"
-                            android:textColor="#004A99"
-                            android:textSize="24sp"
+                            android:textColor="#1E293B"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -158,31 +162,32 @@
                             android:layout_height="wrap_content"
                             android:text="Klęcząc lub leżąc na macie"
                             android:textColor="#64748B"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_q2"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Chair -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_q3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#DBEAFE"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeWidth="2dp"
+                app:strokeColor="#DBEAFE"
                 android:tag="unchecked">
 
                 <LinearLayout
@@ -190,14 +195,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:src="@drawable/ic_chair"
                         app:tint="#004A99"
-                        android:layout_marginEnd="20dp" />
+                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -209,8 +214,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Z krzesłem"
-                            android:textColor="#004A99"
-                            android:textSize="24sp"
+                            android:textColor="#1E293B"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -218,31 +223,32 @@
                             android:layout_height="wrap_content"
                             android:text="Ćwiczę z wykorzystaniem krzesła jako podpory"
                             android:textColor="#64748B"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_q3"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Bed -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_q4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#DBEAFE"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeWidth="2dp"
+                app:strokeColor="#DBEAFE"
                 android:tag="unchecked">
 
                 <LinearLayout
@@ -250,14 +256,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:src="@drawable/ic_bed"
                         app:tint="#004A99"
-                        android:layout_marginEnd="20dp" />
+                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -269,8 +275,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Leżąc w łóżku"
-                            android:textColor="#004A99"
-                            android:textSize="24sp"
+                            android:textColor="#1E293B"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -278,31 +284,32 @@
                             android:layout_height="wrap_content"
                             android:text="Delikatne ćwiczenia rehabilitacyjne"
                             android:textColor="#64748B"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_q4"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Sitting -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_q5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#DBEAFE"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeWidth="2dp"
+                app:strokeColor="#DBEAFE"
                 android:tag="unchecked">
 
                 <LinearLayout
@@ -310,14 +317,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:src="@drawable/ic_sitting"
                         app:tint="#004A99"
-                        android:layout_marginEnd="20dp" />
+                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -329,8 +336,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Siedząc"
-                            android:textColor="#004A99"
-                            android:textSize="24sp"
+                            android:textColor="#1E293B"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -338,18 +345,18 @@
                             android:layout_height="wrap_content"
                             android:text="Ćwiczenia w pozycji siedzącej"
                             android:textColor="#64748B"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_q5"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/bg_indicator_inactive"
                         android:scaleType="fitCenter" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 

@@ -65,8 +65,8 @@ public class SingleExerciseActivity extends AppCompatActivity {
             profile.lozko = prefs.getBoolean("can_exercise_bed", false);
             profile.mozeSiedzac = prefs.getBoolean("can_exercise_sitting", true);
             
-            profile.intensywnosc = (int) prefs.getFloat("maxIntensity", 2.0f);
-            profile.trudnosc = (int) prefs.getFloat("maxDifficulty", 2.0f);
+            profile.intensywnosc = (int) prefs.getFloat("maxIntensity", 3.0f);
+            profile.trudnosc = (int) prefs.getFloat("maxDifficulty", 3.0f);
             profile.cel = prefs.getString("user_goal", "mieszana");
             profile.schorzenia = userConditions;
 

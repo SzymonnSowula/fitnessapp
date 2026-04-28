@@ -29,16 +29,20 @@ public class ExerciseRecommender {
     public static List<Exercise> recommend(List<Exercise> allExercises, UserProfile profile, int limit) {
         List<ScoredExercise> candidates = new ArrayList<>();
 
-        int effectiveMaxIntensity = profile.intensywnosc;
-        int effectiveMaxDifficulty = profile.trudnosc;
+        // Nastrój decyduje o max intensywności i trudności:
+        // 1 = Źle (tylko łatwe), 2 = Średnio (do średnich), 3 = Dobrze (pełny zakres)
+        int effectiveMaxIntensity = profile.samopoczucie;
+        int effectiveMaxDifficulty = profile.samopoczucie;
 
-        if (profile.samopoczucie == 1) { 
-            effectiveMaxIntensity = 1;
-            effectiveMaxDifficulty = 1;
-        } else if (profile.samopoczucie == 3) {
-            // Zwiększamy limity, aby "odblokować" trudniejsze ćwiczenia
-            effectiveMaxIntensity = Math.min(3, profile.intensywnosc + 1);
-            effectiveMaxDifficulty = Math.min(3, profile.trudnosc + 1);
+        // Dla dobrego samopoczucia zawsze pełny zakres (3), ignorując profil.
+        // Dla gorszego samopoczucia hard-cap z profilu (jeśli ktoś ma ustawione niższe limity).
+        if (profile.samopoczucie != 3) {
+            if (profile.intensywnosc > 0 && profile.intensywnosc < effectiveMaxIntensity) {
+                effectiveMaxIntensity = profile.intensywnosc;
+            }
+            if (profile.trudnosc > 0 && profile.trudnosc < effectiveMaxDifficulty) {
+                effectiveMaxDifficulty = profile.trudnosc;
+            }
         }
 
         for (Exercise ex : allExercises) {
@@ -59,10 +63,14 @@ public class ExerciseRecommender {
             double schorzeniaScore = computeSchorzeniaScore(ex, profile.schorzenia);
             score += 4.0 * schorzeniaScore;
 
-            // BONUS ZA TRUDNOŚĆ (Tylko gdy użytkownik czuje się dobrze)
-            // To sprawi, że średnie/trudne ćwiczenia trafią na początek listy
+            // BONUS ZA TRUDNOŚĆ – preferujemy ćwiczenia pasujące do nastroju
+            // Dobrze   -> faworyzuj trudniejsze (+1.0)
+            // Średnio  -> faworyzuj średnie (+0.5)
+            // Źle      -> brak bonusu (łatwe są domyślnie, bo max=1)
             if (profile.samopoczucie == 3) {
                 score += 1.0 * normalize(ex.poziomTrudnosciNum, 1, 3);
+            } else if (profile.samopoczucie == 2) {
+                score += 0.5 * normalize(ex.poziomTrudnosciNum, 1, 3);
             }
 
             if (!profile.schorzenia.isEmpty() && schorzeniaScore < 0.1) {

@@ -65,8 +65,8 @@ public class RecommendationListActivity extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
         if (category == null) category = "mieszana";
 
-        float maxDifficulty = getIntent().getFloatExtra("maxDifficulty", 2.0f);
-        float maxIntensity = getIntent().getFloatExtra("maxIntensity", 2.0f);
+        float maxDifficulty = getIntent().getFloatExtra("maxDifficulty", 3.0f);
+        float maxIntensity = getIntent().getFloatExtra("maxIntensity", 3.0f);
 
         SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", Context.MODE_PRIVATE);
         Set<String> userConditions = prefs.getStringSet("conditions", new HashSet<>());

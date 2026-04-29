@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         NavbarHelper.initNavbar(this);
 
+        // Initialize voice manager
+        VoiceManager.getInstance().init(this);
+
         modelRunner = new ModelRunner();
         db = AppDatabase.getDatabase(this);
         try {

@@ -33,6 +33,9 @@ public class ChoiceActivity extends AppCompatActivity {
 
         NavbarHelper.initNavbar(this);
 
+        // Initialize voice manager
+        VoiceManager.getInstance().init(this);
+
         CardView cardBody = findViewById(R.id.card_body);
         CardView cardMind = findViewById(R.id.card_mind);
 

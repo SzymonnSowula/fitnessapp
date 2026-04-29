@@ -43,6 +43,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private VoiceNavigator voiceNavigator;
     private VideoView videoView;
     private int videoPosition = 0;
+    private boolean isProcessingAction = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,17 +99,22 @@ public class SingleExerciseActivity extends AppCompatActivity {
         }).start();
 
         btnNext.setOnClickListener(v -> {
+            if (isProcessingAction) return;
+            isProcessingAction = true;
             voiceNavigator.stopSpeaking();
             if (currentIndex < exercises.size() - 1) {
                 currentIndex++;
                 showExercise(currentIndex);
                 voiceNavigator.speak("Ćwiczenie " + (currentIndex + 1) + ": " + exercises.get(currentIndex).name);
+                new Handler().postDelayed(() -> isProcessingAction = false, 1000);
             } else {
                 finish();
             }
         });
 
         btnFinish.setOnClickListener(v -> {
+            if (isProcessingAction) return;
+            isProcessingAction = true;
             voiceNavigator.stopSpeaking();
             if (currentIndex == 0) {
                 finish();
@@ -116,17 +122,42 @@ public class SingleExerciseActivity extends AppCompatActivity {
                 currentIndex--;
                 showExercise(currentIndex);
                 voiceNavigator.speak("Poprzednie ćwiczenie: " + exercises.get(currentIndex).name);
+                new Handler().postDelayed(() -> isProcessingAction = false, 1000);
             }
         });
     }
 
     private void handleVoiceCommand(String command) {
-        if (command == null) return;
-        switch (command.toLowerCase(Locale.ROOT)) {
-            case "next": case "następne": if (currentIndex < exercises.size() - 1) btnNext.performClick(); break;
-            case "back": case "powrót": onBackPressed(); break;
-            case "read": case "czytaj": voiceNavigator.speak(tvDescription.getText().toString()); break;
-            case "stop": voiceNavigator.stopSpeaking(); break;
+        if (command == null || isProcessingAction) return;
+        
+        String cleanCommand = command.toLowerCase(Locale.ROOT);
+        switch (cleanCommand) {
+            case "next": 
+            case "następne": 
+            case "next_exercise":
+                btnNext.performClick();
+                break;
+                
+            case "previous": 
+            case "poprzednie": 
+            case "previous_exercise":
+                btnFinish.performClick();
+                break;
+                
+            case "back": 
+            case "powrót": 
+                onBackPressed(); 
+                break;
+                
+            case "read": 
+            case "czytaj": 
+            case "read_description":
+                voiceNavigator.speak(tvDescription.getText().toString()); 
+                break;
+
+            case "stop": 
+                voiceNavigator.stopSpeaking(); 
+                break;
         }
     }
 

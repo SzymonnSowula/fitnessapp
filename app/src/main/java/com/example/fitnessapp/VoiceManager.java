@@ -89,8 +89,12 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     private VoiceManager() {}
 
     public void init(Context context) {
-        if (isInitialized) return;
+        if (isInitialized) {
+            Log.d(TAG, "VoiceManager already initialized");
+            return;
+        }
         this.appContext = context.getApplicationContext();
+        Log.d(TAG, "VoiceManager initializing with context: " + appContext.getPackageName());
         this.tts = new TextToSpeech(appContext, this);
 
         // Initialize tone generator for listening feedback
@@ -369,6 +373,10 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 boolean needsNew = (speechRecognizer == null);
 
                 if (needsNew) {
+                    if (appContext == null) {
+                        Log.e(TAG, "Cannot start listening: appContext is null. Call init() first.");
+                        return;
+                    }
                     if (!SpeechRecognizer.isRecognitionAvailable(appContext)) {
                         Log.e(TAG, "Speech recognition not available on this device");
                         speak("Rozpoznawanie mowy niedostępne na tym urządzeniu.");

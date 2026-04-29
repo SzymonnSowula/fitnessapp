@@ -46,7 +46,7 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-    implementation libs.onnxruntime
+    implementation libs.onnxruntime.android
 
     // Room
     implementation libs.room.runtime

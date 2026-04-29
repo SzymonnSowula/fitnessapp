@@ -93,7 +93,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                     finish();
                 } else {
                     showExercise(currentIndex);
-                    voiceNavigator.speakDelayed("Przygotowałam plan. Ćwiczenie 1: " + exercises.get(0).name, 500);
+                    voiceNavigator.speakDelayed("Przygotowałam plan treningowy. Jeśli potrzebujesz pomocy, powiedz: POMOC. Ćwiczenie 1: " + exercises.get(0).name, 500);
                 }
             });
         }).start();
@@ -161,6 +161,11 @@ public class SingleExerciseActivity extends AppCompatActivity {
 
             case "stop": 
                 voiceNavigator.stopSpeaking(); 
+                break;
+
+            case "help":
+            case "pomoc":
+                voiceNavigator.speak(VoiceCommands.getExerciseHelpText());
                 break;
         }
     }

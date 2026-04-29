@@ -30,13 +30,13 @@ public class MemoryGameActivity extends AppCompatActivity {
 
     private final int[] cardImages = {
             R.drawable.ic_heart,
-            R.drawable.ic_brain,
             R.drawable.ic_home,
-            R.drawable.ic_profile,
-            R.drawable.ic_settings,
-            R.drawable.ic_onboarding_1,
-            R.drawable.ic_onboarding_2,
-            R.drawable.ic_onboarding_3
+            R.drawable.ic_dumbbell,
+            R.drawable.ic_brain,
+            R.drawable.ic_sitting,
+            R.drawable.ic_standing,
+            R.drawable.ic_chair,
+            R.drawable.ic_bed
     };
 
     private int currentColumns, currentRows;
@@ -393,7 +393,7 @@ public class MemoryGameActivity extends AppCompatActivity {
                         cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
                         cardView.setStrokeWidth(0);
                     } else {
-                        ivCard.setImageResource(R.drawable.ic_onboarding_3);
+                        ivCard.setImageResource(R.drawable.ic_help);
                         ivCard.setColorFilter(0xFF004A99);
                         cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
                         cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(0xFF004A99));

@@ -155,6 +155,10 @@ public class SingleExerciseActivity extends AppCompatActivity {
                 voiceNavigator.speak(tvDescription.getText().toString()); 
                 break;
 
+            case "finish":
+                onBackPressed();
+                break;
+
             case "stop": 
                 voiceNavigator.stopSpeaking(); 
                 break;

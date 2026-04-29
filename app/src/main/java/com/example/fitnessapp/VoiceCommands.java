@@ -83,10 +83,9 @@ public class VoiceCommands {
         NAVIGATION_COMMANDS.put("wyjdz", "exit");
         NAVIGATION_COMMANDS.put("wyjscie", "exit");
         NAVIGATION_COMMANDS.put("exit", "exit");
-        NAVIGATION_COMMANDS.put("zamknij", "exit");
-        NAVIGATION_COMMANDS.put("zakończ", "exit");
-        NAVIGATION_COMMANDS.put("zakoncz", "exit");
-        NAVIGATION_COMMANDS.put("koniec", "exit");
+        NAVIGATION_COMMANDS.put("zamknij aplikację", "exit");
+        NAVIGATION_COMMANDS.put("zamknij aplikacje", "exit");
+        NAVIGATION_COMMANDS.put("wyłącz aplikację", "exit");
         NAVIGATION_COMMANDS.put("wyloguj", "exit");
         NAVIGATION_COMMANDS.put("wyloguj się", "exit");
         NAVIGATION_COMMANDS.put("wyloguj sie", "exit");
@@ -190,6 +189,10 @@ public class VoiceCommands {
         EXERCISE_COMMANDS.put("koniec cwiczenia", "finish");
         EXERCISE_COMMANDS.put("zakończ ćwiczenie", "finish");
         EXERCISE_COMMANDS.put("zakoncz cwiczenie", "finish");
+        EXERCISE_COMMANDS.put("zamknij ćwiczenie", "finish");
+        EXERCISE_COMMANDS.put("zamknij cwiczenie", "finish");
+        EXERCISE_COMMANDS.put("wyjdź z ćwiczeń", "finish");
+        EXERCISE_COMMANDS.put("wyjdz z cwiczen", "finish");
 
         EXERCISE_COMMANDS.put("czytaj opis", "read_description");
         EXERCISE_COMMANDS.put("czytaj opis ćwiczenia", "read_description");

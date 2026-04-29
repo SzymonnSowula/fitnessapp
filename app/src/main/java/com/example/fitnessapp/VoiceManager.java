@@ -405,6 +405,11 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
                 intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
 
+                // Zwiększenie czułości i czasu oczekiwania na mowę (przydatne przy większej odległości)
+                intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 3000);
+                intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 2000);
+                intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 2000);
+
                 speechRecognizer.startListening(intent);
                 Log.d(TAG, "Recognizer started, waiting for speech...");
             } catch (Exception e) {

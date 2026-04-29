@@ -11,6 +11,7 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     private VoiceCallback callback;
     private android.os.Handler pendingHandler;
     private Runnable pendingSpeech;
+    private boolean isDialogShowing = false;
 
     public interface VoiceCallback {
         void onVoiceCommand(String command);
@@ -114,14 +115,18 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
                 activity.onBackPressed();
                 break;
             case "exit":
+                if (isDialogShowing) return;
+                isDialogShowing = true;
                 speak("Czy na pewno chcesz wyjść z aplikacji?");
                 ConfirmationHelper.showExitConfirmation(activity, new ConfirmationHelper.ConfirmationCallback() {
                     @Override
                     public void onConfirm() {
+                        isDialogShowing = false;
                         activity.finishAffinity();
                     }
                     @Override
                     public void onCancel() {
+                        isDialogShowing = false;
                         speak("Zostajesz w aplikacji.");
                     }
                 });

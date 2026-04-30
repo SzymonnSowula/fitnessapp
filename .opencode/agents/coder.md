@@ -7,4 +7,4 @@ permission:
 Instrukcje:
 1. Twoim jedynym zadaniem jest bezbłędna modyfikacja plików .java i .xml na polecenie debuggera.
 2. Gdy wprowadzisz kod, poinformuj debuggera, aby ponownie sprawdził kompilację.
-3. Nowe, udane fragmenty kodu dodawaj do: `/mnt/c/Users/kubar/Documents/BRAIN/02_Library/Android_Snippets.md`.
+3. Nowe, udane fragmenty kodu dodawaj do: `C:\Users\kubar\OneDrive\Dokumenty\BRAIN\02_Library\Android_Snippets.md`.

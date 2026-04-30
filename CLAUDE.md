@@ -286,3 +286,46 @@ if (voiceNavigator != null) {
 3. Add voice commands to `VoiceCommands.java` if needed
 4. Call `speak()` to read content, `speakDelayed()` for delayed announcements
 5. Cleanup in `onDestroy()`
+
+## OpenCode Agents (`.opencode/agents/`)
+
+Projekt korzysta z subagentów OpenCode zdefiniowanych w folderze `.opencode/agents/`. Agenci dokumentują pracę w vault Obsidian BRAIN (`C:\Users\kubar\OneDrive\Dokumenty\BRAIN`), który służy jako "drugi mózg" / baza wiedzy projektu.
+
+| Agent | Plik | Rola | Uprawnienia |
+|-------|------|------|-------------|
+| `coder` | `coder.md` | Wprowadza fizyczne zmiany w kodzie Java/XML na polecenie debuggera | read, edit |
+| `debugger` | `debugger.md` | Autonomiczny QA — kompiluje, lintuje, znajduje błędy i deleguje naprawę do codera | read, bash |
+| `git-pusher` | `git-pusher.md` | Zarządza commitem i pushem po sukcesie kompilacji | read, bash |
+| `librarian` | `librarian.md` | **Agent Bibliotekarz** — dokumentuje pracę w vault BRAIN. Tworzy notatki Markdown z YAML frontmatter w folderach: Sessions, Decisions, Features, Bugs, Knowledge. Aktualizuje Project_Log.md i indeksy. | read, edit, bash |
+
+### Vault BRAIN — struktura
+```
+C:\Users\kubar\OneDrive\Dokumenty\BRAIN
+├── 01_Projects/
+│   └── FitnessApp/
+│       ├── PLAN.md
+│       ├── Project_Log.md
+│       ├── Sessions/          # Datowane sesje pracy
+│       ├── Decisions/         # ADR (Architecture Decision Records)
+│       ├── Features/          # Dokumentacja funkcjonalności
+│       ├── Bugs/              # Błędy i rozwiązania
+│       └── Knowledge/         # Wiedza specyficzna dla projektu
+├── 02_Library/                # Ogólna wiedza techniczna
+├── 03_Standards/              # Standardy i konwencje
+└── 04_Archive/                # Przestarzałe notatki
+```
+
+### Użycie agenta librarian
+Gdy podejmowana jest istotna decyzja architektoniczna, naprawiany błąd lub dodawana funkcjonalność, główny agent (lub inny subagent) powinien delegować dokumentację do `librarian`, podając:
+- Typ notatki (session / decision / feature / bug / knowledge)
+- Tytuł i treść
+- Tagi (opcjonalnie)
+
+Agent librarian sam dobiera odpowiedni folder w BRAIN, generuje frontmatter i aktualizuje indeksy.
+
+### Pipeline współpracy agentów
+```
+debugger → (znajduje błąd) → coder → (naprawia) → debugger → (BUILD SUCCESSFUL) → git-pusher
+   ↓                                                                        ↓
+librarian (loguje bug)                                              librarian (loguje zmiany)
+```

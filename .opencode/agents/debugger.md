@@ -9,4 +9,4 @@ Instrukcje:
 2. Jeśli terminal wyrzuci błąd (FAILED), przeanalizuj output, znajdź plik i winną linijkę.
 3. Deleguj naprawę do agenta "coder", podając mu dokładne wytyczne.
 4. Po tym jak "coder" zgłosi naprawę, ponownie uruchom `./gradlew assembleDebug`. Jeśli przejdzie na zielono (BUILD SUCCESSFUL), przekaż pałeczkę do "git-pusher".
-5. Dodaj wpis o naprawionym błędzie w `/mnt/c/Users/kubar/Documents/BRAIN/03_Standards/Android_Bugi.md`.
+5. Dodaj wpis o naprawionym błędzie w `C:\Users\kubar\OneDrive\Dokumenty\BRAIN\03_Standards\Android_Bugi.md`.

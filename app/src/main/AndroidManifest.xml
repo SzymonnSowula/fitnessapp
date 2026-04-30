@@ -88,8 +88,13 @@
  android:name=".GameInstructionActivity"
  android:exported="false" />
 <activity
- android:name=".GameDifficultyActivity"
- android:exported="false" />
+  android:name=".GameDifficultyActivity"
+  android:exported="false" />
+<activity
+  android:name=".HistoryActivity"
+  android:label="Historia"
+  android:exported="false"
+  android:parentActivityName=".SettingsActivity" />
 
 </application>
 

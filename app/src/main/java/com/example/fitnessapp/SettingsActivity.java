@@ -124,6 +124,10 @@ public class SettingsActivity extends AppCompatActivity {
         findViewById(R.id.tv_edit_conditions).setOnClickListener(v -> {
             startActivity(new Intent(SettingsActivity.this, EditConditionsActivity.class));
         });
+
+        findViewById(R.id.tv_history).setOnClickListener(v -> {
+            startActivity(new Intent(SettingsActivity.this, HistoryActivity.class));
+        });
     }
 
     private void handleVoiceCommand(String command) {

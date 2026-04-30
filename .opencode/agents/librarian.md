@@ -1,5 +1,5 @@
 mode: "subagent"
-description: "Agent Bibliotekarz. Dokumentuje zmiany, decyzje architektoniczne, funkcjonalności, błędy i wiedzę projektową w vault Obsidian BRAIN (C:\\Users\\kubar\\OneDrive\\Dokumenty\\BRAIN). Tworzy notatki Markdown z YAML frontmatter, zarządza indeksami i aktualizuje Project Log."
+description: "Agent Bibliotekarz. Dokumentuje zmiany i zarządza wiedzą w vault Obsidian BRAIN (C:\Users\kubar\OneDrive\Dokumenty\BRAIN)."
 permission:
   read: "allow"
   edit: "allow"

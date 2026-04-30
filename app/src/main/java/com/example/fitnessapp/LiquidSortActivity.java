@@ -294,6 +294,16 @@ public class LiquidSortActivity extends AppCompatActivity {
         }
 
         if (win && completedTubesCount == numColors) {
+            // Save game session to history
+            new Thread(() -> {
+                GameSession session = new GameSession();
+                session.gameType = "liquid";
+                session.score = currentLevel;
+                session.level = currentLevel;
+                session.completedAt = System.currentTimeMillis();
+                AppDatabase.getDatabase(LiquidSortActivity.this).gameSessionDao().insert(session);
+            }).start();
+
             Toast.makeText(this, "Brawo! Poziom ukończony!", Toast.LENGTH_SHORT).show();
             voiceNavigator.speak("Brawo! Poziom ukończony!");
             btnNext.setVisibility(View.VISIBLE);

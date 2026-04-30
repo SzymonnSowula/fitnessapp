@@ -179,6 +179,16 @@ public class MemoryGameActivity extends AppCompatActivity {
     }
 
     private void showWinDialog() {
+        // Save game session to history
+        new Thread(() -> {
+            GameSession session = new GameSession();
+            session.gameType = "memory";
+            session.score = score;
+            session.level = currentRows * currentColumns; // grid size
+            session.completedAt = System.currentTimeMillis();
+            AppDatabase.getDatabase(MemoryGameActivity.this).gameSessionDao().insert(session);
+        }).start();
+
         voiceNavigator.speak("Brawo! Ukończyłeś grę w " + moves + " ruchach.");
 
         com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(this);

@@ -44,6 +44,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private VideoView videoView;
     private int videoPosition = 0;
     private boolean isProcessingAction = false;
+    private long exerciseStartTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                     finish();
                 } else {
                     showExercise(currentIndex);
+                    exerciseStartTime = System.currentTimeMillis();
                     voiceNavigator.speakDelayed("Przygotowałam plan treningowy. Jeśli potrzebujesz pomocy, powiedz: POMOC. Ćwiczenie 1: " + exercises.get(0).name, 500);
                 }
             });
@@ -102,6 +104,10 @@ public class SingleExerciseActivity extends AppCompatActivity {
             if (isProcessingAction) return;
             isProcessingAction = true;
             voiceNavigator.stopSpeaking();
+
+            // Save current exercise to history
+            saveCurrentExercise();
+
             if (currentIndex < exercises.size() - 1) {
                 currentIndex++;
                 showExercise(currentIndex);
@@ -117,6 +123,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
             isProcessingAction = true;
             voiceNavigator.stopSpeaking();
             if (currentIndex == 0) {
+                saveCurrentExercise();
                 finish();
             } else {
                 currentIndex--;
@@ -186,6 +193,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     }
 
     private void showExercise(int index) {
+        exerciseStartTime = System.currentTimeMillis();
         Exercise e = exercises.get(index);
         tvProgress.setText("ĆWICZENIE " + (index + 1) + " Z " + exercises.size());
         tvPercentage.setText(((index + 1) * 100 / exercises.size()) + "%");
@@ -291,6 +299,26 @@ public class SingleExerciseActivity extends AppCompatActivity {
             videoPosition = videoView.getCurrentPosition();
             videoView.pause();
         }
+    }
+
+    private void saveCurrentExercise() {
+        if (exercises == null || currentIndex >= exercises.size()) return;
+        Exercise e = exercises.get(currentIndex);
+        long duration = (System.currentTimeMillis() - exerciseStartTime) / 1000;
+        int mood = getIntent().getIntExtra(EXTRA_MOOD_TYPE, MOOD_SAD);
+
+        new Thread(() -> {
+            ExerciseSession session = new ExerciseSession();
+            session.exerciseId = e.id;
+            session.exerciseName = e.name;
+            session.category = e.category;
+            session.moodType = mood;
+            session.durationSeconds = (int) duration;
+            session.completedAt = System.currentTimeMillis();
+            AppDatabase.getDatabase(SingleExerciseActivity.this).exerciseSessionDao().insert(session);
+        }).start();
+
+        voiceNavigator.speak("Ćwiczenie zapisane w historii");
     }
 
     @Override

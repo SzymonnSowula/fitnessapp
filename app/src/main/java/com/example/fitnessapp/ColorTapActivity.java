@@ -203,6 +203,16 @@ private void flashColor(int index) {
         }
 
         if (userSequence.size() == colorSequence.size()) {
+            // Save game session to history
+            new Thread(() -> {
+                GameSession session = new GameSession();
+                session.gameType = "colors";
+                session.score = score;
+                session.level = level;
+                session.completedAt = System.currentTimeMillis();
+                AppDatabase.getDatabase(ColorTapActivity.this).gameSessionDao().insert(session);
+            }).start();
+
             isShowingSequence = true;
             score += colorSequence.size() * 50;
             level++;

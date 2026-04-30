@@ -25,5 +25,7 @@ public class HistoryActivity extends AppCompatActivity {
                     if (position == 0) tab.setText("ĆWICZENIA");
                     else tab.setText("GRY UMYSŁOWE");
                 }).attach();
+
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 }

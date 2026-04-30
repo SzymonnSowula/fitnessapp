@@ -31,4 +31,16 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WSTECZ"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#004A99"
+        android:padding="16dp"
+        android:layout_margin="16dp" />
+
 </LinearLayout>

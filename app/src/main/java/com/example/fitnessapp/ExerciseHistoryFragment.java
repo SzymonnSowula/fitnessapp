@@ -48,6 +48,6 @@ public class ExerciseHistoryFragment extends Fragment {
                     adapter.updateData(sessions);
                 }
             });
-        }).start();
+        });
     }
 }

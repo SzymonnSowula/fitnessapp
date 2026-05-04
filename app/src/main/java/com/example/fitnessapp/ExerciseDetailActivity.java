@@ -104,7 +104,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
                 voiceNavigator.speakDelayed("Szczegóły ćwiczenia: " + currentExercise.name, 500);
             });
-        }).start();
+        });
     }
 
     private void handleVoiceCommand(String command) {

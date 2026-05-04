@@ -101,7 +101,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                     voiceNavigator.speakDelayed("Przygotowałam plan treningowy. Jeśli potrzebujesz pomocy, powiedz: POMOC. Ćwiczenie 1: " + exercises.get(0).name, 500);
                 }
             });
-        }).start();
+        });
 
         btnNext.setOnClickListener(v -> {
             if (isProcessingAction) return;
@@ -262,7 +262,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                     videoView.setVisibility(View.GONE);
                 });
             }
-        }).start();
+        });
     }
 
     private File copyAssetToCache(Context context, String assetName, String outFileName) throws IOException {
@@ -319,7 +319,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
             session.durationSeconds = (int) duration;
             session.completedAt = System.currentTimeMillis();
             AppDatabase.getDatabase(SingleExerciseActivity.this).exerciseSessionDao().insert(session);
-        }).start();
+        });
 
         voiceNavigator.speak("Ćwiczenie zapisane w historii");
     }

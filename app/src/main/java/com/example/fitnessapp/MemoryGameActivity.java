@@ -188,10 +188,10 @@ public class MemoryGameActivity extends AppCompatActivity {
             GameSession session = new GameSession();
             session.gameType = "memory";
             session.score = score;
-            session.level = currentRows * currentColumns; // grid size
+            session.level = currentRows * currentColumns;
             session.completedAt = System.currentTimeMillis();
             AppDatabase.getDatabase(MemoryGameActivity.this).gameSessionDao().insert(session);
-        }).start();
+        });
 
         voiceNavigator.speak("Brawo! Ukończyłeś grę w " + moves + " ruchach.");
 

@@ -111,7 +111,7 @@ public class RecommendationListActivity extends AppCompatActivity {
                     voiceNavigator.speakDelayed("Przygotowałam 5 najlepszych ćwiczeń. Możesz powiedzieć 'czytaj', aby poznać listę.", 500);
                 }
             });
-        }).start();
+        });
     }
 
     private void handleVoiceCommand(String command) {

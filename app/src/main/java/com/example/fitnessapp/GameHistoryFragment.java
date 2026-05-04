@@ -48,6 +48,6 @@ public class GameHistoryFragment extends Fragment {
                     adapter.updateData(sessions);
                 }
             });
-        }).start();
+        });
     }
 }

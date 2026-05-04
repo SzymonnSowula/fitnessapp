@@ -16,6 +16,8 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fitnessapp.utils.AppExecutors;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -65,7 +67,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", Context.MODE_PRIVATE);
         Set<String> userConditions = prefs.getStringSet("conditions", new HashSet<>());
 
-        new Thread(() -> {
+        AppExecutors.getInstance().diskIO().execute(() -> {
             List<Exercise> allExercises = db.exerciseDao().getAll();
             ExerciseRecommender.UserProfile profile = new ExerciseRecommender.UserProfile();
             
@@ -238,7 +240,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     }
 
     private void setupVideoView() {
-        new Thread(() -> {
+        AppExecutors.getInstance().diskIO().execute(() -> {
             try {
                 File videoFile = copyAssetToCache(this, "exercise_placeholder.mp4", "exercise_placeholder.mp4");
                 runOnUiThread(() -> {
@@ -308,7 +310,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
         long duration = (System.currentTimeMillis() - exerciseStartTime) / 1000;
         int mood = getIntent().getIntExtra(EXTRA_MOOD_TYPE, MOOD_SAD);
 
-        new Thread(() -> {
+        AppExecutors.getInstance().diskIO().execute(() -> {
             ExerciseSession session = new ExerciseSession();
             session.exerciseId = e.id;
             session.exerciseName = e.name;

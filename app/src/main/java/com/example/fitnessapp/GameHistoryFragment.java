@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fitnessapp.utils.AppExecutors;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class GameHistoryFragment extends Fragment {
     }
 
     private void loadData() {
-        new Thread(() -> {
+        AppExecutors.getInstance().diskIO().execute(() -> {
             List<GameSession> sessions = AppDatabase.getDatabase(requireContext()).gameSessionDao().getAllDesc();
             requireActivity().runOnUiThread(() -> {
                 if (sessions.isEmpty()) {

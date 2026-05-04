@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.card.MaterialCardView;
 
+import com.example.fitnessapp.utils.AppExecutors;
 import com.example.fitnessapp.utils.ScreenUtils;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -183,7 +184,7 @@ public class MemoryGameActivity extends AppCompatActivity {
 
     private void showWinDialog() {
         // Save game session to history
-        new Thread(() -> {
+        AppExecutors.getInstance().diskIO().execute(() -> {
             GameSession session = new GameSession();
             session.gameType = "memory";
             session.score = score;

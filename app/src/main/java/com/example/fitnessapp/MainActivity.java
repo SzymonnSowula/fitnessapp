@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fitnessapp.utils.AppExecutors;
+
 import java.util.List;
 import java.util.Random;
 
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         db = AppDatabase.getDatabase(this);
         try {
             modelRunner.init(this);
-            new Thread(this::loadExerciseDatabase).start();
+            AppExecutors.getInstance().diskIO().execute(this::loadExerciseDatabase);
         } catch (Exception e) {
             Log.e(TAG, "Błąd inicjalizacji", e);
             Toast.makeText(this, "Błąd ładowania systemu rekomendacji", Toast.LENGTH_SHORT).show();

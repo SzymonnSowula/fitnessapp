@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fitnessapp.utils.AppExecutors;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -79,7 +81,7 @@ public class RecommendationListActivity extends AppCompatActivity {
         recyclerView.setVisibility(View.GONE);
         tvEmpty.setVisibility(View.GONE);
 
-        new Thread(() -> {
+        AppExecutors.getInstance().diskIO().execute(() -> {
             List<Exercise> allExercises = db.exerciseDao().getAll();
             
             ExerciseRecommender.UserProfile profile = new ExerciseRecommender.UserProfile();

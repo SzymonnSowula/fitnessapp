@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.fitnessapp.utils.AppExecutors;
 import com.example.fitnessapp.utils.ScreenUtils;
 
 
@@ -206,7 +207,7 @@ private void flashColor(int index) {
 
         if (userSequence.size() == colorSequence.size()) {
             // Save game session to history
-            new Thread(() -> {
+            AppExecutors.getInstance().diskIO().execute(() -> {
                 GameSession session = new GameSession();
                 session.gameType = "colors";
                 session.score = score;

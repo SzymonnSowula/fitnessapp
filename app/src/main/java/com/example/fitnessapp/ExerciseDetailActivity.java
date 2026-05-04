@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fitnessapp.utils.AppExecutors;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,7 +62,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         TextView tvFlags = findViewById(R.id.tv_flags);
         TextView tvImpacts = findViewById(R.id.tv_impacts);
 
-        new Thread(() -> {
+        AppExecutors.getInstance().diskIO().execute(() -> {
             currentExercise = db.exerciseDao().getById(id);
             runOnUiThread(() -> {
                 if (currentExercise == null) {

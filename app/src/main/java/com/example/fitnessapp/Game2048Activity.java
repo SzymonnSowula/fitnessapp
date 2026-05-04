@@ -65,6 +65,24 @@ public class Game2048Activity extends AppCompatActivity {
         findViewById(R.id.btn_down).setOnClickListener(v -> moveDown());
 
         initCells();
+
+        android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float density = metrics.density;
+        int screenWidthPx = metrics.widthPixels;
+        int boardMarginPx = (int) (32 * density); // 16dp each side
+        int availableWidth = screenWidthPx - boardMarginPx;
+        int cellSize = availableWidth / 4;
+        int cellTextSizeSp = (int) (cellSize / density * 0.45f); // text fills ~45% of cell
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                android.widget.TableRow.LayoutParams params = new android.widget.TableRow.LayoutParams(cellSize, cellSize);
+                cells[i][j].setLayoutParams(params);
+                cells[i][j].setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, Math.max(18, cellTextSizeSp));
+            }
+        }
+
         restartGame();
 
         voiceNavigator.speakDelayed("Gra 2048. Twój cel to " + targetScore + ". Przesuwaj kafelki aby łączyć te same liczby.", 500);
@@ -245,6 +263,27 @@ public class Game2048Activity extends AppCompatActivity {
         super.onDestroy();
         if (voiceNavigator != null) {
             voiceNavigator.cleanup();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Recalculate cell sizes
+        android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float density = metrics.density;
+        int screenWidthPx = metrics.widthPixels;
+        int boardMarginPx = (int) (32 * density);
+        int availableWidth = screenWidthPx - boardMarginPx;
+        int cellSize = availableWidth / 4;
+        int cellTextSizeSp = (int) (cellSize / density * 0.45f);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                android.widget.TableRow.LayoutParams params = new android.widget.TableRow.LayoutParams(cellSize, cellSize);
+                cells[i][j].setLayoutParams(params);
+                cells[i][j].setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, Math.max(18, cellTextSizeSp));
+            }
         }
     }
 

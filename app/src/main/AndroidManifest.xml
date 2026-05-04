@@ -58,7 +58,8 @@
             android:exported="false" />
         <activity
             android:name=".Game2048Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".EditConditionsActivity"
             android:exported="false" />

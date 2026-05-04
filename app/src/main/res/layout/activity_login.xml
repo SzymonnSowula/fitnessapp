@@ -10,7 +10,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="48dp"
-        android:contentDescription="Logo aplikacji"
+        android:contentDescription="@string/app_logo_desc"
         android:src="@drawable/ic_assistant_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

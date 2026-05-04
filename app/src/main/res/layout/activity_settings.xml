@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ustawienia"
+                android:text="@string/settings_title"
                 android:textColor="#004A99"
                 android:textSize="44sp"
                 android:textStyle="bold" />
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Ustawienia głosowe"
+                android:text="@string/voice_settings_title"
                 android:textColor="#64748B"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -71,7 +71,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Obsługa głosowa"
+                                android:text="@string/voice_control"
                                 android:textColor="#0F172A"
                                 android:textSize="26sp"
                                 android:textStyle="bold" />
@@ -80,7 +80,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:text="Sterowanie i czytanie tekstu"
+                                android:text="@string/voice_control_subtitle"
                                 android:textColor="#64748B"
                                 android:textSize="20sp" />
                         </LinearLayout>
@@ -109,7 +109,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Szybkość mowy"
+                            android:text="@string/speech_rate"
                             android:textColor="#0F172A"
                             android:textSize="26sp"
                             android:textStyle="bold" />
@@ -118,7 +118,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Wolniej - szybciej"
+                            android:text="@string/speech_rate_subtitle"
                             android:textColor="#64748B"
                             android:textSize="20sp" />
 
@@ -139,7 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Konto"
+                android:text="@string/account_title"
                 android:textColor="#64748B"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -164,7 +164,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:padding="24dp"
-                        android:text="Zmień imię"
+                        android:text="@string/change_name"
                         android:textColor="#0F172A"
                         android:textSize="26sp"
                         android:textStyle="bold" />
@@ -183,7 +183,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:padding="24dp"
-                        android:text="Moje schorzenia"
+                        android:text="@string/my_conditions"
                         android:textColor="#0F172A"
                         android:textSize="26sp"
                         android:textStyle="bold" />
@@ -202,7 +202,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:padding="24dp"
-                        android:text="Twoja historia"
+                        android:text="@string/your_history"
                         android:textColor="#0F172A"
                         android:textSize="26sp"
                         android:textStyle="bold" />
@@ -216,7 +216,7 @@
                 android:layout_height="72dp"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/bg_button_primary"
-                android:text="Wyloguj się"
+                android:text="@string/logout"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="26sp"

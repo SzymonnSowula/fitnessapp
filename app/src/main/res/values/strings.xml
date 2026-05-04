@@ -186,4 +186,28 @@
     <string name="contraindications_label">PRZECIWWSKAZANIA</string>
     <string name="next_exercise_btn">NASTĘPNE ĆWICZENIE</string>
     <string name="finish_btn">Zakończ</string>
+
+    <!-- Login / Register -->
+    <string name="app_logo_desc">Logo aplikacji</string>
+    <string name="have_account_login">Masz już konto? Zaloguj się</string>
+
+    <!-- Game Instruction -->
+    <string name="back_button_desc">Przycisk powrotu</string>
+    <string name="help_button_desc">Przycisk pomocy</string>
+    <string name="game_icon_desc">Ikona gry</string>
+    <string name="instruction_title">Instrukcja</string>
+    <string name="start_game_btn">ZACZNIJ GRĘ</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Ustawienia</string>
+    <string name="voice_settings_title">Ustawienia głosowe</string>
+    <string name="voice_control">Obsługa głosowa</string>
+    <string name="voice_control_subtitle">Sterowanie i czytanie tekstu</string>
+    <string name="speech_rate">Szybkość mowy</string>
+    <string name="speech_rate_subtitle">Wolniej - szybciej</string>
+    <string name="account_title">Konto</string>
+    <string name="change_name">Zmień imię</string>
+    <string name="my_conditions">Moje schorzenia</string>
+    <string name="your_history">Twoja historia</string>
+    <string name="logout">Wyloguj się</string>
 </resources>

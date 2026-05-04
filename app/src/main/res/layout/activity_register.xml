@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Masz już konto? Zaloguj się"
+        android:text="@string/have_account_login"
         android:textColor="@color/blue_primary"
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"

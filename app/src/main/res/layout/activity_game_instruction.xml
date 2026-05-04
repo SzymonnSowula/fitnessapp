@@ -15,7 +15,7 @@
         app:tint="#004A99"
         android:scaleType="fitCenter"
         android:padding="12dp"
-        android:contentDescription="Przycisk powrotu"
+        android:contentDescription="@string/back_button_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
         app:tint="#004A99"
         android:scaleType="fitCenter"
         android:padding="8dp"
-        android:contentDescription="Przycisk pomocy"
+        android:contentDescription="@string/help_button_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +40,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginTop="32dp"
-        android:contentDescription="Ikona gry"
+        android:contentDescription="@string/game_icon_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_back" />
@@ -82,7 +82,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Instrukcja"
+                android:text="@string/instruction_title"
                 android:textColor="#004A99"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -110,7 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="72dp"
         android:layout_margin="24dp"
-        android:text="ZACZNIJ GRĘ"
+        android:text="@string/start_game_btn"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"

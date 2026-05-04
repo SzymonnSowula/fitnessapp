@@ -22,7 +22,7 @@
             app:tint="#004A99"
             android:scaleType="fitCenter"
             android:padding="12dp"
-            android:contentDescription="Wstecz" />
+            android:contentDescription="@string/back_desc" />
 
         <TextView
             android:layout_width="0dp"

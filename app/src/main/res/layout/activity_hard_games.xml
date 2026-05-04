@@ -24,7 +24,7 @@
             app:tint="#004A99"
             android:scaleType="fitCenter"
             android:padding="12dp"
-            android:contentDescription="Przycisk powrotu" />
+            android:contentDescription="@string/back_button_desc" />
 
         <LinearLayout
             android:layout_width="0dp"

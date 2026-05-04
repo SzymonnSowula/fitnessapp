@@ -37,31 +37,35 @@ public class ModelRunner {
     }
 
     private void loadMetadata(Context context) throws Exception {
-        InputStream is = context.getAssets().open("metadata.json");
-        int size = is.available();
-        byte[] buffer = new byte[size];
-        is.read(buffer);
-        is.close();
-        String json = new String(buffer, StandardCharsets.UTF_8);
-        JSONObject obj = new JSONObject(json);
-        JSONArray classesArray = obj.getJSONArray("classes");
-        classes = new ArrayList<>();
-        for (int i = 0; i < classesArray.length(); i++) {
-            classes.add(classesArray.getString(i));
+        try (InputStream is = context.getAssets().open("metadata.json")) {
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            String json = new String(buffer, StandardCharsets.UTF_8);
+            JSONObject obj = new JSONObject(json);
+            JSONArray classesArray = obj.getJSONArray("classes");
+            classes = new ArrayList<>();
+            for (int i = 0; i < classesArray.length(); i++) {
+                classes.add(classesArray.getString(i));
+            }
         }
     }
 
     private String copyAssetToFiles(Context context, String filename) throws Exception {
         File file = new File(context.getFilesDir(), filename);
-        // Zawsze kopiujemy w fazie debugowania, aby mieć pewność użycia najnowszego modelu z assets
+        if (file.exists() && file.length() > 0) {
+            Log.d(TAG, "Model już istnieje w " + file.getAbsolutePath() + ", pomijam kopiowanie.");
+            return file.getAbsolutePath();
+        }
         try (InputStream is = context.getAssets().open(filename);
              FileOutputStream fos = new FileOutputStream(file)) {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[8192];
             int read;
             while ((read = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, read);
             }
         }
+        Log.d(TAG, "Model skopiowany do " + file.getAbsolutePath());
         return file.getAbsolutePath();
     }
 

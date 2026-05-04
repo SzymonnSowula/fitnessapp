@@ -16,19 +16,18 @@ public class CsvImporter {
 
     public static List<Exercise> loadExercisesFromCsv(Context context) {
         List<Exercise> exercises = new ArrayList<>();
-        try {
-            InputStream is = context.getAssets().open("cwiczenia_seniorzy.csv");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            
+        try (InputStream is = context.getAssets().open("cwiczenia_seniorzy.csv");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+
             // Skip header
             String headerLine = reader.readLine();
             if (headerLine == null) {
                 Log.e(TAG, "Plik CSV jest pusty!");
                 return exercises;
             }
-            
+
             Log.d(TAG, "Nagłówki CSV: " + headerLine);
-            
+
             String line;
             while ((line = reader.readLine()) != null) {
                 // Parsowanie CSV z obsługą cudzysłowów (przecinki wewnątrz pól)
@@ -37,10 +36,10 @@ public class CsvImporter {
                     Log.w(TAG, "Pominięto wiersz (zbyt mało kolumn: " + columns.length + "): " + line);
                     continue;
                 }
-                
+
                 Exercise e = new Exercise();
                 e.name = columns[0];
-                
+
                 // Mapowanie kategorii
                 String rawCategory = columns[3].toLowerCase(Locale.ROOT);
                 if (rawCategory.contains("sila") || rawCategory.contains("siła")) e.category = "sila";
@@ -63,30 +62,29 @@ public class CsvImporter {
 
                 // Poziom trudności (kolumna 4)
                 e.poziomTrudnosciNum = parseInfluence(columns[4]);
-                
+
                 // Binaria (kolumny 11-15)
                 e.wspomaganeKrzeslemBin = parseBinary(columns[11]);
                 e.moznaWLozkuBin = parseBinary(columns[12]);
                 e.moznaSiedzacBin = parseBinary(columns[13]);
                 e.wymagaStaniaBin = parseBinary(columns[14]);
                 e.wymagaPodlogiBin = parseBinary(columns[15]);
-                
+
                 // Wpływy (kolumny 19-23)
                 e.wplywNaRownowageNum = parseInfluence(columns[19]);
                 e.wplywNaSileNum = parseInfluence(columns[20]);
                 e.wplywNaElastycznoscNum = parseInfluence(columns[21]);
                 e.wplywNaKardioNum = parseInfluence(columns[22]);
                 e.wplywNaPostaweNum = parseInfluence(columns[23]);
-                
+
                 // Intensywność (kolumna 24)
                 e.intensywnoscNum = parseInfluence(columns[24]);
-                
+
                 // Źródło (kolumna 2)
                 e.zrodloEnc = 0.0f;
 
                 exercises.add(e);
             }
-            reader.close();
         } catch (Exception e) {
             Log.e(TAG, "Error parsing CSV", e);
         }

@@ -2,42 +2,44 @@ package com.example.fitnessapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
+
+import java.lang.ref.WeakReference;
 
 public class VoiceNavigator implements VoiceManager.VoiceCallback {
     private static final String TAG = "VoiceNavigator";
-    private Activity activity;
+    private final WeakReference<Activity> activityRef;
     private VoiceCallback callback;
-    private android.os.Handler pendingHandler;
+    private final Handler pendingHandler = new Handler(Looper.getMainLooper());
     private Runnable pendingSpeech;
     private boolean isDialogShowing = false;
 
     public interface VoiceCallback {
         void onVoiceCommand(String command);
-        default void onListeningStateChanged(boolean isListening) {} // Optional - for visual feedback
+        default void onListeningStateChanged(boolean isListening) {}
     }
 
     public VoiceNavigator(Activity activity, VoiceCallback callback) {
-        this.activity = activity;
+        this.activityRef = new WeakReference<>(activity);
         this.callback = callback;
     }
 
     public void setup() {
         VoiceManager.getInstance().addCallback(this);
-        // Don't auto-start listening - user taps FAB to speak
     }
 
     public void cleanup() {
         VoiceManager.getInstance().removeCallback(this);
         stopListening();
         cancelPendingSpeech();
+        callback = null;
     }
 
     public void cancelPendingSpeech() {
-        if (pendingHandler != null && pendingSpeech != null) {
+        if (pendingSpeech != null) {
             pendingHandler.removeCallbacks(pendingSpeech);
-            pendingHandler = null;
             pendingSpeech = null;
         }
     }
@@ -56,8 +58,10 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
 
     public void speakDelayed(String text, long delayMs) {
         cancelPendingSpeech();
-        pendingHandler = new android.os.Handler(android.os.Looper.getMainLooper());
-        pendingSpeech = () -> speak(text);
+        pendingSpeech = () -> {
+            speak(text);
+            pendingSpeech = null;
+        };
         pendingHandler.postDelayed(pendingSpeech, delayMs);
     }
 
@@ -72,14 +76,10 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     @Override
     public void onSpeechResult(String text, boolean isFinal) {
         if (!isFinal) return;
-
         Log.d(TAG, "Recognized text: " + text);
-
         String command = VoiceCommands.matchCommand(text);
-
         if (command != null) {
             Log.d(TAG, "Matched command: " + command);
-
             if (VoiceCommands.isNavigationCommand(command)) {
                 handleNavigationCommand(command);
             } else if (callback != null) {
@@ -89,27 +89,28 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
     }
 
     public void handleNavigationCommand(String command) {
+        Activity activity = activityRef.get();
         if (activity == null || activity.isFinishing()) return;
 
         switch (command) {
             case "home":
             case "back_main":
                 speak("Przechodzę do strony głównej");
-                navigateTo(ChoiceActivity.class);
+                navigateTo(activity, ChoiceActivity.class);
                 break;
             case "exercises":
             case "body":
                 speak("Przechodzę do ćwiczeń");
-                navigateTo(MainActivity.class);
+                navigateTo(activity, MainActivity.class);
                 break;
             case "games":
             case "mind":
                 speak("Przechodzę do gier");
-                navigateTo(MindGamesActivity.class);
+                navigateTo(activity, MindGamesActivity.class);
                 break;
             case "settings":
                 speak("Przechodzę do ustawień");
-                navigateTo(SettingsActivity.class);
+                navigateTo(activity, SettingsActivity.class);
                 break;
             case "back":
                 activity.onBackPressed();
@@ -137,7 +138,7 @@ public class VoiceNavigator implements VoiceManager.VoiceCallback {
         }
     }
 
-    private void navigateTo(Class<?> to) {
+    private void navigateTo(Activity activity, Class<?> to) {
         if (activity.getClass().equals(to)) return;
         Intent intent = new Intent(activity, to);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

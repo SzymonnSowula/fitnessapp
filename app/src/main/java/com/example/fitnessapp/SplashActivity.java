@@ -34,4 +34,10 @@ public class SplashActivity extends AppCompatActivity {
             finish();
         }, 1200);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        VoiceManager.getInstance().cleanup();
+    }
 }

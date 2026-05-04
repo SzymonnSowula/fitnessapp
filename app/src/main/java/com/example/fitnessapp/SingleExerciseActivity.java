@@ -45,6 +45,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private int videoPosition = 0;
     private boolean isProcessingAction = false;
     private long exerciseStartTime;
+    private final Handler mainHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +113,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                 currentIndex++;
                 showExercise(currentIndex);
                 voiceNavigator.speak("Ćwiczenie " + (currentIndex + 1) + ": " + exercises.get(currentIndex).name);
-                new Handler().postDelayed(() -> isProcessingAction = false, 1000);
+                mainHandler.postDelayed(() -> isProcessingAction = false, 1000);
             } else {
                 finish();
             }
@@ -129,7 +130,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                 currentIndex--;
                 showExercise(currentIndex);
                 voiceNavigator.speak("Poprzednie ćwiczenie: " + exercises.get(currentIndex).name);
-                new Handler().postDelayed(() -> isProcessingAction = false, 1000);
+                mainHandler.postDelayed(() -> isProcessingAction = false, 1000);
             }
         });
     }
@@ -283,7 +284,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (videoView != null) {
-            new Handler().postDelayed(() -> {
+            mainHandler.postDelayed(() -> {
                 if (videoView != null) {
                     videoView.seekTo(videoPosition);
                     videoView.start();

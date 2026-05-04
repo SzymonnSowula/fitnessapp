@@ -34,6 +34,7 @@ public class ColorTapActivity extends AppCompatActivity {
     private boolean isShowingSequence = false;
     private VoiceNavigator voiceNavigator;
     private Vibrator vibrator;
+    private final android.os.Handler mainHandler = new android.os.Handler(android.os.Looper.getMainLooper());
 
     private final int[] colors = {
             0xFF004A99, // blue
@@ -154,7 +155,6 @@ public class ColorTapActivity extends AppCompatActivity {
     }
 
     private void showSequence(int delayMs) {
-        Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             int currentIndex = 0;
             @Override
@@ -162,7 +162,7 @@ public class ColorTapActivity extends AppCompatActivity {
                 if (currentIndex < colorSequence.size()) {
                     flashColor(colorSequence.get(currentIndex));
                     currentIndex++;
-                    handler.postDelayed(this, delayMs);
+                    mainHandler.postDelayed(this, delayMs);
                 } else {
                     isShowingSequence = false;
                     tvTitle.setText("Dobrze!");
@@ -171,7 +171,7 @@ public class ColorTapActivity extends AppCompatActivity {
                 }
             }
         };
-        handler.postDelayed(runnable, 800);
+        mainHandler.postDelayed(runnable, 800);
     }
 
 private void flashColor(int index) {
@@ -179,7 +179,7 @@ private void flashColor(int index) {
         // First: flash with neon green overlay
         card.setCardBackgroundColor(0xFF39FF14); // Neon green flash
         card.setAlpha(1.0f);
-        new Handler().postDelayed(() -> {
+        mainHandler.postDelayed(() -> {
             // Then return to original color
             card.setCardBackgroundColor(colors[index]);
             card.setAlpha(1.0f);
@@ -200,7 +200,7 @@ private void flashColor(int index) {
             tvTitle.setText("Ups!");
             tvInstruction.setText("Spróbuj jeszcze raz.");
             voiceNavigator.speak("Niestety błąd. Spróbuj jeszcze raz.");
-            new Handler().postDelayed(this::startLevel, 1500);
+            mainHandler.postDelayed(this::startLevel, 1500);
             return;
         }
 
@@ -222,7 +222,7 @@ private void flashColor(int index) {
             tvLevel.setText("Poziom " + level);
             tvTitle.setText("Świetnie!");
             voiceNavigator.speak("Świetnie! Przechodzisz do poziomu " + level);
-            new Handler().postDelayed(this::startLevel, 1500);
+            mainHandler.postDelayed(this::startLevel, 1500);
         }
     }
 

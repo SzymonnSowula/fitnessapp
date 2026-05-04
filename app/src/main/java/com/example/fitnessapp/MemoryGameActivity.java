@@ -29,6 +29,7 @@ public class MemoryGameActivity extends AppCompatActivity {
     private CardAdapter adapter;
     private boolean isLocked = false;
     private VoiceNavigator voiceNavigator;
+    private final android.os.Handler mainHandler = new android.os.Handler(android.os.Looper.getMainLooper());
 
     private final int[] cardImages = {
             R.drawable.ic_heart,
@@ -172,7 +173,7 @@ public class MemoryGameActivity extends AppCompatActivity {
                 }
                 isLocked = false;
             } else {
-                new Handler().postDelayed(() -> {
+                mainHandler.postDelayed(() -> {
                     adapter.unflipCards(pos1, pos2);
                     isLocked = false;
                 }, 800);

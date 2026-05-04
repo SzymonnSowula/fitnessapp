@@ -296,7 +296,7 @@ public class Game2048Activity extends AppCompatActivity {
                     tiles.set(j, merged);
                     tiles.remove(j + 1);
                     score += merged;
-                    runOnUiThread(() -> tvScore.setText(String.valueOf(score)));
+                    tvScore.setText(String.valueOf(score));
                 }
             }
             while (tiles.size() < 4) tiles.add(0);

@@ -20,6 +20,27 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "FitnessAppPrefs";
     private static final String KEY_USER_NAME = "user_name";
 
+    private static final java.text.SimpleDateFormat TIME_FORMAT =
+            new java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
+    private static final java.text.SimpleDateFormat DATE_FORMAT =
+            new java.text.SimpleDateFormat("EEEE, d MMMM", new java.util.Locale("pl", "PL"));
+
+    private static final String[] MOTIVATIONS = {
+        "Każdy krok się liczy. Nawet mały ruch to postęp!",
+        "Ćwiczenia to najlepszy prezent, jaki możesz dać swojemu ciału.",
+        "Masz dziś dużo energii. Wykorzystaj ją!",
+        "Ruch to zdrowie. Dbaj o siebie każdego dnia!",
+        "Jesteś silniejszy niż myślisz!"
+    };
+
+    private static final String[] TIPS = {
+        "Pamiętaj o nawodnieniu. Wypijaj co najmniej 8 szklanek wody dziennie.",
+        "Regularne ćwiczenia poprawiają nastrój i sen.",
+        "Rozciągaj się codziennie przez 10 minut.",
+        "Spaceruj codziennie chociaż 30 minut.",
+        "Dbaj o prawidłową postawę podczas siedzenia."
+    };
+
     private ModelRunner modelRunner;
     private AppDatabase db;
     private volatile boolean dbReady = false;
@@ -121,32 +142,18 @@ public class MainActivity extends AppCompatActivity {
                 voiceNavigator.speak("Powiedz 'dobrze' aby wybrać trudniejsze ćwiczenia, 'zmęczony' dla umiarkowanych, lub 'nie dobrze' dla łatwych.");
                 break;
             case "time":
-                String time = new java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+                String time = TIME_FORMAT.format(new java.util.Date());
                 voiceNavigator.speak("Jest teraz godzina " + time.replace(":", " ") + ".");
                 break;
             case "date":
-                String date = new java.text.SimpleDateFormat("EEEE, d MMMM", new java.util.Locale("pl", "PL")).format(new java.util.Date());
+                String date = DATE_FORMAT.format(new java.util.Date());
                 voiceNavigator.speak("Dzisiaj jest " + date + ".");
                 break;
             case "motivation":
-                String[] motivacje = {
-                    "Każdy krok się liczy. Nawet mały ruch to postęp!",
-                    "Ćwiczenia to najlepszy prezent, jaki możesz dać swojemu ciału.",
-                    "Masz dziś dużo energii. Wykorzystaj ją!",
-                    "Ruch to zdrowie. Dbaj o siebie każdego dnia!",
-                    "Jesteś silniejszy niż myślisz!"
-                };
-                voiceNavigator.speak(motivacje[new java.util.Random().nextInt(motivacje.length)]);
+                voiceNavigator.speak(MOTIVATIONS[new java.util.Random().nextInt(MOTIVATIONS.length)]);
                 break;
             case "advice":
-                String[] porady = {
-                    "Pamiętaj o nawodnieniu. Wypijaj co najmniej 8 szklanek wody dziennie.",
-                    "Regularne ćwiczenia poprawiają nastrój i sen.",
-                    "Rozciągaj się codziennie przez 10 minut.",
-                    "Spaceruj codziennie chociaż 30 minut.",
-                    "Dbaj o prawidłową postawę podczas siedzenia."
-                };
-                voiceNavigator.speak(porady[new java.util.Random().nextInt(porady.length)]);
+                voiceNavigator.speak(TIPS[new java.util.Random().nextInt(TIPS.length)]);
                 break;
             case "weather":
                 voiceNavigator.speak("Aktualnie nie mogę sprawdzić pogody, ale zachęcam do wyjścia na świeże powietrze!");

@@ -62,7 +62,10 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     private ToneGenerator toneGenerator;
 
     // Pending TTS message to speak after init
-    private String pendingSpeak = null;
+    private volatile String pendingSpeak = null;
+
+    // Reusable main thread handler
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public interface VoiceCallback {
         void onSpeechResult(String text, boolean isFinal);
@@ -138,7 +141,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                     isSpeakingNow = false;
                     // Only restart listening if in auto mode and desired
                     if (isListeningDesired && !isManualMode) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        mainHandler.postDelayed(() -> {
                             if (isListeningDesired) restartListening();
                         }, getRestartDelay());
                     }
@@ -149,7 +152,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 public void onError(String utteranceId) {
                     isSpeakingNow = false;
                     if (isListeningDesired && !isManualMode) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        mainHandler.postDelayed(() -> {
                             restartListening();
                         }, RETRY_DELAY_MS);
                     }
@@ -160,7 +163,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                     isSpeakingNow = false;
                     Log.e(TAG, "TTS Error: " + errorCode);
                     if (isListeningDesired && !isManualMode) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        mainHandler.postDelayed(() -> {
                             restartListening();
                         }, RETRY_DELAY_MS);
                     }
@@ -257,7 +260,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                     // Announce cooldown to user with TTS
                     speak("Chwilowa przerwa. Spróbuj ponownie za chwilę.");
                     // Schedule exit from cooldown
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    mainHandler.postDelayed(() -> {
                         isInErrorCooldown = false;
                         consecutiveErrorCount = 0;
                         Log.d(TAG, "Error cooldown ended");
@@ -270,14 +273,14 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                     error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
                     // Normal silence - restart after delay
                     if (!isSpeakingNow && !isInErrorCooldown) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        mainHandler.postDelayed(() -> {
                             if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, isInQuietMode ? QUIET_RESTART_DELAY_MS : 800);
                     }
                 } else if (error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
                     if (!isSpeakingNow && currentRetryCount < MAX_RETRIES) {
                         currentRetryCount++;
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        mainHandler.postDelayed(() -> {
                             if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, RETRY_DELAY_MS);
                     }
@@ -285,7 +288,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                     speak("Brak uprawnień do mikrofonu. Sprawdź ustawienia aplikacji.");
                 } else {
                     if (!isSpeakingNow && !isInErrorCooldown) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        mainHandler.postDelayed(() -> {
                             if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, RETRY_DELAY_MS);
                     }
@@ -313,7 +316,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                             for (VoiceCallback cb : callbacks) cb.onSpeechResult(text, true);
                             // After processing a command, restart listening for next command
                             if (isListeningDesired && !isSpeakingNow && !isInErrorCooldown) {
-                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                mainHandler.postDelayed(() -> {
                                     if (isListeningDesired && !isInErrorCooldown) restartListening();
                                 }, 1000);
                             }
@@ -321,7 +324,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                     } else {
                         // No matches - restart
                         if (isListeningDesired && !isSpeakingNow && !isInErrorCooldown) {
-                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            mainHandler.postDelayed(() -> {
                                 if (isListeningDesired && !isInErrorCooldown) restartListening();
                             }, 300);
                         }
@@ -329,7 +332,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 } else {
                     // Null results - restart
                     if (isListeningDesired && !isSpeakingNow && !isInErrorCooldown) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        mainHandler.postDelayed(() -> {
                             if (isListeningDesired && !isInErrorCooldown) restartListening();
                         }, 300);
                     }
@@ -367,7 +370,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     public void restartListening() {
         if (!isListeningDesired || isSpeakingNow || isInErrorCooldown) return;
 
-        new Handler(Looper.getMainLooper()).post(() -> {
+        mainHandler.post(() -> {
             try {
                 // Check if recognizer exists
                 boolean needsNew = (speechRecognizer == null);
@@ -416,7 +419,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
                 Log.e(TAG, "Failed to start recognizer: " + e.getMessage(), e);
                 destroyRecognizer();
                 if (isListeningDesired && !isSpeakingNow) {
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    mainHandler.postDelayed(() -> {
                         if (isListeningDesired) restartListening();
                     }, RETRY_DELAY_MS);
                 }
@@ -436,7 +439,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
     }
 
     private void pauseListeningTemporarily() {
-        new Handler(Looper.getMainLooper()).post(() -> {
+        mainHandler.post(() -> {
             if (speechRecognizer != null) {
                 try {
                     speechRecognizer.cancel();
@@ -481,7 +484,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
         if (!ttsReady || !isTTSEnabled()) return;
         isSpeakingNow = true;
         pauseListeningTemporarily();
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        mainHandler.postDelayed(() -> {
             try {
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, UUID.randomUUID().toString());
             } catch (Exception e) {

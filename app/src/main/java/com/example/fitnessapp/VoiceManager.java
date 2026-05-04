@@ -588,6 +588,7 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
             } catch (Exception e) {
                 Log.w(TAG, "Error shutting down TTS: " + e.getMessage());
             }
+            tts = null;
         }
         if (toneGenerator != null) {
             try {
@@ -595,6 +596,10 @@ public class VoiceManager implements TextToSpeech.OnInitListener {
             } catch (Exception e) {
                 Log.w(TAG, "Error releasing tone generator: " + e.getMessage());
             }
+            toneGenerator = null;
         }
+        ttsReady = false;
+        isInitialized = false;
+        instance = null;
     }
 }

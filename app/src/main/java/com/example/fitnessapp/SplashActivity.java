@@ -44,6 +44,8 @@ public class SplashActivity extends AppCompatActivity {
         if (splashRunnable != null) {
             splashHandler.removeCallbacks(splashRunnable);
         }
-        VoiceManager.getInstance().cleanup();
+        // Nie wywołujemy VoiceManager.cleanup() — singleton musi pozostać aktywny
+        // przez cały czas życia aplikacji. Cleanup jest wywoływane tylko przy
+        // wylogowaniu / zamknięciu aplikacji.
     }
 }

@@ -18,7 +18,7 @@
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nazwa ćwiczenia"
+            android:text="@string/exercise_name_label"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#004A99" />
@@ -27,7 +27,7 @@
             android:id="@+id/tv_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kategoria"
+            android:text="@string/category_label"
             android:textSize="14sp"
             android:textColor="#1E293B"
             android:layout_marginTop="4dp" />
@@ -36,7 +36,7 @@
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Data"
+            android:text="@string/date_label"
             android:textSize="12sp"
             android:textColor="#64748B"
             android:layout_marginTop="4dp" />

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Brak zapisanych gier"
+        android:text="@string/no_games_saved"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#1E293B"

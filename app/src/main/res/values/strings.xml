@@ -210,4 +210,19 @@
     <string name="my_conditions">Moje schorzenia</string>
     <string name="your_history">Twoja historia</string>
     <string name="logout">Wyloguj się</string>
+
+    <!-- History -->
+    <string name="no_games_saved">Brak zapisanych gier</string>
+    <string name="no_exercises_saved">Brak zapisanych ćwiczeń</string>
+    <string name="game_type_label">Typ gry</string>
+    <string name="score_label">Wynik</string>
+    <string name="date_label">Data</string>
+    <string name="exercise_name_label">Nazwa ćwiczenia</string>
+    <string name="category_label">Kategoria</string>
+
+    <!-- Win Dialog -->
+    <string name="win_congrats">BRAWO!!!!</string>
+    <string name="increase_level">Zwiększ poziom</string>
+    <string name="play_again">Zagraj jeszcze raz</string>
+    <string name="exit">Wyjdź</string>
 </resources>

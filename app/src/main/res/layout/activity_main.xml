@@ -24,7 +24,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Pomoc głosowa"
+            android:contentDescription="@string/voice_help_desc"
             android:padding="12dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_help" />

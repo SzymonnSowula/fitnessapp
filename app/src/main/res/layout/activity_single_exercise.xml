@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
@@ -23,7 +24,7 @@
             android:id="@+id/tv_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ĆWICZENIE 1 Z 5"
+            android:text="@string/exercise_progress_placeholder"
             android:textColor="#1E293B"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -38,7 +39,7 @@
             android:src="@drawable/ic_help"
             android:scaleType="fitCenter"
             android:padding="8dp"
-            android:contentDescription="Pomoc głosowa" />
+            android:contentDescription="@string/voice_help_desc" />
 
         <TextView
             android:id="@+id/tv_percentage"
@@ -47,7 +48,7 @@
             android:layout_toStartOf="@id/btn_help"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
-            android:text="20%"
+            android:text="@string/percentage_placeholder"
             android:textColor="#004A99"
             android:textSize="26sp"
             android:textStyle="bold" />
@@ -83,7 +84,7 @@
                 android:id="@+id/tv_exercise_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wykrok w tył z asekuracją krzesła"
+                android:text="@string/exercise_name_placeholder"
                 android:textColor="#004A99"
                 android:textSize="44sp"
                 android:textStyle="bold"
@@ -100,7 +101,7 @@
                     android:id="@+id/tv_difficulty_icons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⤢ ⤢ ⤢ ⤢ ⤢"
+                    android:text="@string/difficulty_icons_placeholder"
                     android:textColor="#057A32"
                     android:textSize="26sp" />
 
@@ -109,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Łatwe"
+                    android:text="@string/difficulty_easy"
                     android:textColor="#057A32"
                     android:textSize="26sp"
                     android:textStyle="bold" />
@@ -128,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="24dp"
-                    android:text="Stań stabilnie przy oparciu krzesła. Wykonaj spokojny krok w tył, uginając lekko kolana. Trzymaj plecy prosto i wspomagaj się dłońmi na krześle dla pełnego bezpieczeństwa. Powoli wróć do pozycji wyjściowej."
+                    tools:text="@string/no_description"
                     android:textColor="#1E293B"
                     android:textSize="26sp"
                     android:lineSpacingMultiplier="1.1" />
@@ -156,7 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="PRZECIWWSKAZANIA"
+                android:text="@string/contraindications_label"
                 android:textColor="#B91C1C"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -182,7 +183,7 @@
         android:layout_height="72dp"
         android:layout_marginBottom="12dp"
         android:backgroundTint="#005CB9"
-        android:text="NASTĘPNE ĆWICZENIE"
+        android:text="@string/next_exercise_btn"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="26sp"
@@ -199,7 +200,7 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:backgroundTint="#FFFFFF"
-        android:text="Zakończ"
+        android:text="@string/finish_btn"
         android:textAllCaps="false"
         android:textColor="#1E293B"
         android:textSize="26sp"

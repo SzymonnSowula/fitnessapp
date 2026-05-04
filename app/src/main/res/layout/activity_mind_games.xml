@@ -24,7 +24,7 @@
         app:tint="#004A99"
         android:scaleType="fitCenter"
         android:padding="12dp"
-        android:contentDescription="Wstecz" />
+        android:contentDescription="@string/back_desc" />
 
     <ImageButton
         android:id="@+id/btn_help"
@@ -35,7 +35,7 @@
         android:src="@drawable/ic_help"
         android:scaleType="fitCenter"
         android:padding="8dp"
-        android:contentDescription="Pomoc głosowa" />
+        android:contentDescription="@string/voice_help_desc" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -48,7 +48,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gry umysłowe"
+                android:text="@string/mind_games_title"
                 android:textColor="#004A99"
                 android:textSize="44sp"
                 android:textStyle="bold" />
@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Wybierz grę"
+                android:text="@string/select_game"
                 android:textColor="#334155"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -108,7 +108,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
-                        android:contentDescription="Ikona gry memory"
+                        android:contentDescription="@string/icon_memory"
                         android:src="@drawable/ic_brain"
                         app:tint="#7C3AED" />
                 </FrameLayout>
@@ -121,14 +121,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Memory"
+                        android:text="@string/game_memory"
                         android:textColor="#1E293B"
                         android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Wybierz poziom"
+                        android:text="@string/select_level"
                         android:textColor="#475569"
                         android:textSize="26sp"
                         android:textStyle="bold" />
@@ -169,7 +169,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
-                        android:contentDescription="Ikona gry kolory"
+                        android:contentDescription="@string/icon_colors"
                         android:src="@drawable/ic_mood_happy"
                         app:tint="#059669" />
                 </FrameLayout>
@@ -182,14 +182,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Kolory"
+                        android:text="@string/game_colors"
                         android:textColor="#1E293B"
                         android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Wybierz poziom"
+                        android:text="@string/select_level"
                         android:textColor="#475569"
                         android:textSize="26sp"
                         android:textStyle="bold" />
@@ -230,7 +230,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
-                        android:contentDescription="Ikona gry płyny"
+                        android:contentDescription="@string/icon_liquid"
                         android:src="@drawable/ic_plan"
                         app:tint="#2563EB" />
                 </FrameLayout>
@@ -243,14 +243,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Płyny"
+                        android:text="@string/game_liquid"
                         android:textColor="#1E293B"
                         android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sortuj kolory"
+                        android:text="@string/sort_colors"
                         android:textColor="#475569"
                         android:textSize="26sp"
                         android:textStyle="bold" />
@@ -291,7 +291,7 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_gravity="center"
-                        android:contentDescription="Ikona gry 2048"
+                        android:contentDescription="@string/icon_2048"
                         android:src="@drawable/ic_onboarding_3"
                         app:tint="#EA580C" />
                 </FrameLayout>
@@ -304,14 +304,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2048"
+                        android:text="@string/game_2048"
                         android:textColor="#1E293B"
                         android:textSize="44sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Połącz liczby"
+                        android:text="@string/merge_numbers"
                         android:textColor="#475569"
                         android:textSize="26sp"
                         android:textStyle="bold" />

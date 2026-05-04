@@ -157,4 +157,33 @@
     <string name="feature_coming_soon">Funkcja będzie dostępna wkrótce</string>
     <string name="tab_exercises">ĆWICZENIA</string>
     <string name="tab_mind_games">GRY UMYSŁOWE</string>
+
+    <!-- Accessibility -->
+    <string name="voice_help_desc">Pomoc głosowa</string>
+    <string name="back_desc">Wstecz</string>
+    <string name="icon_memory">Ikona gry memory</string>
+    <string name="icon_colors">Ikona gry kolory</string>
+    <string name="icon_liquid">Ikona gry płyny</string>
+    <string name="icon_2048">Ikona gry 2048</string>
+
+    <!-- Mind Games -->
+    <string name="mind_games_title">Gry umysłowe</string>
+    <string name="select_game">Wybierz grę</string>
+    <string name="game_memory">Memory</string>
+    <string name="game_colors">Kolory</string>
+    <string name="game_liquid">Płyny</string>
+    <string name="game_2048">2048</string>
+    <string name="select_level">Wybierz poziom</string>
+    <string name="sort_colors">Sortuj kolory</string>
+    <string name="merge_numbers">Połącz liczby</string>
+
+    <!-- Single Exercise placeholders -->
+    <string name="exercise_progress_placeholder">ĆWICZENIE 1 Z 5</string>
+    <string name="percentage_placeholder">20%</string>
+    <string name="exercise_name_placeholder">Wykrok w tył z asekuracją krzesła</string>
+    <string name="difficulty_icons_placeholder">⤢ ⤢ ⤢ ⤢ ⤢</string>
+    <string name="difficulty_easy">Łatwe</string>
+    <string name="contraindications_label">PRZECIWWSKAZANIA</string>
+    <string name="next_exercise_btn">NASTĘPNE ĆWICZENIE</string>
+    <string name="finish_btn">Zakończ</string>
 </resources>

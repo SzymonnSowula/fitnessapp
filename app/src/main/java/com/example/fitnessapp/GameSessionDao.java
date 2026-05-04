@@ -11,10 +11,10 @@ public interface GameSessionDao {
     @Insert
     void insert(GameSession session);
 
-    @Query("SELECT * FROM game_sessions ORDER BY completedAt DESC")
+    @Query("SELECT * FROM game_sessions ORDER BY completedAt DESC LIMIT 50")
     List<GameSession> getAllDesc();
 
-    @Query("SELECT * FROM game_sessions WHERE gameType = :type ORDER BY completedAt DESC")
+    @Query("SELECT * FROM game_sessions WHERE gameType = :type ORDER BY completedAt DESC LIMIT 50")
     List<GameSession> getByGameType(String type);
 
     @Query("SELECT COUNT(*) FROM game_sessions")

@@ -1,7 +1,6 @@
 package com.example.fitnessapp;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;

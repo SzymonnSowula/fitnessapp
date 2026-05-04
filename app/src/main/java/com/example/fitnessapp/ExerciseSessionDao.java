@@ -11,7 +11,7 @@ public interface ExerciseSessionDao {
     @Insert
     void insert(ExerciseSession session);
 
-    @Query("SELECT * FROM exercise_sessions ORDER BY completedAt DESC")
+    @Query("SELECT * FROM exercise_sessions ORDER BY completedAt DESC LIMIT 50")
     List<ExerciseSession> getAllDesc();
 
     @Query("SELECT COUNT(*) FROM exercise_sessions")

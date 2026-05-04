@@ -65,8 +65,10 @@ public class SettingsActivity extends AppCompatActivity {
         switchVoiceEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
             VoiceManager.getInstance().setSpeechEnabled(isChecked);
             VoiceManager.getInstance().setTTSEnabled(isChecked);
-            prefs.edit().putBoolean(KEY_SPEECH_ENABLED, isChecked).apply();
-            prefs.edit().putBoolean(KEY_TTS_ENABLED, isChecked).apply();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(KEY_SPEECH_ENABLED, isChecked);
+            editor.putBoolean(KEY_TTS_ENABLED, isChecked);
+            editor.apply();
             
             if (isChecked) {
                 VoiceManager.getInstance().speak("Obsługa głosowa włączona");

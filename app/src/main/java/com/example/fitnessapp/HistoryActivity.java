@@ -22,8 +22,8 @@ public class HistoryActivity extends AppCompatActivity {
 
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
-                    if (position == 0) tab.setText("ĆWICZENIA");
-                    else tab.setText("GRY UMYSŁOWE");
+                    if (position == 0) tab.setText(R.string.tab_exercises);
+                    else tab.setText(R.string.tab_mind_games);
                 }).attach();
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());

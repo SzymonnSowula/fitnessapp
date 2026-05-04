@@ -93,7 +93,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 if (exercises.isEmpty()) {
-                    Toast.makeText(this, "Brak bezpiecznych ćwiczeń dla Twojego profilu", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.no_safe_exercises, Toast.LENGTH_LONG).show();
                     finish();
                 } else {
                     showExercise(currentIndex);
@@ -258,7 +258,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                 });
             } catch (IOException e) {
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Nie można wczytać wideo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_video_load, Toast.LENGTH_SHORT).show();
                     videoView.setVisibility(View.GONE);
                 });
             }

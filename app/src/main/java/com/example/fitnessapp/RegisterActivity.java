@@ -33,19 +33,19 @@ public class RegisterActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_fill_all_fields, Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (password.length() < 6) {
-                Toast.makeText(this, "Hasło musi mieć co najmniej 6 znaków", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_password_too_short, Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // TYMCZASOWA REJESTRACJA LOKALNA:
             // Udajemy, że rejestracja się powiodła. Gdy stworzymy lokalną bazę danych (Room),
             // w tym miejscu dodamy kod zapisujący użytkownika do pamięci telefonu.
-            Toast.makeText(this, "Konto lokalne utworzone! Możesz się zalogować.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.success_account_created, Toast.LENGTH_LONG).show();
             finish(); // Zamyka ekran rejestracji i wraca do logowania
         });
 

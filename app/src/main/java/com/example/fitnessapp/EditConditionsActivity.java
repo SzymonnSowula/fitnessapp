@@ -89,7 +89,7 @@ public class EditConditionsActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", Context.MODE_PRIVATE);
         prefs.edit().putStringSet("conditions", conditions).apply();
 
-        Toast.makeText(this, "Zapisano zmiany", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.changes_saved, Toast.LENGTH_SHORT).show();
         finish();
     }
 }

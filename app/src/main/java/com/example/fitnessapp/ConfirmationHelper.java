@@ -38,20 +38,20 @@ public class ConfirmationHelper {
         MaterialButton btnCancel = dialogView.findViewById(R.id.btn_exit_cancel);
 
         if (tvTitle != null) {
-            tvTitle.setText("Wyjście z aplikacji");
+            tvTitle.setText(activity.getString(R.string.dialog_exit_title));
         }
         if (tvMessage != null) {
-            tvMessage.setText("Czy na pewno chcesz wyjść z aplikacji?");
+            tvMessage.setText(activity.getString(R.string.dialog_exit_message));
         }
         if (btnConfirm != null) {
-            btnConfirm.setText("Tak, wyjdź");
+            btnConfirm.setText(activity.getString(R.string.dialog_exit_confirm));
             btnConfirm.setOnClickListener(v -> {
                 dialog.dismiss();
                 if (callback != null) callback.onConfirm();
             });
         }
         if (btnCancel != null) {
-            btnCancel.setText("Nie, zostaję");
+            btnCancel.setText(activity.getString(R.string.dialog_exit_cancel));
             btnCancel.setOnClickListener(v -> {
                 dialog.dismiss();
                 if (callback != null) callback.onCancel();

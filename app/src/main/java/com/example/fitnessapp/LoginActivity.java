@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_fill_all_fields, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish(); // Zamykamy ekran logowania, żeby użytkownik nie mógł do niego wrócić przyciskiem "Wstecz"
             } else {
-                Toast.makeText(this, "Błędne dane! Spróbuj wpisać admin / admin", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_invalid_credentials, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         // Skoro rezygnujemy z Google, ten przycisk docelowo powinieneś usunąć z pliku XML (activity_login.xml).
         // Na razie zostawiamy, żeby aplikacja się nie sypała, ale zmieniamy mu komunikat.
         btnGoogle.setOnClickListener(v -> {
-            Toast.makeText(this, "Zdecydowaliśmy się na logowanie lokalne (offline)!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.info_local_login, Toast.LENGTH_SHORT).show();
         });
     }
 }

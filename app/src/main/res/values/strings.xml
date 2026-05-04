@@ -136,4 +136,25 @@
     <!-- Memory Game -->
     <string name="memory_score">0</string>
     <string name="memory_moves">0</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_exit_title">Wyjście z aplikacji</string>
+    <string name="dialog_exit_message">Czy na pewno chcesz wyjść z aplikacji?</string>
+    <string name="dialog_exit_confirm">Tak, wyjdź</string>
+    <string name="dialog_exit_cancel">Nie, zostaję</string>
+
+    <!-- Auth -->
+    <string name="error_fill_all_fields">Wypełnij wszystkie pola</string>
+    <string name="error_invalid_credentials">Błędne dane! Spróbuj wpisać admin / admin</string>
+    <string name="error_password_too_short">Hasło musi mieć co najmniej 6 znaków</string>
+    <string name="success_account_created">Konto lokalne utworzone! Możesz się zalogować.</string>
+    <string name="info_local_login">Zdecydowaliśmy się na logowanie lokalne (offline)!</string>
+
+    <!-- General -->
+    <string name="changes_saved">Zapisano zmiany</string>
+    <string name="no_safe_exercises">Brak bezpiecznych ćwiczeń dla Twojego profilu</string>
+    <string name="error_video_load">Nie można wczytać wideo</string>
+    <string name="feature_coming_soon">Funkcja będzie dostępna wkrótce</string>
+    <string name="tab_exercises">ĆWICZENIA</string>
+    <string name="tab_mind_games">GRY UMYSŁOWE</string>
 </resources>

@@ -2,7 +2,6 @@ package com.example.fitnessapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -91,7 +90,7 @@ public class GameDifficultyActivity extends AppCompatActivity {
             case "confirm":
             case "next":
                 voiceNavigator.speak("Rozpoczynam grę.");
-                new android.os.Handler().postDelayed(this::launchGame, 1000);
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(this::launchGame, 1000);
                 break;
             case "help":
                 voiceNavigator.speak("Wybierz poziom trudności: łatwy, średni lub trudny. Powiedz start aby rozpocząć grę.");

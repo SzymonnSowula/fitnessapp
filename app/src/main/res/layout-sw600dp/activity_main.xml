@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="32dp"
-        android:paddingTop="48dp"
+        android:paddingHorizontal="@dimen/margin_xl"
+        android:paddingTop="@dimen/margin_xl"
         app:layout_constraintTop_toTopOf="parent">
 
     <RelativeLayout
@@ -19,13 +19,13 @@
 
         <ImageButton
             android:id="@+id/btn_help"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="@dimen/icon_xl"
+            android:layout_height="@dimen/icon_xl"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Pomoc głosowa"
-            android:padding="12dp"
+            android:contentDescription="@string/vh_title"
+            android:padding="@dimen/margin_medium"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_help" />
 
@@ -35,20 +35,20 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/btn_help"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
             android:text="@string/welcome_fallback"
             android:textColor="#004A99"
-            android:textSize="44sp"
+            android:textSize="@dimen/text_size_title"
             android:textStyle="bold" />
     </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/margin_small"
             android:text="@string/mood_question"
             android:textColor="#334155"
-            android:textSize="26sp"
+            android:textSize="@dimen/text_size_xl"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -56,9 +56,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="8dp"
+        android:paddingHorizontal="@dimen/margin_large"
+        android:paddingTop="@dimen/margin_large"
+        android:paddingBottom="@dimen/margin_small"
         app:layout_constraintTop_toBottomOf="@id/header_container"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_container">
 
@@ -68,8 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="32dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            app:cardCornerRadius="@dimen/margin_large"
             app:cardElevation="8dp"
             android:clickable="true"
             android:focusable="true"
@@ -80,19 +80,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="@dimen/margin_large">
 
                 <FrameLayout
-                    android:layout_width="90dp"
-                    android:layout_height="90dp">
+                    android:layout_width="@dimen/icon_xl"
+                    android:layout_height="@dimen/icon_xl">
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_indicator_active"
                         android:backgroundTint="#DCFCE7" />
                     <ImageView
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="@dimen/icon_large"
+                        android:layout_height="@dimen/icon_large"
                         android:layout_gravity="center"
                         android:contentDescription="@string/mood_happy_desc"
                         android:src="@drawable/ic_mood_happy" />
@@ -102,10 +102,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="@dimen/margin_large"
                     android:text="@string/mood_happy_label"
                     android:textColor="#1E293B"
-                    android:textSize="26sp"
+                    android:textSize="@dimen/text_size_xl"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="0.85" />
             </LinearLayout>
@@ -117,8 +117,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="32dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            app:cardCornerRadius="@dimen/margin_large"
             app:cardElevation="8dp"
             android:clickable="true"
             android:focusable="true"
@@ -129,19 +129,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="@dimen/margin_large">
 
                 <FrameLayout
-                    android:layout_width="90dp"
-                    android:layout_height="90dp">
+                    android:layout_width="@dimen/icon_xl"
+                    android:layout_height="@dimen/icon_xl">
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_indicator_active"
                         android:backgroundTint="#DBEAFE" />
                     <ImageView
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="@dimen/icon_large"
+                        android:layout_height="@dimen/icon_large"
                         android:layout_gravity="center"
                         android:contentDescription="@string/mood_sad_desc"
                         android:src="@drawable/ic_mood_sad" />
@@ -151,10 +151,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="@dimen/margin_large"
                     android:text="@string/mood_sad_label"
                     android:textColor="#1E293B"
-                    android:textSize="26sp"
+                    android:textSize="@dimen/text_size_xl"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="0.85" />
             </LinearLayout>
@@ -166,8 +166,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="4dp"
-            app:cardCornerRadius="32dp"
+            android:layout_marginBottom="@dimen/margin_small"
+            app:cardCornerRadius="@dimen/margin_large"
             app:cardElevation="8dp"
             android:clickable="true"
             android:focusable="true"
@@ -178,19 +178,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:padding="@dimen/margin_large">
 
                 <FrameLayout
-                    android:layout_width="90dp"
-                    android:layout_height="90dp">
+                    android:layout_width="@dimen/icon_xl"
+                    android:layout_height="@dimen/icon_xl">
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_indicator_active"
                         android:backgroundTint="#FEE2E2" />
                     <ImageView
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="@dimen/icon_large"
+                        android:layout_height="@dimen/icon_large"
                         android:layout_gravity="center"
                         android:contentDescription="@string/mood_very_sad_desc"
                         android:src="@drawable/ic_mood_very_sad" />
@@ -200,10 +200,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="@dimen/margin_large"
                     android:text="@string/mood_very_sad_label"
                     android:textColor="#1E293B"
-                    android:textSize="26sp"
+                    android:textSize="@dimen/text_size_xl"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="0.85" />
             </LinearLayout>

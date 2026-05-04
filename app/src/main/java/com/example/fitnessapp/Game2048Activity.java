@@ -7,6 +7,9 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.fitnessapp.utils.ScreenUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -66,22 +69,7 @@ public class Game2048Activity extends AppCompatActivity {
 
         initCells();
 
-        android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float density = metrics.density;
-        int screenWidthPx = metrics.widthPixels;
-        int boardMarginPx = (int) (32 * density); // 16dp each side
-        int availableWidth = screenWidthPx - boardMarginPx;
-        int cellSize = availableWidth / 4;
-        int cellTextSizeSp = (int) (cellSize / density * 0.45f); // text fills ~45% of cell
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                android.widget.TableRow.LayoutParams params = new android.widget.TableRow.LayoutParams(cellSize, cellSize);
-                cells[i][j].setLayoutParams(params);
-                cells[i][j].setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, Math.max(18, cellTextSizeSp));
-            }
-        }
+        recalculateCellSizes();
 
         restartGame();
 
@@ -269,15 +257,15 @@ public class Game2048Activity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(android.content.res.Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Recalculate cell sizes
-        android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        float density = metrics.density;
-        int screenWidthPx = metrics.widthPixels;
-        int boardMarginPx = (int) (32 * density);
+        recalculateCellSizes();
+    }
+
+    private void recalculateCellSizes() {
+        int screenWidthPx = ScreenUtils.getScreenWidthPx(this);
+        int boardMarginPx = ScreenUtils.dpToPx(this, 32); // 16dp each side
         int availableWidth = screenWidthPx - boardMarginPx;
         int cellSize = availableWidth / 4;
-        int cellTextSizeSp = (int) (cellSize / density * 0.45f);
+        float cellTextSizeSp = ScreenUtils.pxToDp(this, cellSize) * 0.45f; // text fills ~45% of cell
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 android.widget.TableRow.LayoutParams params = new android.widget.TableRow.LayoutParams(cellSize, cellSize);

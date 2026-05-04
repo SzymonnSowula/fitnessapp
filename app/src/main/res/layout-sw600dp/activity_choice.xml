@@ -9,34 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="32dp"
-        android:paddingTop="48dp"
+        android:paddingHorizontal="@dimen/margin_xl"
+        android:paddingTop="@dimen/margin_xl"
         app:layout_constraintTop_toTopOf="parent">
 
-<TextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/choice_title"
-        android:textColor="#004A99"
-        android:textSize="44sp"
-        android:textStyle="bold"
-        android:lineSpacingMultiplier="0.9" />
+        <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/choice_title"
+                android:textColor="#004A99"
+                android:textSize="@dimen/text_size_title"
+                android:textStyle="bold"
+                android:lineSpacingMultiplier="0.9" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="@dimen/margin_small">
 
         <ImageButton
             android:id="@+id/btn_help"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="@dimen/icon_xl"
+            android:layout_height="@dimen/icon_xl"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Pomoc głosowa"
-            android:padding="12dp"
+            android:contentDescription="@string/vh_title"
+            android:padding="@dimen/margin_medium"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_help" />
 
@@ -46,10 +46,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/btn_help"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/margin_small"
             android:text="@string/choice_subtitle"
             android:textColor="#334155"
-            android:textSize="26sp"
+            android:textSize="@dimen/text_size_xl"
             android:textStyle="bold" />
     </RelativeLayout>
     </LinearLayout>
@@ -58,9 +58,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="8dp"
+        android:paddingHorizontal="@dimen/margin_large"
+        android:paddingTop="@dimen/margin_large"
+        android:paddingBottom="@dimen/margin_small"
         app:layout_constraintTop_toBottomOf="@id/header_container"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_container">
 
@@ -70,8 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="36dp"
+            android:layout_marginBottom="@dimen/margin_large"
+            app:cardCornerRadius="@dimen/margin_large"
             app:cardElevation="10dp"
             android:clickable="true"
             android:focusable="true"
@@ -82,19 +82,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="24dp">
+                android:padding="@dimen/margin_large">
 
                 <FrameLayout
-                    android:layout_width="110dp"
-                    android:layout_height="110dp">
+                    android:layout_width="@dimen/game_card_size"
+                    android:layout_height="@dimen/game_card_size">
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_indicator_active"
                         android:backgroundTint="#DBEAFE" />
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="@dimen/game_card_icon"
+                        android:layout_height="@dimen/game_card_icon"
                         android:layout_gravity="center"
                         android:contentDescription="@string/body_icon_desc"
                         android:src="@drawable/ic_heart"
@@ -104,21 +104,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="@dimen/margin_large"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/body_label"
                         android:textColor="#1E293B"
-                        android:textSize="44sp"
+                        android:textSize="@dimen/text_size_title"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/body_subtitle"
                         android:textColor="#475569"
-                        android:textSize="26sp"
+                        android:textSize="@dimen/text_size_xl"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -130,8 +130,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="36dp"
+            android:layout_marginBottom="@dimen/margin_small"
+            app:cardCornerRadius="@dimen/margin_large"
             app:cardElevation="10dp"
             android:clickable="true"
             android:focusable="true"
@@ -142,19 +142,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="24dp">
+                android:padding="@dimen/margin_large">
 
                 <FrameLayout
-                    android:layout_width="110dp"
-                    android:layout_height="110dp">
+                    android:layout_width="@dimen/game_card_size"
+                    android:layout_height="@dimen/game_card_size">
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_indicator_active"
                         android:backgroundTint="#EDE9FE" />
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="@dimen/game_card_icon"
+                        android:layout_height="@dimen/game_card_icon"
                         android:layout_gravity="center"
                         android:contentDescription="@string/mind_icon_desc"
                         android:src="@drawable/ic_brain"
@@ -164,21 +164,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="@dimen/margin_large"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mind_label"
                         android:textColor="#1E293B"
-                        android:textSize="44sp"
+                        android:textSize="@dimen/text_size_title"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mind_subtitle"
                         android:textColor="#475569"
-                        android:textSize="26sp"
+                        android:textSize="@dimen/text_size_xl"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>

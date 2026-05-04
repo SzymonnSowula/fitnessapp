@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fitnessapp.utils.ScreenUtils;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -184,7 +186,7 @@ public class LiquidSortActivity extends AppCompatActivity {
         tubes.add(tube);
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = 0;
-        params.height = (int) (heightDp * getResources().getDisplayMetrics().density);
+        params.height = ScreenUtils.dpToPx(this, heightDp);
         params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
         params.setMargins(8, 12, 8, 12);
         tube.setLayoutParams(params);

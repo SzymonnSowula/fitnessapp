@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.fitnessapp.utils.ScreenUtils;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -231,8 +233,8 @@ private void flashColor(int index) {
         for (int i = 0; i < total; i++) {
             View view = new View(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    (int)(32 * getResources().getDisplayMetrics().density),
-                    (int)(8 * getResources().getDisplayMetrics().density)
+                    ScreenUtils.dpToPx(this, 32),
+                    ScreenUtils.dpToPx(this, 8)
             );
             params.setMargins(8, 0, 8, 0);
             view.setLayoutParams(params);

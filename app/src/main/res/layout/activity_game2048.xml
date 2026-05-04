@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="0"
+                android:text="@string/game_2048_score"
                 android:textColor="#1E40AF"
                 android:textSize="32sp"
                 android:textStyle="bold" />
@@ -114,7 +114,7 @@
             android:layout_weight="1"
             android:maxWidth="80dp"
             android:layout_marginHorizontal="8dp"
-            android:text="▲"
+            android:text="@string/game_2048_up"
             android:textSize="28sp"
             android:backgroundTint="@color/light_blue_bg"
             android:textColor="@color/blue_primary" />
@@ -135,7 +135,7 @@
             android:layout_weight="1"
             android:maxWidth="80dp"
             android:layout_marginHorizontal="8dp"
-            android:text="◀"
+            android:text="@string/game_2048_left"
             android:textSize="28sp"
             android:backgroundTint="@color/light_blue_bg"
             android:textColor="@color/blue_primary" />
@@ -148,7 +148,7 @@
             android:layout_weight="1"
             android:maxWidth="80dp"
             android:layout_marginHorizontal="8dp"
-            android:text="▼"
+            android:text="@string/game_2048_down"
             android:textSize="28sp"
             android:backgroundTint="@color/light_blue_bg"
             android:textColor="@color/blue_primary" />
@@ -161,7 +161,7 @@
             android:layout_weight="1"
             android:maxWidth="80dp"
             android:layout_marginHorizontal="8dp"
-            android:text="▶"
+            android:text="@string/game_2048_right"
             android:textSize="28sp"
             android:backgroundTint="@color/light_blue_bg"
             android:textColor="@color/blue_primary" />

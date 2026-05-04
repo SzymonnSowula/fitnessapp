@@ -105,4 +105,35 @@
     <string name="nav_home">Home</string>
     <string name="nav_exercises">ćwiczenia</string>
     <string name="nav_settings_label">Ustawienia</string>
+
+    <!-- MainActivity / Mood -->
+    <string name="welcome_fallback">Witaj Użytkowniku!</string>
+    <string name="mood_question">Jak się dzisiaj czujesz?</string>
+    <string name="mood_happy_label">Czuję się\ndobrze</string>
+    <string name="mood_happy_desc">Dobry nastrój</string>
+    <string name="mood_sad_label">Jestem\nzmęczony</string>
+    <string name="mood_sad_desc">Zmęczenie</string>
+    <string name="mood_very_sad_label">Nie czuję się\ndobrze</string>
+    <string name="mood_very_sad_desc">Zły nastrój</string>
+
+    <!-- ChoiceActivity -->
+    <string name="choice_title">Co chcesz\npoćwiczyć?</string>
+    <string name="choice_subtitle">Wybierz obszar treningu</string>
+    <string name="body_label">Ciało</string>
+    <string name="body_subtitle">Siła i równowaga</string>
+    <string name="body_icon_desc">Ikona ciała</string>
+    <string name="mind_label">Umysł</string>
+    <string name="mind_subtitle">Pamięć i koncentracja</string>
+    <string name="mind_icon_desc">Ikona umysłu</string>
+
+    <!-- Game 2048 -->
+    <string name="game_2048_score">0</string>
+    <string name="game_2048_up">▲</string>
+    <string name="game_2048_left">◀</string>
+    <string name="game_2048_down">▼</string>
+    <string name="game_2048_right">▶</string>
+
+    <!-- Memory Game -->
+    <string name="memory_score">0</string>
+    <string name="memory_moves">0</string>
 </resources>

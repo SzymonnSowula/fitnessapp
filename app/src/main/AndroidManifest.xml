@@ -55,7 +55,8 @@
             android:exported="false" />
         <activity
             android:name=".MemoryGameActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".Game2048Activity"
             android:exported="false"
@@ -72,25 +73,32 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ColorTapActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".EasyGamesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".MediumGamesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".HardGamesActivity"
-            android:exported="false" />
-<activity
- android:name=".LiquidSortActivity"
- android:exported="false" />
- <activity
- android:name=".GameInstructionActivity"
- android:exported="false" />
-<activity
-  android:name=".GameDifficultyActivity"
-  android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".LiquidSortActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".GameInstructionActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".GameDifficultyActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize" />
 <activity
   android:name=".HistoryActivity"
   android:label="Historia"

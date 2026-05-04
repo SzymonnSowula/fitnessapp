@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.card.MaterialCardView;
+
+import com.example.fitnessapp.utils.ScreenUtils;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -332,8 +334,7 @@ public class MemoryGameActivity extends AppCompatActivity {
         @Override
         public CardViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             MaterialCardView cardView = new MaterialCardView(parent.getContext());
-            float density = parent.getContext().getResources().getDisplayMetrics().density;
-            int marginPx = (int) (6 * density);
+            int marginPx = ScreenUtils.dpToPx(parent.getContext(), 6);
             int displayHeight = itemHeight > 0 ? (itemHeight - (marginPx * 2)) : ViewGroup.LayoutParams.WRAP_CONTENT;
             GridLayoutManager.LayoutParams params = new GridLayoutManager.LayoutParams(
                     GridLayoutManager.LayoutParams.MATCH_PARENT,
@@ -341,8 +342,8 @@ public class MemoryGameActivity extends AppCompatActivity {
             );
             params.setMargins(marginPx, marginPx, marginPx, marginPx);
             cardView.setLayoutParams(params);
-            cardView.setRadius(32f * density);
-            cardView.setCardElevation(2f * density);
+            cardView.setRadius(ScreenUtils.dpToPx(parent.getContext(), 32));
+            cardView.setCardElevation(ScreenUtils.dpToPx(parent.getContext(), 2));
             cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
             return new CardViewHolder(cardView);
         }
@@ -351,8 +352,7 @@ public class MemoryGameActivity extends AppCompatActivity {
         public void onBindViewHolder(CardViewHolder holder, int position) {
             if (itemHeight > 0) {
                 ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
-                float density = holder.itemView.getContext().getResources().getDisplayMetrics().density;
-                int marginPx = (int) (4 * density);
+                int marginPx = ScreenUtils.dpToPx(holder.itemView.getContext(), 4);
                 int calculatedHeight = itemHeight - (marginPx * 2);
                 if (params.height != calculatedHeight) {
                     params.height = calculatedHeight;

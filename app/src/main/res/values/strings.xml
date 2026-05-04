@@ -180,10 +180,10 @@
     <!-- Single Exercise placeholders -->
     <string name="exercise_progress_placeholder">ĆWICZENIE 1 Z 5</string>
     <string name="percentage_placeholder">20%</string>
-    <string name="exercise_name_placeholder">Wykrok w tył z asekuracją krzesła</string>
+    <string name="exercise_detail_name_placeholder">Wykrok w tył z asekuracją krzesła</string>
     <string name="difficulty_icons_placeholder">⤢ ⤢ ⤢ ⤢ ⤢</string>
     <string name="difficulty_easy">Łatwe</string>
-    <string name="contraindications_label">PRZECIWWSKAZANIA</string>
+    <string name="contraindications_title">PRZECIWWSKAZANIA</string>
     <string name="next_exercise_btn">NASTĘPNE ĆWICZENIE</string>
     <string name="finish_btn">Zakończ</string>
 

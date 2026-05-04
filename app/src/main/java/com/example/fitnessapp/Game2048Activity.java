@@ -3,7 +3,6 @@ package com.example.fitnessapp;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;

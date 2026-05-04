@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;

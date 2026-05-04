@@ -47,7 +47,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private int videoPosition = 0;
     private boolean isProcessingAction = false;
     private long exerciseStartTime;
-    private final Handler mainHandler = new Handler();
+    private final Handler mainHandler = new Handler(android.os.Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

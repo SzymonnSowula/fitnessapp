@@ -71,14 +71,14 @@ voiceNavigator.speakDelayed("Co chcesz poćwiczyć? Wybierz Ciało lub Umysł.",
             case "body":
             case "exercises":
                 voiceNavigator.speak("Przechodzę do ćwiczeń.");
-                new android.os.Handler().postDelayed(() -> {
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
                     startActivity(new Intent(ChoiceActivity.this, MainActivity.class));
                 }, 1000);
                 break;
             case "mind":
             case "games":
                 voiceNavigator.speak("Przechodzę do gier umysłowych.");
-                new android.os.Handler().postDelayed(() -> {
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
                     startActivity(new Intent(ChoiceActivity.this, MindGamesActivity.class));
                 }, 1000);
                 break;

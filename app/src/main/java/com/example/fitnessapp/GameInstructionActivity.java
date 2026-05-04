@@ -61,7 +61,7 @@ public class GameInstructionActivity extends AppCompatActivity {
             case "confirm":
             case "next":
                 voiceNavigator.speak("Przechodzę do wyboru poziomu trudności.");
-                new android.os.Handler().postDelayed(() -> {
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
                     View btnStart = findViewById(R.id.btn_start);
                     if (btnStart != null) btnStart.performClick();
                 }, 1000);

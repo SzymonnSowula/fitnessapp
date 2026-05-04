@@ -12,6 +12,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private static final String PREFS_NAME = "FitnessAppPrefs";
     private static final String KEY_ONBOARDING_COMPLETED = "onboarding_completed";
+    private final Handler splashHandler = new Handler(Looper.getMainLooper());
+    private Runnable splashRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,19 +27,23 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean onboardingCompleted = prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false);
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        splashRunnable = () -> {
             if (onboardingCompleted) {
                 startActivity(new Intent(SplashActivity.this, ChoiceActivity.class));
             } else {
                 startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));
             }
             finish();
-        }, 1200);
+        };
+        splashHandler.postDelayed(splashRunnable, 1200);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (splashRunnable != null) {
+            splashHandler.removeCallbacks(splashRunnable);
+        }
         VoiceManager.getInstance().cleanup();
     }
 }

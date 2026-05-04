@@ -76,35 +76,35 @@ public class MindGamesActivity extends AppCompatActivity {
  break;
  case "game_memory":
  voiceNavigator.speak("Uruchamiam grę memory.");
- new android.os.Handler().postDelayed(() -> {
- Intent intent = new Intent(this, GameInstructionActivity.class);
- intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_MEMORY);
- startActivity(intent);
- }, 1000);
- break;
- case "game_colors":
- voiceNavigator.speak("Uruchamiam grę kolory.");
- new android.os.Handler().postDelayed(() -> {
- Intent intent = new Intent(this, GameInstructionActivity.class);
- intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_COLORS);
- startActivity(intent);
- }, 1000);
- break;
- case "game_liquid":
- voiceNavigator.speak("Uruchamiam sortowanie płynów.");
- new android.os.Handler().postDelayed(() -> {
- Intent intent = new Intent(this, GameInstructionActivity.class);
- intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_LIQUID);
- startActivity(intent);
- }, 1000);
- break;
- case "game_2048":
- voiceNavigator.speak("Uruchamiam grę dwa tysiące czterdzieści osiem.");
- new android.os.Handler().postDelayed(() -> {
- Intent intent = new Intent(this, GameInstructionActivity.class);
- intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_2048);
- startActivity(intent);
- }, 1000);
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = new Intent(this, GameInstructionActivity.class);
+                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_MEMORY);
+                startActivity(intent);
+            }, 1000);
+            break;
+        case "game_colors":
+            voiceNavigator.speak("Uruchamiam grę kolory.");
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = new Intent(this, GameInstructionActivity.class);
+                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_COLORS);
+                startActivity(intent);
+            }, 1000);
+            break;
+        case "game_liquid":
+            voiceNavigator.speak("Uruchamiam sortowanie płynów.");
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = new Intent(this, GameInstructionActivity.class);
+                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_LIQUID);
+                startActivity(intent);
+            }, 1000);
+            break;
+        case "game_2048":
+            voiceNavigator.speak("Uruchamiam grę dwa tysiące czterdzieści osiem.");
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = new Intent(this, GameInstructionActivity.class);
+                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_2048);
+                startActivity(intent);
+            }, 1000);
  break;
  case "stop":
  voiceNavigator.stopSpeaking();

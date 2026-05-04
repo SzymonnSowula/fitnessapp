@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.fitnessapp.utils.AppExecutors;
 
 import java.util.List;
-import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -237,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 modelRunner.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Błąd zamykania modelRunner", e);
             }
         }
         if (voiceNavigator != null) {

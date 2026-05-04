@@ -246,7 +246,7 @@ public class LiquidSortActivity extends AppCompatActivity {
         }
 
         final int finalPourCount = pourCount;
-        final android.os.Handler handler = new android.os.Handler();
+        final android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
         for (int i = 0; i < finalPourCount; i++) {
             final int index = i;
             handler.postDelayed(() -> {

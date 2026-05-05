@@ -22,8 +22,11 @@ public class GameDifficultyActivity extends AppCompatActivity {
     private int selectedDifficulty = DIFFICULTY_EASY;
 
     private CardView cardEasy, cardMedium, cardHard;
-    private ImageView ivGameIcon;
-    private TextView tvGameTitle, tvEasyDesc, tvMediumDesc, tvHardDesc;
+    private android.view.View containerEasy, containerMedium, containerHard;
+    private ImageView ivEasyIcon, ivMediumIcon, ivHardIcon;
+    private TextView tvEasyTitle, tvMediumTitle, tvHardTitle;
+    private TextView tvEasyDesc, tvMediumDesc, tvHardDesc;
+    private ImageView ivCheckEasy, ivCheckMedium, ivCheckHard;
     private VoiceNavigator voiceNavigator;
 
     @Override
@@ -33,11 +36,25 @@ public class GameDifficultyActivity extends AppCompatActivity {
 
         gameType = getIntent().getIntExtra(EXTRA_GAME_TYPE, GameInstructionActivity.GAME_MEMORY);
 
-        ivGameIcon = findViewById(R.id.iv_game_icon);
-        tvGameTitle = findViewById(R.id.tv_game_title);
         tvEasyDesc = findViewById(R.id.tv_easy_desc);
         tvMediumDesc = findViewById(R.id.tv_medium_desc);
         tvHardDesc = findViewById(R.id.tv_hard_desc);
+
+        tvEasyTitle = findViewById(R.id.tv_easy_title);
+        tvMediumTitle = findViewById(R.id.tv_medium_title);
+        tvHardTitle = findViewById(R.id.tv_hard_title);
+
+        ivEasyIcon = findViewById(R.id.iv_easy_icon);
+        ivMediumIcon = findViewById(R.id.iv_medium_icon);
+        ivHardIcon = findViewById(R.id.iv_hard_icon);
+
+        containerEasy = findViewById(R.id.icon_container_easy);
+        containerMedium = findViewById(R.id.icon_container_medium);
+        containerHard = findViewById(R.id.icon_container_hard);
+
+        ivCheckEasy = findViewById(R.id.iv_check_easy);
+        ivCheckMedium = findViewById(R.id.iv_check_medium);
+        ivCheckHard = findViewById(R.id.iv_check_hard);
 
         cardEasy = findViewById(R.id.card_easy);
         cardMedium = findViewById(R.id.card_medium);
@@ -116,9 +133,6 @@ public class GameDifficultyActivity extends AppCompatActivity {
     private void setupGameDifficulty() {
         switch (gameType) {
             case GameInstructionActivity.GAME_MEMORY:
-                ivGameIcon.setImageResource(R.drawable.ic_brain);
-                ivGameIcon.setColorFilter(0xFF7C3AED);
-                tvGameTitle.setText(R.string.game_memory);
                 tvEasyDesc.setText("3 pary kart");
                 tvMediumDesc.setText("6 par kart");
                 tvHardDesc.setText("8 par kart");
@@ -126,9 +140,6 @@ public class GameDifficultyActivity extends AppCompatActivity {
                 break;
 
             case GameInstructionActivity.GAME_COLORS:
-                ivGameIcon.setImageResource(R.drawable.ic_mood_happy);
-                ivGameIcon.setColorFilter(0xFF059669);
-                tvGameTitle.setText(R.string.game_colors);
                 tvEasyDesc.setText("Krótkie sekwencje");
                 tvMediumDesc.setText("Średnie sekwencje");
                 tvHardDesc.setText("Długie sekwencje");
@@ -136,9 +147,6 @@ public class GameDifficultyActivity extends AppCompatActivity {
                 break;
 
             case GameInstructionActivity.GAME_LIQUID:
-                ivGameIcon.setImageResource(R.drawable.ic_plan);
-                ivGameIcon.setColorFilter(0xFF2563EB);
-                tvGameTitle.setText(R.string.game_liquid);
                 tvEasyDesc.setText("3 kolory");
                 tvMediumDesc.setText("4 kolory");
                 tvHardDesc.setText("5 kolorów");
@@ -146,9 +154,6 @@ public class GameDifficultyActivity extends AppCompatActivity {
                 break;
 
             case GameInstructionActivity.GAME_2048:
-                ivGameIcon.setImageResource(R.drawable.ic_onboarding_3);
-                ivGameIcon.setColorFilter(0xFFEA580C);
-                tvGameTitle.setText(R.string.game_2048);
                 tvEasyDesc.setText("Cel: 512");
                 tvMediumDesc.setText("Cel: 1024");
                 tvHardDesc.setText("Cel: 2048");
@@ -158,63 +163,38 @@ public class GameDifficultyActivity extends AppCompatActivity {
     }
 
     private void updateDifficultyUI() {
-        // Easy card - selected: green, unselected: light blue
-        if (selectedDifficulty == DIFFICULTY_EASY) {
-            cardEasy.setCardBackgroundColor(0xFF057A32);
-            cardMedium.setCardBackgroundColor(0xFFDBEAFE);
-            cardHard.setCardBackgroundColor(0xFFDBEAFE);
-        } else if (selectedDifficulty == DIFFICULTY_MEDIUM) {
-            cardEasy.setCardBackgroundColor(0xFFDBEAFE);
-            cardMedium.setCardBackgroundColor(0xFFEA580C);
-            cardHard.setCardBackgroundColor(0xFFDBEAFE);
-        } else {
-            cardEasy.setCardBackgroundColor(0xFFDBEAFE);
-            cardMedium.setCardBackgroundColor(0xFFDBEAFE);
-            cardHard.setCardBackgroundColor(0xFFDC2626);
-        }
+        // Reset all to unselected state
+        setCardSelected(cardEasy, containerEasy, ivEasyIcon, tvEasyTitle, tvEasyDesc, ivCheckEasy, false, 0xFFE6F9EE, 0xFF10B981);
+        setCardSelected(cardMedium, containerMedium, ivMediumIcon, tvMediumTitle, tvMediumDesc, ivCheckMedium, false, 0xFFE0F2FE, 0xFF004A99); // Blue for medium
+        setCardSelected(cardHard, containerHard, ivHardIcon, tvHardTitle, tvHardDesc, ivCheckHard, false, 0xFFFEF2F2, 0xFFEF4444);
 
-        // Update text and icon colors based on selection for accessibility
-        updateCardSelectionState(cardEasy, R.id.iv_easy_icon, 0xFF34D399, selectedDifficulty == DIFFICULTY_EASY);
-        updateCardSelectionState(cardMedium, R.id.iv_medium_icon, 0xFF93C5FD, selectedDifficulty == DIFFICULTY_MEDIUM);
-        updateCardSelectionState(cardHard, R.id.iv_hard_icon, 0xFFFCA5A5, selectedDifficulty == DIFFICULTY_HARD);
+        // Apply selected state
+        if (selectedDifficulty == DIFFICULTY_EASY) {
+            setCardSelected(cardEasy, containerEasy, ivEasyIcon, tvEasyTitle, tvEasyDesc, ivCheckEasy, true, 0xFF34D399, 0xFFFFFFFF);
+        } else if (selectedDifficulty == DIFFICULTY_MEDIUM) {
+            setCardSelected(cardMedium, containerMedium, ivMediumIcon, tvMediumTitle, tvMediumDesc, ivCheckMedium, true, 0xFF337ACC, 0xFFFFFFFF);
+        } else if (selectedDifficulty == DIFFICULTY_HARD) {
+            setCardSelected(cardHard, containerHard, ivHardIcon, tvHardTitle, tvHardDesc, ivCheckHard, true, 0xFFEF4444, 0xFFFFFFFF);
+        }
     }
 
-    private void updateCardSelectionState(CardView card, int iconId, int indicatorColor, boolean isSelected) {
-        if (card.getChildCount() > 0 && card.getChildAt(0) instanceof android.view.ViewGroup) {
-            android.view.ViewGroup container = (android.view.ViewGroup) card.getChildAt(0);
-
-            // 1. Update Icon and its indicator background
-            if (container.getChildCount() > 0 && container.getChildAt(0) instanceof android.view.ViewGroup) {
-                android.view.ViewGroup iconFrame = (android.view.ViewGroup) container.getChildAt(0);
-                if (iconFrame.getChildCount() >= 2) {
-                    android.view.View indicator = iconFrame.getChildAt(0);
-                    ImageView icon = (ImageView) iconFrame.getChildAt(1);
-
-                    if (isSelected) {
-                        indicator.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0x40FFFFFF)); // Semi-transparent white
-                        icon.setColorFilter(0xFFFFFFFF);
-                    } else {
-                        indicator.setBackgroundTintList(android.content.res.ColorStateList.valueOf(indicatorColor));
-                        // Pick a dark color for the icon on light background
-                        icon.setColorFilter(0xFF1E40AF);
-                    }
-                }
-            }
-
-            // 2. Update Text Colors
-            if (container.getChildCount() > 1 && container.getChildAt(1) instanceof android.view.ViewGroup) {
-                android.view.ViewGroup textContainer = (android.view.ViewGroup) container.getChildAt(1);
-                for (int i = 0; i < textContainer.getChildCount(); i++) {
-                    if (textContainer.getChildAt(i) instanceof TextView) {
-                        TextView tv = (TextView) textContainer.getChildAt(i);
-                        if (isSelected) {
-                            tv.setTextColor(0xFFFFFFFF);
-                        } else {
-                            tv.setTextColor(i == 0 ? 0xFF004A99 : 0xFF1E40AF);
-                        }
-                    }
-                }
-            }
+    private void setCardSelected(CardView card, android.view.View iconContainer, ImageView icon, 
+                                TextView title, TextView desc, ImageView check, boolean selected, 
+                                int iconBgColor, int iconColor) {
+        if (selected) {
+            card.setCardBackgroundColor(0xFF004A99);
+            title.setTextColor(0xFFFFFFFF);
+            desc.setTextColor(0xFFDBEAFE);
+            iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
+            icon.setColorFilter(iconColor);
+            check.setVisibility(android.view.View.VISIBLE);
+        } else {
+            card.setCardBackgroundColor(0xFFFFFFFF);
+            title.setTextColor(0xFF004A99);
+            desc.setTextColor(0xFF64748B);
+            iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
+            icon.setColorFilter(iconColor);
+            check.setVisibility(android.view.View.GONE);
         }
     }
 

@@ -72,7 +72,7 @@ public class Game2048Activity extends AppCompatActivity {
 
         restartGame();
 
-        voiceNavigator.speakDelayed("Gra 2048. Twój cel to " + targetScore + ". Przesuwaj kafelki aby łączyć te same liczby.", 500);
+        voiceNavigator.speakDelayed(getString(R.string.game_2048_start_voice, targetScore), 500);
     }
 
     private void initCells() {
@@ -95,30 +95,30 @@ public class Game2048Activity extends AppCompatActivity {
             case "new_game":
             case "reset":
                 restartGame();
-                voiceNavigator.speak("Zaczynamy od nowa.");
+                voiceNavigator.speak(getString(R.string.game_2048_new_game_voice));
                 break;
             case "move_up":
-                voiceNavigator.speak("Góra");
+                voiceNavigator.speak(getString(R.string.game_2048_move_up_voice));
                 moveUp();
                 break;
             case "move_down":
-                voiceNavigator.speak("Dół");
+                voiceNavigator.speak(getString(R.string.game_2048_move_down_voice));
                 moveDown();
                 break;
             case "move_left":
-                voiceNavigator.speak("Lewo");
+                voiceNavigator.speak(getString(R.string.game_2048_move_left_voice));
                 moveLeft();
                 break;
             case "move_right":
-                voiceNavigator.speak("Prawo");
+                voiceNavigator.speak(getString(R.string.game_2048_move_right_voice));
                 moveRight();
                 break;
             case "help":
-                voiceNavigator.speak("Mów góra, dół, lewo lub prawo aby przesuwać kafelki.");
+                voiceNavigator.speak(getString(R.string.game_2048_help_voice));
                 break;
             case "read":
             case "repeat":
-                voiceNavigator.speak("Gra 2048. Twój wynik to " + score);
+                voiceNavigator.speak(getString(R.string.game_2048_status_voice, score));
                 break;
         }
     }
@@ -225,11 +225,11 @@ public class Game2048Activity extends AppCompatActivity {
         }
 
         if (hasWon) {
-            Toast.makeText(this, "Gratulacje! Cel osiągnięty!", Toast.LENGTH_LONG).show();
-            voiceNavigator.speak("Gratulacje! Cel " + targetScore + " osiągnięty! Wygrałeś!");
+            Toast.makeText(this, R.string.game_2048_win_toast, Toast.LENGTH_LONG).show();
+            voiceNavigator.speak(getString(R.string.game_2048_win_voice, targetScore));
         } else if (!hasEmpty && !canMove()) {
-            Toast.makeText(this, "Koniec gry! Nie ma więcej ruchów.", Toast.LENGTH_LONG).show();
-            voiceNavigator.speak("Koniec gry! Nie ma więcej możliwych ruchów. Twój wynik to " + score + ".");
+            Toast.makeText(this, R.string.game_2048_game_over_toast, Toast.LENGTH_LONG).show();
+            voiceNavigator.speak(getString(R.string.game_2048_game_over_voice, score));
         }
     }
 

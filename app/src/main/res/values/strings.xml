@@ -59,7 +59,17 @@
     <string name="no">nie</string>
     <string name="instruction_label">Instrukcja:</string>
     <string name="contraindications_label">Przeciwwskazania:</string>
+    <string name="exercise_step_fmt">ĆWICZENIE %1$d Z %2$d</string>
+    <string name="video_button">WIDEO</string>
+    <string name="back_button">POWRÓT</string>
+    <string name="previous">Poprzednie</string>
+    <string name="difficulty_medium">Średnie</string>
+    <string name="difficulty_hard">Trudne</string>
+    <string name="exercise_saved">Ćwiczenie zapisane w historii</string>
+    <string name="training_plan_ready">Przygotowałam plan treningowy. Jeśli potrzebujesz pomocy, powiedz: POMOC. Ćwiczenie 1: %1$s</string>
+    <string name="step2_announcement">Krok drugi: zobacz wideo i sprawdź przeciwwskazania.</string>
     <string name="no_description">Brak opisu ćwiczenia.</string>
+    <string name="no_description_short">Brak opisu.</string>
     <string name="none">Brak.</string>
 
     <!-- Voice help dialog -->
@@ -132,10 +142,63 @@
     <string name="game_2048_left">◀</string>
     <string name="game_2048_down">▼</string>
     <string name="game_2048_right">▶</string>
+    <string name="game_2048_start_voice">Gra 2048. Twój cel to %1$d. Przesuwaj kafelki aby łączyć te same liczby.</string>
+    <string name="game_2048_new_game_voice">Zaczynamy od nowa.</string>
+    <string name="game_2048_move_up_voice">Góra</string>
+    <string name="game_2048_move_down_voice">Dół</string>
+    <string name="game_2048_move_left_voice">Lewo</string>
+    <string name="game_2048_move_right_voice">Prawo</string>
+    <string name="game_2048_help_voice">Mów góra, dół, lewo lub prawo aby przesuwać kafelki.</string>
+    <string name="game_2048_status_voice">Gra 2048. Twój wynik to %1$d</string>
+    <string name="game_2048_win_toast">Gratulacje! Cel osiągnięty!</string>
+    <string name="game_2048_win_voice">Gratulacje! Cel %1$d osiągnięty! Wygrałeś!</string>
+    <string name="game_2048_game_over_toast">Koniec gry! Nie ma więcej ruchów.</string>
+    <string name="game_2048_game_over_voice">Koniec gry! Nie ma więcej możliwych ruchów. Twój wynik to %1$d.</string>
+
+    <string name="game_2048_instruction">Połącz kafelki, aby zdobyć %1$d</string>
+    <string name="game_2048_restart">Zacznij od nowa</string>
 
     <!-- Memory Game -->
     <string name="memory_score">0</string>
     <string name="memory_moves">0</string>
+
+    <string name="color_tap_score_fmt">Wynik: %1$d</string>
+    <string name="color_tap_level_fmt">Poziom %1$d</string>
+    <string name="color_tap_start_voice">Gra Kolory. Powtarzaj sekwencję kolorów.</string>
+    <string name="color_tap_new_game_voice">Nowa gra.</string>
+    <string name="color_tap_help_voice">Obserwuj sekwencję kolorów i ją powtórz.</string>
+    <string name="color_tap_status_voice">Gra Kolory. Poziom %1$d. Wynik: %2$d</string>
+    <string name="color_tap_watch">Patrz!</string>
+    <string name="color_tap_remember">Zapamiętaj sekwencję...</string>
+    <string name="color_tap_good">Dobrze!</string>
+    <string name="color_tap_repeat">Powtórz sekwencję!</string>
+    <string name="color_tap_your_turn_voice">Twoja kolej. Powtórz sekwencję.</string>
+    <string name="color_tap_oops">Ups!</string>
+    <string name="color_tap_try_again">Spróbuj jeszcze raz.</string>
+    <string name="color_tap_error_voice">Niestety błąd. Spróbuj jeszcze raz.</string>
+    <string name="color_tap_great">Świetnie!</string>
+    <string name="color_tap_next_level_voice">Świetnie! Przechodzisz do poziomu %1$d</string>
+
+    <!-- Liquid Sort Game -->
+    <string name="liquid_start_voice">Gra Płyny. Sortuj kolory przelewając płyny między probówkami.</string>
+    <string name="liquid_reset_voice">Resetuję poziom.</string>
+    <string name="liquid_next_level_voice">Następny poziom.</string>
+    <string name="liquid_help_voice">Kliknij na probówkę aby ją wybrać, a następnie na drugą aby przelać płyn.</string>
+    <string name="liquid_status_voice">Gra Płyny. Poziom %1$d. %2$s</string>
+    <string name="liquid_status_unsorted">Wszystkie probówki są jeszcze nieposortowane.</string>
+    <string name="liquid_status_progress">Uzupełniono %1$d z %2$d kolorów.</string>
+    <string name="liquid_level_fmt">Poziom %1$d</string>
+    <string name="liquid_win_toast">Brawo! Poziom ukończony!</string>
+    <string name="liquid_win_voice">Brawo! Poziom ukończony!</string>
+
+    <string name="score_title">WYNIK</string>
+    <string name="moves_title">RUCHY</string>
+    <string name="play_again_btn">Zagraj ponownie</string>
+    <string name="memory_title">Gra Memory</string>
+
+    <string name="liquid_reset_btn">Resetuj Poziom</string>
+    <string name="liquid_next_btn">Następny Poziom</string>
+    <string name="exit_btn">Wyjdź</string>
 
     <!-- Dialogs -->
     <string name="dialog_exit_title">Wyjście z aplikacji</string>
@@ -220,9 +283,41 @@
     <string name="exercise_name_label">Nazwa ćwiczenia</string>
     <string name="category_label">Kategoria</string>
 
+    <string name="mind_games_intro">Dostępne gry: Memory - ćwiczenie pamięci. Kolory - powtarzanie sekwencji. Płyny - sortowanie kolorów. Dwa tysiące czterdzieści osiem - łączenie liczb.</string>
+    <string name="launching_memory">Uruchamiam grę Memory.</string>
+    <string name="launching_colors">Uruchamiam grę Kolory.</string>
+    <string name="launching_liquid">Uruchamiam sortowanie płynów.</string>
+    <string name="launching_2048">Uruchamiam grę dwa tysiące czterdzieści osiem.</string>
+    <string name="difficulty_selection_voice">Przechodzę do wyboru poziomu trudności.</string>
+    <string name="instruction_read_voice">Komendy: start lub następny - przejdź do wyboru poziomu. Wstecz - wróć. Czytaj - przeczytaj instrukcję.</string>
+    <string name="difficulty_help_voice">Wybierz poziom trudności: łatwy, średni lub trudny. Powiedz start aby rozpocząć grę.</string>
+    <string name="selected_easy">Wybrano poziom łatwy. Powiedz start aby zacząć.</string>
+    <string name="selected_medium">Wybrano poziom średni. Powiedz start aby zacząć.</string>
+    <string name="selected_hard">Wybrano poziom trudny. Powiedz start aby zacząć.</string>
+    <string name="launching_game">Rozpoczynam grę.</string>
+
     <!-- Win Dialog -->
     <string name="win_congrats">BRAWO!!!!</string>
+    <string name="win_increase_difficulty">BRAWO!!!!\nCzy chcesz zwiększyć poziom trudności?</string>
+    <string name="win_max_level">BRAWO!!!!\nUkończyłeś najtrudniejszy poziom!</string>
     <string name="increase_level">Zwiększ poziom</string>
     <string name="play_again">Zagraj jeszcze raz</string>
     <string name="exit">Wyjdź</string>
+    <string name="restart">Restart</string>
+    <string name="memory_win_voice">Brawo! Ukończyłeś grę w %1$d ruchach.</string>
+    <string name="memory_status_voice">Twój wynik to %1$d punktów, wykonałeś %2$d ruchów.</string>
+    <string name="memory_new_game_voice">Nowa gra.</string>
+    <string name="memory_help_voice">Witaj w grze Memory. Znajdź pary jednakowych obrazków. Kliknij w kartę, aby ją odsłonić.</string>
+    <string name="memory_start_voice">Gra Memory. Znajdź pary jednakowych kart.</string>
+    <string name="memory_title_fmt">Memory %1$dx%2$d</string>
+    <string name="mem_apple">Jabłko</string>
+    <string name="mem_banana">Banan</string>
+    <string name="mem_cat">Kot</string>
+    <string name="mem_dog">Pies</string>
+    <string name="mem_sun">Słońce</string>
+    <string name="mem_house">Dom</string>
+    <string name="mem_car">Samochód</string>
+    <string name="mem_tree">Drzewo</string>
+    <string name="mem_flower">Kwiat</string>
+    <string name="mem_fish">Ryba</string>
 </resources>

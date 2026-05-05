@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F8FAFC"
     android:paddingHorizontal="20dp"
     android:paddingTop="20dp"
     android:paddingBottom="16dp">
@@ -16,43 +17,43 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
-<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise_progress_placeholder"
-            android:textColor="#1E293B"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.05" />
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="ĆWICZENIE 1 Z 5"
+                android:textColor="#1E293B"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05" />
 
-        <ImageButton
-            android:id="@+id/btn_help"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentEnd="true"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_help"
-            android:scaleType="fitCenter"
-            android:padding="8dp"
-            android:contentDescription="@string/voice_help_desc" />
+            <ImageButton
+                android:id="@+id/btn_help"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentEnd="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_help"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:contentDescription="@string/voice_help_desc" />
 
-        <TextView
-            android:id="@+id/tv_percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/btn_help"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:text="@string/percentage_placeholder"
-            android:textColor="#004A99"
-            android:textSize="26sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/btn_help"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                tools:text="20%"
+                android:textColor="#004A99"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/progress_exercise"
@@ -61,17 +62,103 @@
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
             android:max="100"
-            android:progress="20"
+            tools:progress="20"
             android:progressDrawable="@drawable/progress_bar_custom" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_difficulty_icons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#004A99"
+                android:textSize="24sp"
+                tools:text="● ● ○" />
+
+            <TextView
+                android:id="@+id/tv_difficulty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="#64748B"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="Średnie" />
+        </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
+    <!-- Step 1: Description -->
+    <LinearLayout
+        android:id="@+id/layout_step1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/btn_next"
+        app:layout_constraintTop_toBottomOf="@id/header_progress">
+
+        <TextView
+            android:id="@+id/tv_exercise_name_step1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Nazwa Ćwiczenia"
+            android:textColor="#004A99"
+            android:textSize="44sp"
+            android:textStyle="bold"
+            android:lineSpacingMultiplier="0.9" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/instruction_label"
+            android:textColor="#334155"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:fillViewport="true">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp">
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="24dp"
+                    android:textColor="#1E293B"
+                    android:textSize="32sp"
+                    android:lineSpacingMultiplier="1.1"
+                    tools:text="Tutaj pojawi się opis ćwiczenia, który jest duży i czytelny dla seniora." />
+            </androidx.cardview.widget.CardView>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- Step 2: Video & Contraindications -->
+    <ScrollView
+        android:id="@+id/layout_step2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
         android:fillViewport="true"
-        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@id/btn_next"
         app:layout_constraintTop_toBottomOf="@id/header_progress">
 
@@ -81,68 +168,22 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_exercise_name"
+                android:id="@+id/tv_exercise_name_step2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/exercise_detail_name_placeholder"
+                tools:text="Nazwa Ćwiczenia"
                 android:textColor="#004A99"
                 android:textSize="44sp"
                 android:textStyle="bold"
                 android:lineSpacingMultiplier="0.9" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_difficulty_icons"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/difficulty_icons_placeholder"
-                    android:textColor="#057A32"
-                    android:textSize="26sp" />
-
-                <TextView
-                    android:id="@+id/tv_difficulty_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="@string/difficulty_easy"
-                    android:textColor="#057A32"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:cardBackgroundColor="#F1F5F9"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
-
-                <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="24dp"
-                    tools:text="@string/no_description"
-                    android:textColor="#1E293B"
-                    android:textSize="26sp"
-                    android:lineSpacingMultiplier="1.1" />
-            </androidx.cardview.widget.CardView>
-
-            <!-- Video Container -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/video_container"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_marginTop="24dp"
+                android:layout_height="320dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
+                app:cardElevation="8dp"
                 app:cardBackgroundColor="#000000">
 
                 <VideoView
@@ -156,58 +197,62 @@
                 android:id="@+id/tv_contraindications_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/contraindications_title"
+                android:layout_marginTop="20dp"
+                android:text="@string/contraindications_label"
                 android:textColor="#B91C1C"
                 android:textSize="26sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_contraindications"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_contraindications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="#B91C1C"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                app:cardBackgroundColor="#FEF2F2"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
 
+                <TextView
+                    android:id="@+id/tv_contraindications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textColor="#B91C1C"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    tools:text="Choroba stawów kolan/bioder" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="12dp"
         android:backgroundTint="#005CB9"
-        android:text="@string/next_exercise_btn"
+        tools:text="DALEJ"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="26sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        app:icon="@drawable/ic_chevron_right"
-        app:iconGravity="textEnd"
-        app:iconPadding="16dp"
-        app:iconTint="@color/white"
-        app:cornerRadius="16dp"
+        app:cornerRadius="20dp"
         app:layout_constraintBottom_toTopOf="@id/btn_finish" />
 
     <Button
         android:id="@+id/btn_finish"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="80dp"
         android:backgroundTint="#FFFFFF"
-        android:text="@string/finish_btn"
-        android:textAllCaps="false"
+        tools:text="POPRZEDNIE"
+        android:textAllCaps="true"
         android:textColor="#1E293B"
-        android:textSize="26sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:strokeColor="#CBD5E1"
         app:strokeWidth="2dp"
-        app:cornerRadius="16dp"
+        app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

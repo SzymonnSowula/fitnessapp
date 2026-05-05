@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,13 +38,15 @@ public class SingleExerciseActivity extends AppCompatActivity {
     private List<Exercise> exercises = new ArrayList<>();
     private int currentIndex = 0;
 
-    private TextView tvProgress, tvPercentage, tvExerciseName, tvDifficultyIcons, tvDifficultyText, tvDescription, tvContraindicationsLabel, tvContraindications;
+    private TextView tvProgress, tvPercentage, tvExerciseNameStep1, tvExerciseNameStep2, tvDifficultyIcons, tvDifficultyText, tvDescription, tvContraindicationsLabel, tvContraindications;
+    private View layoutStep1, layoutStep2;
     private ProgressBar progressExercise;
     private Button btnNext, btnFinish;
     private VoiceNavigator voiceNavigator;
     private VideoView videoView;
     private int videoPosition = 0;
     private boolean isProcessingAction = false;
+    private boolean isStep2 = false;
     private long exerciseStartTime;
     private final Handler mainHandler = new Handler(android.os.Looper.getMainLooper());
 
@@ -71,12 +72,10 @@ public class SingleExerciseActivity extends AppCompatActivity {
             List<Exercise> allExercises = db.exerciseDao().getAll();
             ExerciseRecommender.UserProfile profile = new ExerciseRecommender.UserProfile();
             
-            // Mapowanie nastroju
             if (moodType == MOOD_HAPPY) profile.samopoczucie = 3;
             else if (moodType == MOOD_VERY_SAD) profile.samopoczucie = 1;
             else profile.samopoczucie = 2;
 
-            // Synchronizacja z SharedPreferences
             profile.mozeStac = prefs.getBoolean("can_stand", true);
             profile.mozePodloge = prefs.getBoolean("can_exercise_floor", false);
             profile.krzeslo = prefs.getBoolean("needs_chair", false);
@@ -88,7 +87,6 @@ public class SingleExerciseActivity extends AppCompatActivity {
             profile.cel = prefs.getString("user_goal", "mieszana");
             profile.schorzenia = userConditions;
 
-            // WYWOŁANIE REKOMENDATORA
             exercises = ExerciseRecommender.recommend(allExercises, profile, 5);
 
             runOnUiThread(() -> {
@@ -98,7 +96,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
                 } else {
                     showExercise(currentIndex);
                     exerciseStartTime = System.currentTimeMillis();
-                    voiceNavigator.speakDelayed("Przygotowałam plan treningowy. Jeśli potrzebujesz pomocy, powiedz: POMOC. Ćwiczenie 1: " + exercises.get(0).name, 500);
+                    voiceNavigator.speakDelayed(getString(R.string.training_plan_ready, exercises.get(0).name), 500);
                 }
             });
         });
@@ -108,16 +106,21 @@ public class SingleExerciseActivity extends AppCompatActivity {
             isProcessingAction = true;
             voiceNavigator.stopSpeaking();
 
-            // Save current exercise to history
-            saveCurrentExercise();
-
-            if (currentIndex < exercises.size() - 1) {
-                currentIndex++;
-                showExercise(currentIndex);
-                voiceNavigator.speak("Ćwiczenie " + (currentIndex + 1) + ": " + exercises.get(currentIndex).name);
-                mainHandler.postDelayed(() -> isProcessingAction = false, 1000);
+            if (!isStep2) {
+                isStep2 = true;
+                updateStepVisibility();
+                voiceNavigator.speak(getString(R.string.step2_announcement));
+                mainHandler.postDelayed(() -> isProcessingAction = false, 500);
             } else {
-                finish();
+                saveCurrentExercise();
+                if (currentIndex < exercises.size() - 1) {
+                    currentIndex++;
+                    isStep2 = false;
+                    showExercise(currentIndex);
+                    mainHandler.postDelayed(() -> isProcessingAction = false, 1000);
+                } else {
+                    finish();
+                }
             }
         });
 
@@ -125,21 +128,27 @@ public class SingleExerciseActivity extends AppCompatActivity {
             if (isProcessingAction) return;
             isProcessingAction = true;
             voiceNavigator.stopSpeaking();
-            if (currentIndex == 0) {
-                saveCurrentExercise();
-                finish();
+
+            if (isStep2) {
+                isStep2 = false;
+                updateStepVisibility();
+                mainHandler.postDelayed(() -> isProcessingAction = false, 500);
             } else {
-                currentIndex--;
-                showExercise(currentIndex);
-                voiceNavigator.speak("Poprzednie ćwiczenie: " + exercises.get(currentIndex).name);
-                mainHandler.postDelayed(() -> isProcessingAction = false, 1000);
+                if (currentIndex == 0) {
+                    saveCurrentExercise();
+                    finish();
+                } else {
+                    currentIndex--;
+                    isStep2 = true;
+                    showExercise(currentIndex);
+                    mainHandler.postDelayed(() -> isProcessingAction = false, 1000);
+                }
             }
         });
     }
 
     private void handleVoiceCommand(String command) {
         if (command == null || isProcessingAction) return;
-        
         String cleanCommand = command.toLowerCase(Locale.ROOT);
         switch (cleanCommand) {
             case "next": 
@@ -147,32 +156,26 @@ public class SingleExerciseActivity extends AppCompatActivity {
             case "next_exercise":
                 btnNext.performClick();
                 break;
-                
             case "previous": 
             case "poprzednie": 
             case "previous_exercise":
                 btnFinish.performClick();
                 break;
-                
             case "back": 
             case "powrót": 
                 onBackPressed(); 
                 break;
-                
             case "read": 
             case "czytaj": 
             case "read_description":
                 voiceNavigator.speak(tvDescription.getText().toString()); 
                 break;
-
             case "finish":
                 onBackPressed();
                 break;
-
             case "stop": 
                 voiceNavigator.stopSpeaking(); 
                 break;
-
             case "help":
             case "pomoc":
                 voiceNavigator.speak(VoiceCommands.getExerciseHelpText());
@@ -184,7 +187,10 @@ public class SingleExerciseActivity extends AppCompatActivity {
         tvProgress = findViewById(R.id.tv_progress);
         tvPercentage = findViewById(R.id.tv_percentage);
         progressExercise = findViewById(R.id.progress_exercise);
-        tvExerciseName = findViewById(R.id.tv_exercise_name);
+        tvExerciseNameStep1 = findViewById(R.id.tv_exercise_name_step1);
+        tvExerciseNameStep2 = findViewById(R.id.tv_exercise_name_step2);
+        layoutStep1 = findViewById(R.id.layout_step1);
+        layoutStep2 = findViewById(R.id.layout_step2);
         tvDifficultyIcons = findViewById(R.id.tv_difficulty_icons);
         tvDifficultyText = findViewById(R.id.tv_difficulty_text);
         tvDescription = findViewById(R.id.tv_description);
@@ -195,17 +201,37 @@ public class SingleExerciseActivity extends AppCompatActivity {
         videoView = findViewById(R.id.video_view);
     }
 
+    private void updateStepVisibility() {
+        if (isStep2) {
+            layoutStep1.setVisibility(View.GONE);
+            layoutStep2.setVisibility(View.VISIBLE);
+            btnNext.setText(currentIndex >= exercises.size() - 1 ? getString(R.string.finish) : getString(R.string.next));
+            btnFinish.setText(R.string.back_button);
+            if (videoView != null) videoView.start();
+        } else {
+            layoutStep1.setVisibility(View.VISIBLE);
+            layoutStep2.setVisibility(View.GONE);
+            btnNext.setText(R.string.video_button);
+            btnFinish.setText(currentIndex == 0 ? getString(R.string.finish) : getString(R.string.previous));
+            if (videoView != null) videoView.pause();
+            if (exercises != null && currentIndex < exercises.size()) {
+                Exercise e = exercises.get(currentIndex);
+                voiceNavigator.speak(e.name + ". " + (e.opis != null ? e.opis : ""));
+            }
+        }
+    }
+
     private void showExercise(int index) {
         exerciseStartTime = System.currentTimeMillis();
         Exercise e = exercises.get(index);
-        tvProgress.setText("ĆWICZENIE " + (index + 1) + " Z " + exercises.size());
+        tvProgress.setText(getString(R.string.exercise_step_fmt, index + 1, exercises.size()));
         tvPercentage.setText(((index + 1) * 100 / exercises.size()) + "%");
         progressExercise.setProgress((index + 1) * 100 / exercises.size());
-        tvExerciseName.setText(e.name);
+        tvExerciseNameStep1.setText(e.name);
+        tvExerciseNameStep2.setText(e.name);
         tvDifficultyIcons.setText(getDifficultyIcons((int) e.poziomTrudnosciNum));
         tvDifficultyText.setText(getDifficultyText((int) e.poziomTrudnosciNum));
-        tvDescription.setText(e.opis != null ? e.opis : "Brak opisu.");
-        
+        tvDescription.setText(e.opis != null ? e.opis : getString(R.string.no_description_short));
         if (e.przeciwwskazania != null && !e.przeciwwskazania.equalsIgnoreCase("brak")) {
             tvContraindicationsLabel.setVisibility(View.VISIBLE);
             tvContraindications.setVisibility(View.VISIBLE);
@@ -214,19 +240,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
             tvContraindicationsLabel.setVisibility(View.GONE);
             tvContraindications.setVisibility(View.GONE);
         }
-
-        // Logika przycisków nawigacji
-        if (index == 0) {
-            btnFinish.setText("ZAKOŃCZ");
-        } else {
-            btnFinish.setText("POPRZEDNIE");
-        }
-
-        if (index >= exercises.size() - 1) {
-            btnNext.setText("ZAKOŃCZ");
-        } else {
-            btnNext.setText("NASTĘPNE");
-        }
+        updateStepVisibility();
     }
 
     private String getDifficultyIcons(int v) {
@@ -236,7 +250,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
     }
 
     private String getDifficultyText(int v) {
-        return v <= 1 ? "Łatwe" : (v <= 2 ? "Średnie" : "Trudne");
+        return v <= 1 ? getString(R.string.difficulty_easy) : (v <= 2 ? getString(R.string.difficulty_medium) : getString(R.string.difficulty_hard));
     }
 
     private void setupVideoView() {
@@ -248,13 +262,11 @@ public class SingleExerciseActivity extends AppCompatActivity {
                     MediaController mediaController = new MediaController(this);
                     mediaController.setAnchorView(videoView);
                     videoView.setMediaController(mediaController);
-                    videoView.setOnPreparedListener(mp -> {
-                        mp.setLooping(true);
-                        if (videoPosition > 0) {
-                            videoView.seekTo(videoPosition);
-                        }
-                        videoView.start();
-                    });
+        videoView.setOnPreparedListener(mp -> {
+            mp.setLooping(true);
+            if (videoPosition > 0) videoView.seekTo(videoPosition);
+            if (isStep2) videoView.start();
+        });
                 });
             } catch (IOException e) {
                 runOnUiThread(() -> {
@@ -267,16 +279,12 @@ public class SingleExerciseActivity extends AppCompatActivity {
 
     private File copyAssetToCache(Context context, String assetName, String outFileName) throws IOException {
         File outFile = new File(context.getCacheDir(), outFileName);
-        if (outFile.exists()) {
-            return outFile;
-        }
+        if (outFile.exists()) return outFile;
         try (InputStream is = context.getAssets().open(assetName);
              FileOutputStream fos = new FileOutputStream(outFile)) {
             byte[] buffer = new byte[8192];
             int read;
-            while ((read = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, read);
-            }
+            while ((read = is.read(buffer)) != -1) fos.write(buffer, 0, read);
             fos.flush();
         }
         return outFile;
@@ -285,9 +293,9 @@ public class SingleExerciseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (videoView != null) {
+        if (videoView != null && isStep2) {
             mainHandler.postDelayed(() -> {
-                if (videoView != null) {
+                if (videoView != null && isStep2) {
                     videoView.seekTo(videoPosition);
                     videoView.start();
                 }
@@ -296,12 +304,18 @@ public class SingleExerciseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (videoView != null) {
             videoPosition = videoView.getCurrentPosition();
             videoView.pause();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mainHandler.removeCallbacksAndMessages(null);
     }
 
     private void saveCurrentExercise() {
@@ -320,8 +334,7 @@ public class SingleExerciseActivity extends AppCompatActivity {
             session.completedAt = System.currentTimeMillis();
             AppDatabase.getDatabase(SingleExerciseActivity.this).exerciseSessionDao().insert(session);
         });
-
-        voiceNavigator.speak("Ćwiczenie zapisane w historii");
+        voiceNavigator.speak(getString(R.string.exercise_saved));
     }
 
     @Override

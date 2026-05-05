@@ -59,7 +59,7 @@ public class GameInstructionActivity extends AppCompatActivity {
             case "start":
             case "confirm":
             case "next":
-                voiceNavigator.speak("Przechodzę do wyboru poziomu trudności.");
+                voiceNavigator.speak(getString(R.string.difficulty_selection_voice));
                 new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
                     View btnStart = findViewById(R.id.btn_start);
                     if (btnStart != null) btnStart.performClick();
@@ -70,7 +70,7 @@ public class GameInstructionActivity extends AppCompatActivity {
                 voiceNavigator.speak(tvInstructionText.getText().toString());
                 break;
             case "help":
-                voiceNavigator.speak("Komendy: start lub następny - przejdź do wyboru poziomu. Wstecz - wróć. Czytaj - przeczytaj instrukcję.");
+                voiceNavigator.speak(getString(R.string.instruction_read_voice));
                 break;
         }
     }
@@ -91,55 +91,33 @@ public class GameInstructionActivity extends AppCompatActivity {
             case GAME_MEMORY:
                 ivGameIcon.setImageResource(R.drawable.ic_brain);
                 ivGameIcon.setColorFilter(0xFF7C3AED);
-                tvGameTitle.setText("GRA PAMIĘĆ");
-                tvInstructionText.setText(
-                    "ZNAJDŹ WSZYSTKIE PARY JEDNAKOWYCH KART. " +
-                    "KLIKNIJ DWIE KARTY. JEŚLI SĄ TAKIE SAME, " +
-                    "ZOSTANĄ ODKRYTE. ZAPAMIĘTAJ POŁOŻENIE KART " +
-                    "I ZNAJDŹ ICH PARY."
-                );
-                voiceNavigator.speakDelayed("Gra Pamięć. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
+                tvGameTitle.setText(R.string.game_memory);
+                tvInstructionText.setText(getString(R.string.memory_help_voice).toUpperCase());
+                voiceNavigator.speakDelayed(getString(R.string.launching_memory) + " " + getString(R.string.instruction_read_voice), 800);
                 break;
 
             case GAME_COLORS:
                 ivGameIcon.setImageResource(R.drawable.ic_mood_happy);
                 ivGameIcon.setColorFilter(0xFF059669);
-                tvGameTitle.setText("GRA KOLORY");
-                tvInstructionText.setText(
-                    "OBSERWUJ SEKWENCJĘ KOLORÓW, " +
-                    "KTÓRA BĘDZIE MIGAĆ. " +
-                    "GDY POJAWI SIĘ NAPIS DOBRZE, " +
-                    "POWTÓRZ SEKWENCJĘ KLIKAJĄC " +
-                    "W KOLORY W ODPOWIEDNIEJ KOLEJNOŚCI."
-                );
-                voiceNavigator.speakDelayed("Gra Kolory. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
+                tvGameTitle.setText(R.string.game_colors);
+                tvInstructionText.setText(getString(R.string.color_tap_help_voice).toUpperCase());
+                voiceNavigator.speakDelayed(getString(R.string.launching_colors) + " " + getString(R.string.instruction_read_voice), 800);
                 break;
 
             case GAME_LIQUID:
                 ivGameIcon.setImageResource(R.drawable.ic_plan);
                 ivGameIcon.setColorFilter(0xFF2563EB);
-                tvGameTitle.setText("GRA PŁYNY");
-                tvInstructionText.setText(
-                    "SORTUJ KOLORY PRZELEWAJĄC PŁYNY " +
-                    "MIĘDZY PROBÓWKAMI. KLIKNIJ NA PROBÓWKĘ, " +
-                    "ABY JĄ WYBRAĆ. NASTĘPNIE KLIKNIJ DRUGĄ PROBÓWKĘ, " +
-                    "ABY PRZELAĆ PŁYN."
-                );
-                voiceNavigator.speakDelayed("Gra Płyny. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
+                tvGameTitle.setText(R.string.game_liquid);
+                tvInstructionText.setText(getString(R.string.liquid_help_voice).toUpperCase());
+                voiceNavigator.speakDelayed(getString(R.string.launching_liquid) + " " + getString(R.string.instruction_read_voice), 800);
                 break;
 
             case GAME_2048:
                 ivGameIcon.setImageResource(R.drawable.ic_onboarding_3);
                 ivGameIcon.setColorFilter(0xFFEA580C);
-                tvGameTitle.setText("GRA 2048");
-                tvInstructionText.setText(
-                    "ŁĄCZ KAFELKI Z TYMI SAMYMI LICZBAMI, ABY " +
-                    "ZDOBYĆ KAFLA 2048. PRZESUWAJ KAFELKI " +
-                    "W GÓRĘ, W DÓŁ, W LEWO LUB W PRAWO. " +
-                    "GDY DWA KAFELKI Z TĄ SAMĄ LICZBĄ SIĘ " +
-                    "STKNĄ, POŁĄCZĄ SIĘ W JEDEN!"
-                );
-                voiceNavigator.speakDelayed("Gra 2048. Przeczytaj instrukcję i powiedz start aby przejść do wyboru poziomu.", 800);
+                tvGameTitle.setText(R.string.game_2048);
+                tvInstructionText.setText(getString(R.string.game_2048_help_voice).toUpperCase());
+                voiceNavigator.speakDelayed(getString(R.string.launching_2048) + " " + getString(R.string.instruction_read_voice), 800);
                 break;
         }
     }

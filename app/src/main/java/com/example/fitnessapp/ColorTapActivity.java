@@ -80,8 +80,8 @@ public class ColorTapActivity extends AppCompatActivity {
                 break;
         }
 
-        tvScore.setText("Wynik: 0");
-        tvLevel.setText("Poziom " + level);
+        tvScore.setText(getString(R.string.color_tap_score_fmt, 0));
+        tvLevel.setText(getString(R.string.color_tap_level_fmt, level));
 
         findViewById(R.id.btn_back_game).setOnClickListener(v -> finish());
         findViewById(R.id.btn_restart).setOnClickListener(v -> restartGame());
@@ -89,7 +89,7 @@ public class ColorTapActivity extends AppCompatActivity {
         setupTiles();
         startLevel();
 
-        voiceNavigator.speakDelayed("Gra Kolory. Powtarzaj sekwencję kolorów.", 500);
+        voiceNavigator.speakDelayed(getString(R.string.color_tap_start_voice), 500);
     }
 
     private void handleVoiceCommand(String command) {
@@ -98,17 +98,17 @@ public class ColorTapActivity extends AppCompatActivity {
             case "restart":
             case "reset":
                 restartGame();
-                voiceNavigator.speak("Nowa gra.");
+                voiceNavigator.speak(getString(R.string.color_tap_new_game_voice));
                 break;
             case "stop":
                 voiceNavigator.stopSpeaking();
                 break;
             case "help":
-                voiceNavigator.speak("Obserwuj sekwencję kolorów i ją powtórz.");
+                voiceNavigator.speak(getString(R.string.color_tap_help_voice));
                 break;
             case "read":
             case "repeat":
-                voiceNavigator.speak("Gra Kolory. Poziom " + level + ". Wynik: " + score);
+                voiceNavigator.speak(getString(R.string.color_tap_status_voice, level, score));
                 break;
         }
     }
@@ -133,8 +133,8 @@ public class ColorTapActivity extends AppCompatActivity {
     private void startLevel() {
         userSequence.clear();
         isShowingSequence = true;
-        tvTitle.setText("Patrz!");
-        tvInstruction.setText("Zapamiętaj sekwencję...");
+        tvTitle.setText(R.string.color_tap_watch);
+        tvInstruction.setText(R.string.color_tap_remember);
         updateIndicators();
 
         int minLength = 2, maxLength = 4, delay = 1000;
@@ -164,9 +164,9 @@ public class ColorTapActivity extends AppCompatActivity {
                     mainHandler.postDelayed(this, delayMs);
                 } else {
                     isShowingSequence = false;
-                    tvTitle.setText("Dobrze!");
-                    tvInstruction.setText("Powtórz sekwencję!");
-                    voiceNavigator.speak("Twoja kolej. Powtórz sekwencję.");
+                    tvTitle.setText(R.string.color_tap_good);
+                    tvInstruction.setText(R.string.color_tap_repeat);
+                    voiceNavigator.speak(getString(R.string.color_tap_your_turn_voice));
                 }
             }
         };
@@ -196,9 +196,9 @@ private void flashColor(int index) {
         int checkIndex = userSequence.size() - 1;
         if (userSequence.get(checkIndex) != colorSequence.get(checkIndex)) {
             isShowingSequence = true;
-            tvTitle.setText("Ups!");
-            tvInstruction.setText("Spróbuj jeszcze raz.");
-            voiceNavigator.speak("Niestety błąd. Spróbuj jeszcze raz.");
+            tvTitle.setText(R.string.color_tap_oops);
+            tvInstruction.setText(R.string.color_tap_try_again);
+            voiceNavigator.speak(getString(R.string.color_tap_error_voice));
             mainHandler.postDelayed(this::startLevel, 1500);
             return;
         }
@@ -217,10 +217,10 @@ private void flashColor(int index) {
             isShowingSequence = true;
             score += colorSequence.size() * 50;
             level++;
-            tvScore.setText("Wynik: " + score);
-            tvLevel.setText("Poziom " + level);
-            tvTitle.setText("Świetnie!");
-            voiceNavigator.speak("Świetnie! Przechodzisz do poziomu " + level);
+            tvScore.setText(getString(R.string.color_tap_score_fmt, score));
+            tvLevel.setText(getString(R.string.color_tap_level_fmt, level));
+            tvTitle.setText(R.string.color_tap_great);
+            voiceNavigator.speak(getString(R.string.color_tap_next_level_voice, level));
             mainHandler.postDelayed(this::startLevel, 1500);
         }
     }
@@ -250,8 +250,8 @@ private void flashColor(int index) {
     private void restartGame() {
         score = 0;
         level = 1;
-        tvScore.setText("Wynik: 0");
-        tvLevel.setText("Poziom 1");
+        tvScore.setText(getString(R.string.color_tap_score_fmt, 0));
+        tvLevel.setText(getString(R.string.color_tap_level_fmt, 1));
         startLevel();
     }
 

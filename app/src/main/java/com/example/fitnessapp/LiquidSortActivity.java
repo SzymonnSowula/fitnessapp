@@ -95,7 +95,7 @@ public class LiquidSortActivity extends AppCompatActivity {
 
         setupLevel(currentLevel);
 
-        voiceNavigator.speakDelayed("Gra Płyny. Sortuj kolory przelewając płyny między probówkami.", 500);
+        voiceNavigator.speakDelayed(getString(R.string.liquid_start_voice), 500);
     }
 
     private void handleVoiceCommand(String command) {
@@ -104,24 +104,24 @@ public class LiquidSortActivity extends AppCompatActivity {
             case "restart":
             case "reset":
                 setupLevel(currentLevel);
-                voiceNavigator.speak("Resetuję poziom.");
+                voiceNavigator.speak(getString(R.string.liquid_reset_voice));
                 break;
             case "next_level":
             case "next":
                 if (btnNext.getVisibility() == View.VISIBLE) {
                     btnNext.performClick();
-                    voiceNavigator.speak("Następny poziom.");
+                    voiceNavigator.speak(getString(R.string.liquid_next_level_voice));
                 }
                 break;
             case "stop":
                 voiceNavigator.stopSpeaking();
                 break;
             case "help":
-                voiceNavigator.speak("Kliknij na probówkę aby ją wybrać, a następnie na drugą aby przelać płyn.");
+                voiceNavigator.speak(getString(R.string.liquid_help_voice));
                 break;
             case "read":
             case "repeat":
-                voiceNavigator.speak("Gra Płyny. Poziom " + currentLevel + ". " + getGameStateVoiceDescription());
+                voiceNavigator.speak(getString(R.string.liquid_status_voice, currentLevel, getGameStateVoiceDescription()));
                 break;
         }
     }
@@ -133,14 +133,14 @@ public class LiquidSortActivity extends AppCompatActivity {
         }
         int total = Math.min(2 + (currentLevel / 2), COLORS.length);
         if (completed == 0) {
-            return "Wszystkie probówki są jeszcze nieposortowane.";
+            return getString(R.string.liquid_status_unsorted);
         } else {
-            return "Uzupełniono " + completed + " z " + total + " kolorów.";
+            return getString(R.string.liquid_status_progress, completed, total);
         }
     }
 
     private void setupLevel(int level) {
-        tvLevel.setText("Poziom " + level);
+        tvLevel.setText(getString(R.string.liquid_level_fmt, level));
         glTubes.removeAllViews();
         tubes.clear();
         selectedTube = null;
@@ -306,8 +306,8 @@ public class LiquidSortActivity extends AppCompatActivity {
                 AppDatabase.getDatabase(LiquidSortActivity.this).gameSessionDao().insert(session);
             });
 
-            Toast.makeText(this, "Brawo! Poziom ukończony!", Toast.LENGTH_SHORT).show();
-            voiceNavigator.speak("Brawo! Poziom ukończony!");
+            Toast.makeText(this, R.string.liquid_win_toast, Toast.LENGTH_SHORT).show();
+            voiceNavigator.speak(getString(R.string.liquid_win_voice));
             btnNext.setVisibility(View.VISIBLE);
         }
     }

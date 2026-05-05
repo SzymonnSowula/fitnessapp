@@ -89,26 +89,26 @@ public class GameDifficultyActivity extends AppCompatActivity {
             case "start":
             case "confirm":
             case "next":
-                voiceNavigator.speak("Rozpoczynam grę.");
+                voiceNavigator.speak(getString(R.string.launching_game));
                 new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(this::launchGame, 1000);
                 break;
             case "help":
-                voiceNavigator.speak("Wybierz poziom trudności: łatwy, średni lub trudny. Powiedz start aby rozpocząć grę.");
+                voiceNavigator.speak(getString(R.string.difficulty_help_voice));
                 break;
             case "easy":
                 selectedDifficulty = DIFFICULTY_EASY;
                 updateDifficultyUI();
-                voiceNavigator.speak("Wybrano poziom łatwy. Powiedz start aby zacząć.");
+                voiceNavigator.speak(getString(R.string.selected_easy));
                 break;
             case "medium":
                 selectedDifficulty = DIFFICULTY_MEDIUM;
                 updateDifficultyUI();
-                voiceNavigator.speak("Wybrano poziom średni. Powiedz start aby zacząć.");
+                voiceNavigator.speak(getString(R.string.selected_medium));
                 break;
             case "hard":
                 selectedDifficulty = DIFFICULTY_HARD;
                 updateDifficultyUI();
-                voiceNavigator.speak("Wybrano poziom trudny. Powiedz start aby zacząć.");
+                voiceNavigator.speak(getString(R.string.selected_hard));
                 break;
         }
     }
@@ -118,41 +118,41 @@ public class GameDifficultyActivity extends AppCompatActivity {
             case GameInstructionActivity.GAME_MEMORY:
                 ivGameIcon.setImageResource(R.drawable.ic_brain);
                 ivGameIcon.setColorFilter(0xFF7C3AED);
-                tvGameTitle.setText("MEMORY");
+                tvGameTitle.setText(R.string.game_memory);
                 tvEasyDesc.setText("3 pary kart");
                 tvMediumDesc.setText("6 par kart");
                 tvHardDesc.setText("8 par kart");
-                voiceNavigator.speakDelayed("Wybierz poziom trudności gry Memory. Łatwy, średni lub trudny.", 800);
+                voiceNavigator.speakDelayed(getString(R.string.difficulty_selection_voice) + " " + getString(R.string.game_memory), 800);
                 break;
 
             case GameInstructionActivity.GAME_COLORS:
                 ivGameIcon.setImageResource(R.drawable.ic_mood_happy);
                 ivGameIcon.setColorFilter(0xFF059669);
-                tvGameTitle.setText("KOLORY");
+                tvGameTitle.setText(R.string.game_colors);
                 tvEasyDesc.setText("Krótkie sekwencje");
                 tvMediumDesc.setText("Średnie sekwencje");
                 tvHardDesc.setText("Długie sekwencje");
-                voiceNavigator.speakDelayed("Wybierz poziom trudności gry Kolory. Łatwy, średni lub trudny.", 800);
+                voiceNavigator.speakDelayed(getString(R.string.difficulty_selection_voice) + " " + getString(R.string.game_colors), 800);
                 break;
 
             case GameInstructionActivity.GAME_LIQUID:
                 ivGameIcon.setImageResource(R.drawable.ic_plan);
                 ivGameIcon.setColorFilter(0xFF2563EB);
-                tvGameTitle.setText("PŁYNY");
+                tvGameTitle.setText(R.string.game_liquid);
                 tvEasyDesc.setText("3 kolory");
                 tvMediumDesc.setText("4 kolory");
                 tvHardDesc.setText("5 kolorów");
-                voiceNavigator.speakDelayed("Wybierz poziom trudności gry Płyny. Łatwy, średni lub trudny.", 800);
+                voiceNavigator.speakDelayed(getString(R.string.difficulty_selection_voice) + " " + getString(R.string.game_liquid), 800);
                 break;
 
             case GameInstructionActivity.GAME_2048:
                 ivGameIcon.setImageResource(R.drawable.ic_onboarding_3);
                 ivGameIcon.setColorFilter(0xFFEA580C);
-                tvGameTitle.setText("2048");
+                tvGameTitle.setText(R.string.game_2048);
                 tvEasyDesc.setText("Cel: 512");
                 tvMediumDesc.setText("Cel: 1024");
                 tvHardDesc.setText("Cel: 2048");
-                voiceNavigator.speakDelayed("Wybierz poziom trudności gry dwa tysiące czterdzieści osiem. Łatwy, średni lub trudny.", 800);
+                voiceNavigator.speakDelayed(getString(R.string.difficulty_selection_voice) + " " + getString(R.string.game_2048), 800);
                 break;
         }
     }

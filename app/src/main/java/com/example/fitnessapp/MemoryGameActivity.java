@@ -49,12 +49,7 @@ public class MemoryGameActivity extends AppCompatActivity {
 
         setupImageNames();
 
-        voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
-            @Override
-            public void onVoiceCommand(String command) {
-                runOnUiThread(() -> handleVoiceCommand(command));
-            }
-        });
+        voiceNavigator = new VoiceNavigator(this, command -> runOnUiThread(() -> handleVoiceCommand(command)));
 
         voiceNavigator.setup();
         voiceNavigator.startListening();
@@ -72,21 +67,21 @@ public class MemoryGameActivity extends AppCompatActivity {
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(currentColumns, currentRows));
 
-        voiceNavigator.speakDelayed("Gra Memory. Znajdź pary jednakowych kart.", 500);
+        voiceNavigator.speakDelayed(getString(R.string.memory_start_voice), 500);
     }
 
     private void setupImageNames() {
         imageNames = new HashMap<>();
-        imageNames.put(R.drawable.memory1, "Jabłko");
-        imageNames.put(R.drawable.memory2, "Banan");
-        imageNames.put(R.drawable.memory3, "Kot");
-        imageNames.put(R.drawable.memory4, "Pies");
-        imageNames.put(R.drawable.memory5, "Słońce");
-        imageNames.put(R.drawable.memory6, "Dom");
-        imageNames.put(R.drawable.memory7, "Samochód");
-        imageNames.put(R.drawable.memory8, "Drzewo");
-        imageNames.put(R.drawable.memory9, "Kwiat");
-        imageNames.put(R.drawable.memory10, "Ryba");
+        imageNames.put(R.drawable.memory1, getString(R.string.mem_apple));
+        imageNames.put(R.drawable.memory2, getString(R.string.mem_banana));
+        imageNames.put(R.drawable.memory3, getString(R.string.mem_cat));
+        imageNames.put(R.drawable.memory4, getString(R.string.mem_dog));
+        imageNames.put(R.drawable.memory5, getString(R.string.mem_sun));
+        imageNames.put(R.drawable.memory6, getString(R.string.mem_house));
+        imageNames.put(R.drawable.memory7, getString(R.string.mem_car));
+        imageNames.put(R.drawable.memory8, getString(R.string.mem_tree));
+        imageNames.put(R.drawable.memory9, getString(R.string.mem_flower));
+        imageNames.put(R.drawable.memory10, getString(R.string.mem_fish));
     }
 
     private void handleVoiceCommand(String command) {
@@ -95,11 +90,9 @@ public class MemoryGameActivity extends AppCompatActivity {
             case "restart":
             case "reset":
                 setupGame(currentColumns, currentRows);
-                voiceNavigator.speak("Nowa gra.");
+                voiceNavigator.speak(getString(R.string.memory_new_game_voice));
                 break;
             case "back":
-                finish();
-                break;
             case "exit":
                 finish();
                 break;
@@ -107,11 +100,11 @@ public class MemoryGameActivity extends AppCompatActivity {
                 voiceNavigator.stopSpeaking();
                 break;
             case "help":
-                voiceNavigator.speak("Witaj w grze Memory. Znajdź pary jednakowych obrazków. Kliknij w kartę, aby ją odsłonić.");
+                voiceNavigator.speak(getString(R.string.memory_help_voice));
                 break;
             case "read":
             case "repeat":
-                voiceNavigator.speak("Gra Memory. Wynik: " + score + ". Ruchy: " + moves);
+                voiceNavigator.speak(getString(R.string.memory_status_voice, score, moves));
                 break;
         }
     }
@@ -128,7 +121,7 @@ public class MemoryGameActivity extends AppCompatActivity {
         moves = 0;
         if (tvScore != null) tvScore.setText("0");
         if (tvMoves != null) tvMoves.setText("0");
-        if (tvTitle != null) tvTitle.setText("Memory " + columns + "x" + rows);
+        if (tvTitle != null) tvTitle.setText(getString(R.string.memory_title_fmt, columns, rows));
         isLocked = false;
 
         List<Integer> selectedImages = new ArrayList<>();
@@ -140,29 +133,23 @@ public class MemoryGameActivity extends AppCompatActivity {
 
         Collections.shuffle(selectedImages);
 
-        adapter = new CardAdapter(selectedImages, rows, new CardAdapter.OnCardClickListener() {
-            @Override
-            public void onCardClick(int position) {
-                if (!isLocked && !adapter.isCardFlipped(position) && !adapter.isCardRemoved(position)) {
-                    int imgRes = adapter.getCardImage(position);
-                    String name = imageNames.get(imgRes);
-                    if (name != null) voiceNavigator.speak(name);
-                    
-                    adapter.flipCard(position);
-                    checkMatch();
-                }
+        adapter = new CardAdapter(selectedImages, rows, position -> {
+            if (!isLocked && !adapter.isCardFlipped(position) && !adapter.isCardRemoved(position)) {
+                int imgRes = adapter.getCardImage(position);
+                String name = imageNames.get(imgRes);
+                if (name != null) voiceNavigator.speak(name);
+                
+                adapter.flipCard(position);
+                checkMatch();
             }
         });
 
-        rvCards.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                int containerHeight = v.getHeight() - v.getPaddingTop() - v.getPaddingBottom();
-                if (containerHeight > 0) {
-                    int newItemHeight = containerHeight / rows;
-                    if (adapter.getItemHeight() != newItemHeight) {
-                        v.post(() -> adapter.updateItemHeight(containerHeight));
-                    }
+        rvCards.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            int containerHeight = v.getHeight() - v.getPaddingTop() - v.getPaddingBottom();
+            if (containerHeight > 0) {
+                int newItemHeight = containerHeight / rows;
+                if (adapter.getItemHeight() != newItemHeight) {
+                    v.post(() -> adapter.updateItemHeight(containerHeight));
                 }
             }
         });
@@ -209,7 +196,7 @@ public class MemoryGameActivity extends AppCompatActivity {
             AppDatabase.getDatabase(MemoryGameActivity.this).gameSessionDao().insert(session);
         });
 
-        voiceNavigator.speak("Brawo! Ukończyłeś grę w " + moves + " ruchach.");
+        voiceNavigator.speak(getString(R.string.memory_win_voice, moves));
 
         com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_game_win, null);
@@ -237,8 +224,8 @@ public class MemoryGameActivity extends AppCompatActivity {
         }
 
         if (canIncrease) {
-            tvMsg.setText("BRAWO!!!!\nCzy chcesz zwiększyć poziom trudności?");
-            btnAction.setText("Zwiększ poziom");
+            tvMsg.setText(R.string.win_increase_difficulty);
+            btnAction.setText(R.string.increase_level);
             btnRestart.setVisibility(View.VISIBLE);
             int finalNextCols = nextCols;
             int finalNextRows = nextRows;
@@ -247,8 +234,8 @@ public class MemoryGameActivity extends AppCompatActivity {
                 setupGame(finalNextCols, finalNextRows);
             });
         } else {
-            tvMsg.setText("BRAWO!!!!\nUkończyłeś najtrudniejszy poziom!");
-            btnAction.setText("Zagraj jeszcze raz");
+            tvMsg.setText(R.string.win_max_level);
+            btnAction.setText(R.string.play_again);
             btnRestart.setVisibility(View.GONE);
             btnAction.setOnClickListener(v -> {
                 dialog.dismiss();

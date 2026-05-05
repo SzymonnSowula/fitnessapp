@@ -64,56 +64,56 @@ public class MindGamesActivity extends AppCompatActivity {
  startActivity(intent);
  });
 
- voiceNavigator.speakDelayed("Gry umysłowe. Wybierz grę.", 500);
+ voiceNavigator.speakDelayed(getString(R.string.mind_games_intro), 500);
  }
 
- private void handleVoiceCommand(String command) {
- switch (command) {
- case "games":
- case "read":
- case "repeat":
- voiceNavigator.speak("Dostępne gry: Memory - ćwiczenie pamięci. Kolory - powtarzanie sekwencji. Płyny - sortowanie kolorów. 2048 - łączenie liczb.");
- break;
- case "game_memory":
- voiceNavigator.speak("Uruchamiam grę memory.");
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                Intent intent = new Intent(this, GameInstructionActivity.class);
-                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_MEMORY);
-                startActivity(intent);
-            }, 1000);
-            break;
-        case "game_colors":
-            voiceNavigator.speak("Uruchamiam grę kolory.");
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                Intent intent = new Intent(this, GameInstructionActivity.class);
-                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_COLORS);
-                startActivity(intent);
-            }, 1000);
-            break;
-        case "game_liquid":
-            voiceNavigator.speak("Uruchamiam sortowanie płynów.");
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                Intent intent = new Intent(this, GameInstructionActivity.class);
-                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_LIQUID);
-                startActivity(intent);
-            }, 1000);
-            break;
-        case "game_2048":
-            voiceNavigator.speak("Uruchamiam grę dwa tysiące czterdzieści osiem.");
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                Intent intent = new Intent(this, GameInstructionActivity.class);
-                intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_2048);
-                startActivity(intent);
-            }, 1000);
- break;
- case "stop":
- voiceNavigator.stopSpeaking();
- break;
- case "help":
- voiceNavigator.speak(VoiceCommands.getGameHelpText());
- break;
- }
- }
+    private void handleVoiceCommand(String command) {
+        switch (command) {
+            case "games":
+            case "read":
+            case "repeat":
+                voiceNavigator.speak(getString(R.string.mind_games_intro));
+                break;
+            case "game_memory":
+                voiceNavigator.speak(getString(R.string.launching_memory));
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    Intent intent = new Intent(this, GameInstructionActivity.class);
+                    intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_MEMORY);
+                    startActivity(intent);
+                }, 1000);
+                break;
+            case "game_colors":
+                voiceNavigator.speak(getString(R.string.launching_colors));
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    Intent intent = new Intent(this, GameInstructionActivity.class);
+                    intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_COLORS);
+                    startActivity(intent);
+                }, 1000);
+                break;
+            case "game_liquid":
+                voiceNavigator.speak(getString(R.string.launching_liquid));
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    Intent intent = new Intent(this, GameInstructionActivity.class);
+                    intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_LIQUID);
+                    startActivity(intent);
+                }, 1000);
+                break;
+            case "game_2048":
+                voiceNavigator.speak(getString(R.string.launching_2048));
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    Intent intent = new Intent(this, GameInstructionActivity.class);
+                    intent.putExtra(GameInstructionActivity.EXTRA_GAME_TYPE, GameInstructionActivity.GAME_2048);
+                    startActivity(intent);
+                }, 1000);
+                break;
+            case "stop":
+                voiceNavigator.stopSpeaking();
+                break;
+            case "help":
+                voiceNavigator.speak(VoiceCommands.getGameHelpText());
+                break;
+        }
+    }
 
  private void navigateTo(Class<?> activityClass) {
  Intent intent = new Intent(this, activityClass);

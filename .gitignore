@@ -1,6 +1,9 @@
 *.iml
 .gradle
 .claude
+CLAUDE.md
+AGENTS.md
+.opencode/
 /local.properties
 /.idea/caches
 /.idea/libraries

@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Vial 1 -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M4,2h4v16c0,1.1 -0.9,2 -2,2s-2,-0.9 -2,-2V2z" />
+    <!-- Vial 2 -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M10,2h4v16c0,1.1 -0.9,2 -2,2s-2,-0.9 -2,-2V2z" />
+    <!-- Vial 3 -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M16,2h4v16c0,1.1 -0.9,2 -2,2s-2,-0.9 -2,-2V2z" />
+</vector>

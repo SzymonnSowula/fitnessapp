@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MemoryGameActivity extends AppCompatActivity {
 
@@ -29,16 +31,13 @@ public class MemoryGameActivity extends AppCompatActivity {
     private boolean isLocked = false;
     private VoiceNavigator voiceNavigator;
     private final android.os.Handler mainHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private Map<Integer, String> imageNames;
 
     private final int[] cardImages = {
-            R.drawable.ic_heart,
-            R.drawable.ic_home,
-            R.drawable.ic_dumbbell,
-            R.drawable.ic_brain,
-            R.drawable.ic_sitting,
-            R.drawable.ic_standing,
-            R.drawable.ic_chair,
-            R.drawable.ic_bed
+            R.drawable.memory1, R.drawable.memory2, R.drawable.memory3,
+            R.drawable.memory4, R.drawable.memory5, R.drawable.memory6,
+            R.drawable.memory7, R.drawable.memory8, R.drawable.memory9,
+            R.drawable.memory10
     };
 
     private int currentColumns, currentRows;
@@ -47,6 +46,8 @@ public class MemoryGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_game);
+
+        setupImageNames();
 
         voiceNavigator = new VoiceNavigator(this, new VoiceNavigator.VoiceCallback() {
             @Override
@@ -63,8 +64,8 @@ public class MemoryGameActivity extends AppCompatActivity {
         tvMoves = findViewById(R.id.tv_moves);
         tvTitle = findViewById(R.id.tv_title);
 
-        currentColumns = getIntent().getIntExtra("EXTRA_COLUMNS", 4);
-        currentRows = getIntent().getIntExtra("EXTRA_ROWS", 4);
+        currentColumns = getIntent().getIntExtra("EXTRA_COLUMNS", 2);
+        currentRows = getIntent().getIntExtra("EXTRA_ROWS", 3);
 
         setupGame(currentColumns, currentRows);
 
@@ -72,6 +73,20 @@ public class MemoryGameActivity extends AppCompatActivity {
         findViewById(R.id.btn_restart).setOnClickListener(v -> setupGame(currentColumns, currentRows));
 
         voiceNavigator.speakDelayed("Gra Memory. Znajdź pary jednakowych kart.", 500);
+    }
+
+    private void setupImageNames() {
+        imageNames = new HashMap<>();
+        imageNames.put(R.drawable.memory1, "Jabłko");
+        imageNames.put(R.drawable.memory2, "Banan");
+        imageNames.put(R.drawable.memory3, "Kot");
+        imageNames.put(R.drawable.memory4, "Pies");
+        imageNames.put(R.drawable.memory5, "Słońce");
+        imageNames.put(R.drawable.memory6, "Dom");
+        imageNames.put(R.drawable.memory7, "Samochód");
+        imageNames.put(R.drawable.memory8, "Drzewo");
+        imageNames.put(R.drawable.memory9, "Kwiat");
+        imageNames.put(R.drawable.memory10, "Ryba");
     }
 
     private void handleVoiceCommand(String command) {
@@ -83,7 +98,7 @@ public class MemoryGameActivity extends AppCompatActivity {
                 voiceNavigator.speak("Nowa gra.");
                 break;
             case "back":
-                onBackPressed();
+                finish();
                 break;
             case "exit":
                 finish();
@@ -92,11 +107,11 @@ public class MemoryGameActivity extends AppCompatActivity {
                 voiceNavigator.stopSpeaking();
                 break;
             case "help":
-                voiceNavigator.speak(VoiceCommands.getGameHelpText());
+                voiceNavigator.speak("Witaj w grze Memory. Znajdź pary jednakowych obrazków. Kliknij w kartę, aby ją odsłonić.");
                 break;
             case "read":
             case "repeat":
-                voiceNavigator.speak("Gra Memory. Znajdź wszystkie pary kart. Wynik: " + score + ". Ruchy: " + moves);
+                voiceNavigator.speak("Gra Memory. Wynik: " + score + ". Ruchy: " + moves);
                 break;
         }
     }
@@ -129,6 +144,10 @@ public class MemoryGameActivity extends AppCompatActivity {
             @Override
             public void onCardClick(int position) {
                 if (!isLocked && !adapter.isCardFlipped(position) && !adapter.isCardRemoved(position)) {
+                    int imgRes = adapter.getCardImage(position);
+                    String name = imageNames.get(imgRes);
+                    if (name != null) voiceNavigator.speak(name);
+                    
                     adapter.flipCard(position);
                     checkMatch();
                 }
@@ -142,7 +161,7 @@ public class MemoryGameActivity extends AppCompatActivity {
                 if (containerHeight > 0) {
                     int newItemHeight = containerHeight / rows;
                     if (adapter.getItemHeight() != newItemHeight) {
-                        adapter.updateItemHeight(containerHeight);
+                        v.post(() -> adapter.updateItemHeight(containerHeight));
                     }
                 }
             }
@@ -181,7 +200,6 @@ public class MemoryGameActivity extends AppCompatActivity {
     }
 
     private void showWinDialog() {
-        // Save game session to history
         AppExecutors.getInstance().diskIO().execute(() -> {
             GameSession session = new GameSession();
             session.gameType = "memory";
@@ -210,7 +228,6 @@ public class MemoryGameActivity extends AppCompatActivity {
         int nextCols = currentColumns;
         int nextRows = currentRows;
 
-        // Memory progression: 2x3 → 3x4 → 4x4 → 4x5
         if (currentColumns == 2 && currentRows == 3) {
             nextCols = 3; nextRows = 4; canIncrease = true;
         } else if (currentColumns == 3 && currentRows == 4) {
@@ -285,7 +302,7 @@ public class MemoryGameActivity extends AppCompatActivity {
 
         void updateItemHeight(int containerHeight) {
             this.itemHeight = containerHeight / rows;
-            notifyItemRangeChanged(0, getItemCount());
+            notifyDataSetChanged();
         }
 
         boolean isCardFlipped(int position) {
@@ -334,7 +351,7 @@ public class MemoryGameActivity extends AppCompatActivity {
         @Override
         public CardViewHolder onCreateViewHolder(android.view.ViewGroup parent, int viewType) {
             MaterialCardView cardView = new MaterialCardView(parent.getContext());
-            int marginPx = ScreenUtils.dpToPx(parent.getContext(), 6);
+            int marginPx = ScreenUtils.dpToPx(parent.getContext(), 8);
             int displayHeight = itemHeight > 0 ? (itemHeight - (marginPx * 2)) : ViewGroup.LayoutParams.WRAP_CONTENT;
             GridLayoutManager.LayoutParams params = new GridLayoutManager.LayoutParams(
                     GridLayoutManager.LayoutParams.MATCH_PARENT,
@@ -342,9 +359,9 @@ public class MemoryGameActivity extends AppCompatActivity {
             );
             params.setMargins(marginPx, marginPx, marginPx, marginPx);
             cardView.setLayoutParams(params);
-            cardView.setRadius(ScreenUtils.dpToPx(parent.getContext(), 32));
-            cardView.setCardElevation(ScreenUtils.dpToPx(parent.getContext(), 2));
-            cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
+            cardView.setRadius(ScreenUtils.dpToPx(parent.getContext(), 40));
+            cardView.setCardElevation(ScreenUtils.dpToPx(parent.getContext(), 8));
+            cardView.setStrokeWidth(0);
             return new CardViewHolder(cardView);
         }
 
@@ -352,7 +369,7 @@ public class MemoryGameActivity extends AppCompatActivity {
         public void onBindViewHolder(CardViewHolder holder, int position) {
             if (itemHeight > 0) {
                 ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
-                int marginPx = ScreenUtils.dpToPx(holder.itemView.getContext(), 4);
+                int marginPx = ScreenUtils.dpToPx(holder.itemView.getContext(), 8);
                 int calculatedHeight = itemHeight - (marginPx * 2);
                 if (params.height != calculatedHeight) {
                     params.height = calculatedHeight;
@@ -380,34 +397,29 @@ public class MemoryGameActivity extends AppCompatActivity {
                 ivCard.setLayoutParams(new android.view.ViewGroup.LayoutParams(
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                         android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-                ivCard.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                ivCard.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 itemView.addView(ivCard);
             }
 
             void bind(int imageRes, boolean isFlipped, boolean isRemoved, Runnable onClick) {
-                int height = cardView.getLayoutParams().height;
-                int p = height / 5;
-                if (p < 12) p = 12;
-                if (p > 48) p = 48;
-                ivCard.setPadding(p, p, p, p);
-
                 if (isRemoved) {
-                    ivCard.setVisibility(View.INVISIBLE);
                     cardView.setVisibility(View.INVISIBLE);
                 } else {
                     cardView.setVisibility(View.VISIBLE);
-                    ivCard.setVisibility(View.VISIBLE);
+                    
                     if (isFlipped) {
+                        ivCard.setPadding(0, 0, 0, 0);
+                        ivCard.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         ivCard.setImageResource(imageRes);
-                        ivCard.setColorFilter(0xFFFFFFFF);
-                        cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
-                        cardView.setStrokeWidth(0);
+                        ivCard.setColorFilter(null);
+                        cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
                     } else {
+                        int p = ScreenUtils.dpToPx(cardView.getContext(), 32);
+                        ivCard.setPadding(p, p, p, p);
+                        ivCard.setScaleType(ImageView.ScaleType.FIT_CENTER);
                         ivCard.setImageResource(R.drawable.ic_help);
                         ivCard.setColorFilter(0xFF004A99);
-                        cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFFFFFFF));
-                        cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(0xFF004A99));
-                        cardView.setStrokeWidth(6);
+                        cardView.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(0xFFF5F3FF));
                     }
                 }
                 cardView.setOnClickListener(v -> onClick.run());

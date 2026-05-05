@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Main Board -->
+    <path
+        android:fillColor="#EA580C"
+        android:pathData="M3,3h18v18h-18z" />
+    <!-- Tile 1 (Simulated number 2) -->
+    <path
+        android:fillColor="#FFEDD5"
+        android:pathData="M5,5h6v6h-6z" />
+    <!-- Tile 2 (Simulated number 4) -->
+    <path
+        android:fillColor="#FED7AA"
+        android:pathData="M13,5h6v6h-6z" />
+    <!-- Tile 3 (Simulated number 8) -->
+    <path
+        android:fillColor="#FDBA74"
+        android:pathData="M5,13h6v6h-6z" />
+    <!-- Tile 4 (Simulated number 16) -->
+    <path
+        android:fillColor="#FB923C"
+        android:pathData="M13,13h6v6h-6z" />
+</vector>

@@ -199,6 +199,11 @@ public class SingleExerciseActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnFinish = findViewById(R.id.btn_finish);
         videoView = findViewById(R.id.video_view);
+
+        android.widget.ImageButton btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
     }
 
     private void updateStepVisibility() {

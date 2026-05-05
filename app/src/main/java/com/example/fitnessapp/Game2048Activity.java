@@ -58,6 +58,10 @@ public class Game2048Activity extends AppCompatActivity {
         voiceNavigator.startListening();
 
         tvScore = findViewById(R.id.tv_score);
+        TextView tvInstruction = findViewById(R.id.tv_instruction);
+        if (tvInstruction != null) {
+            tvInstruction.setText(getString(R.string.game_2048_instruction, targetScore));
+        }
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         findViewById(R.id.btn_restart).setOnClickListener(v -> restartGame());
 

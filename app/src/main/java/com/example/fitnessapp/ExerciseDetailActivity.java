@@ -33,6 +33,11 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         voiceNavigator.setup();
         voiceNavigator.startListening();
 
+        android.widget.ImageButton btnHelp = findViewById(R.id.btn_help);
+        if (btnHelp != null) {
+            btnHelp.setOnClickListener(v -> VoiceHelpDialog.show(this));
+        }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(R.string.exercise_details_title);

@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -119,8 +121,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         // Obsługa kliknięć w opcje
-        findViewById(R.id.tv_change_name).setOnClickListener(v ->
-            Toast.makeText(this, R.string.feature_coming_soon, Toast.LENGTH_SHORT).show());
+        findViewById(R.id.tv_change_name).setOnClickListener(v -> showChangeNameDialog());
 
         findViewById(R.id.tv_edit_conditions).setOnClickListener(v -> {
             startActivity(new Intent(SettingsActivity.this, EditConditionsActivity.class));
@@ -129,6 +130,33 @@ public class SettingsActivity extends AppCompatActivity {
         findViewById(R.id.tv_history).setOnClickListener(v -> {
             startActivity(new Intent(SettingsActivity.this, HistoryActivity.class));
         });
+    }
+
+    private void showChangeNameDialog() {
+        SharedPreferences prefs = getSharedPreferences("FitnessAppPrefs", MODE_PRIVATE);
+        String currentName = prefs.getString("user_name", "");
+
+        EditText editText = new EditText(this);
+        editText.setText(currentName);
+        editText.setHint(R.string.enter_name_hint);
+        editText.setTextSize(22);
+        int paddingPx = (int) (24 * getResources().getDisplayMetrics().density);
+        editText.setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.change_name)
+                .setView(editText)
+                .setPositiveButton(R.string.save, (dialog, which) -> {
+                    String newName = editText.getText().toString().trim();
+                    if (!newName.isEmpty()) {
+                        prefs.edit().putString("user_name", newName).apply();
+                        Toast.makeText(this, R.string.name_changed, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, R.string.name_empty, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void handleVoiceCommand(String command) {

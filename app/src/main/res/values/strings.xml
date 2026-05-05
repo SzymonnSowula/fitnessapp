@@ -320,4 +320,11 @@
     <string name="mem_tree">Drzewo</string>
     <string name="mem_flower">Kwiat</string>
     <string name="mem_fish">Ryba</string>
+
+    <!-- Change name dialog -->
+    <string name="enter_name_hint">Wpisz swoje imię</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="name_changed">Imię zostało zmienione</string>
+    <string name="name_empty">Imię nie może być puste</string>
 </resources>

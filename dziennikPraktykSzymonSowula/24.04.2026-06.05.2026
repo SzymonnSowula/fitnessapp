@@ -1,0 +1,18 @@
+24 kwietnia (piątek)
+Skupiłem się na rozbudowie interfejsu głosowego, znacząco zwiększając zasób dostępnych komend. Dokonałem rekalibracji procesu onboardingu po ostatnich modyfikacjach oraz sfinalizowałem wdrożenie zaplanowanych funkcjonalności. Pracowałem nad grami logicznymi 
+27 kwietnia (poniedziałek)
+Głównie zajmowałem się pracą nad zaległościami z poprzednich tygodni, przeprowadzilem wiele testów funkcjonalnych, dałem mojej babci aplikacje do testowania na podstawie feedbacku pracowałem nad poprawkami. 
+28 kwietnia (wtorek)
+Wyeliminowałem błędy w module autoryzacji oraz zoptymalizowałem algorytm i warstwę wizualną onboardingu.
+Pracowałem dużo nad algorytmem lasu losowego do generatora planów ćwiczeń 
+29 kwietnia (środa)
+Prace koncentrowały się na dostępności i interakcji multimodalnej. Zaimplementowałem odtwarzacz wideo dla modułu ćwiczeń
+Udoskonaliłem logikę rozpoznawania nastroju oraz przebudowałem asystenta głosowego pod kątem potrzeb seniorów (zwiększona czytelność). Wprowadzenie trybu ciągłego nasłuchiwania znacząco podniosło płynność obsługi. 
+30 kwietnia (czwartek)
+Pracowałem nad poprawą logiki w aplikacji, pojawiło się parę problemów które zajęły niestety mi dużo czasu, całość zakończona powodzeniem. Naprawiałem błędy/sugestie od testerów aplikacji.
+4 maja (poniedziałek)
+Dzień intensywnej optymalizacji wydajnościowej. Wdrożyłem mechanizmy dynamicznego skalowania UI, zapewniając responsywność elementów w grach logicznych. Zrobiłem Grafiki do gry memory, zaimplementowałem je w grze, oraz naprawiłem błędy logiczne w grze memory: Rozwiązałem błąd w VoiceManager, gdzie przedwczesna inicjalizacja w ekranie startowym blokowała syntezę mowy (TTS).
+5 maja (wtorek)
+Skupiłem się na estetyce modułów grywalnych, ujednolicając język wizualny całej aplikacji. Przeprowadziłem kompleksowy przegląd end-to-end, wprowadzając ostatnie korekty przed przejściem do kolejnej fazy projektu.
+6 maja
+Zakończenie prac nad projektem, zakończenie praktyk - przygotowanie prezentacji o projekcie. Ostatnie szlify i prezentacja projektu przed grupą 

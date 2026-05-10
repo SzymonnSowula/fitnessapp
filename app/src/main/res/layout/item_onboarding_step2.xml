@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="@string/onboarding_step2_title"
             android:textColor="#004A99"
-            android:textSize="28sp"
+            android:textSize="36sp"
             android:textStyle="bold"
             android:gravity="center"
             android:lineSpacingMultiplier="1.1"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/onboarding_step2_subtitle"
             android:textColor="#64748B"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:gravity="center"
             android:layout_marginBottom="20dp" />
 
@@ -40,7 +40,7 @@
             android:layout_height="64dp"
             android:layout_marginBottom="20dp"
             android:text="@string/onboarding_step2_select_all"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#004A99"
             app:strokeColor="#004A99"
@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_standing"
                             android:textColor="#1E293B"
-                            android:textSize="20sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_standing_desc"
                             android:textColor="#64748B"
-                            android:textSize="14sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
@@ -141,7 +141,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_floor"
                             android:textColor="#1E293B"
-                            android:textSize="20sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -149,7 +149,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_floor_desc"
                             android:textColor="#64748B"
-                            android:textSize="14sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
@@ -196,7 +196,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_chair"
                             android:textColor="#1E293B"
-                            android:textSize="20sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -204,7 +204,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_chair_desc"
                             android:textColor="#64748B"
-                            android:textSize="14sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
@@ -251,7 +251,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_bed"
                             android:textColor="#1E293B"
-                            android:textSize="20sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -259,7 +259,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_bed_desc"
                             android:textColor="#64748B"
-                            android:textSize="14sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 
@@ -306,7 +306,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_sitting"
                             android:textColor="#1E293B"
-                            android:textSize="20sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -314,7 +314,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/position_sitting_desc"
                             android:textColor="#64748B"
-                            android:textSize="14sp"
+                            android:textSize="18sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
 

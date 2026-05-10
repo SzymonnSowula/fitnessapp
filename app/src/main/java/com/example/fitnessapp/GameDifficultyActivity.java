@@ -185,15 +185,23 @@ public class GameDifficultyActivity extends AppCompatActivity {
             card.setCardBackgroundColor(0xFF004A99);
             title.setTextColor(0xFFFFFFFF);
             desc.setTextColor(0xFFDBEAFE);
-            iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
-            icon.setColorFilter(iconColor);
+            if (iconContainer != null) {
+                iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
+            }
+            if (icon != null) {
+                icon.setColorFilter(iconColor);
+            }
             check.setVisibility(android.view.View.VISIBLE);
         } else {
             card.setCardBackgroundColor(0xFFFFFFFF);
             title.setTextColor(0xFF004A99);
             desc.setTextColor(0xFF64748B);
-            iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
-            icon.setColorFilter(iconColor);
+            if (iconContainer != null) {
+                iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
+            }
+            if (icon != null) {
+                icon.setColorFilter(iconColor);
+            }
             check.setVisibility(android.view.View.GONE);
         }
     }

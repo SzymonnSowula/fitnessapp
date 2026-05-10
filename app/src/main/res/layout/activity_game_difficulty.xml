@@ -14,7 +14,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_back"
         app:tint="#004A99"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,26 +65,9 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp">
 
-                <FrameLayout
-                    android:id="@+id/icon_container_easy"
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:background="@drawable/bg_indicator_active"
-                    android:backgroundTint="#E6F9EE">
-                    <ImageView
-                        android:id="@+id/iv_easy_icon"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_leaf"
-                        app:tint="#10B981" />
-                </FrameLayout>
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/icon_container_easy"
-                    android:layout_marginStart="20dp"
                     android:layout_centerVertical="true"
                     android:orientation="vertical">
                     <TextView
@@ -92,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Łatwy"
-                        android:textColor="#004A99"
+                        android:textColor="#059669"
                         android:textSize="32sp"
                         android:textStyle="bold" />
                     <TextView
@@ -131,26 +114,9 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp">
 
-                <FrameLayout
-                    android:id="@+id/icon_container_medium"
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:background="@drawable/bg_indicator_active"
-                    android:backgroundTint="#337ACC">
-                    <ImageView
-                        android:id="@+id/iv_medium_icon"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_dumbbell"
-                        app:tint="@color/white" />
-                </FrameLayout>
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/icon_container_medium"
-                    android:layout_marginStart="20dp"
                     android:layout_centerVertical="true"
                     android:orientation="vertical">
                     <TextView
@@ -197,26 +163,9 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp">
 
-                <FrameLayout
-                    android:id="@+id/icon_container_hard"
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:background="@drawable/bg_indicator_active"
-                    android:backgroundTint="#FEF2F2">
-                    <ImageView
-                        android:id="@+id/iv_hard_icon"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_lightning"
-                        app:tint="#EF4444" />
-                </FrameLayout>
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/icon_container_hard"
-                    android:layout_marginStart="20dp"
                     android:layout_centerVertical="true"
                     android:orientation="vertical">
                     <TextView
@@ -224,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Trudny"
-                        android:textColor="#004A99"
+                        android:textColor="#DC2626"
                         android:textSize="32sp"
                         android:textStyle="bold" />
                     <TextView

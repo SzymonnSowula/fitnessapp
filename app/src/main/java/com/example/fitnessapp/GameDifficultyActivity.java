@@ -22,8 +22,6 @@ public class GameDifficultyActivity extends AppCompatActivity {
     private int selectedDifficulty = DIFFICULTY_EASY;
 
     private CardView cardEasy, cardMedium, cardHard;
-    private android.view.View containerEasy, containerMedium, containerHard;
-    private ImageView ivEasyIcon, ivMediumIcon, ivHardIcon;
     private TextView tvEasyTitle, tvMediumTitle, tvHardTitle;
     private TextView tvEasyDesc, tvMediumDesc, tvHardDesc;
     private ImageView ivCheckEasy, ivCheckMedium, ivCheckHard;
@@ -43,14 +41,6 @@ public class GameDifficultyActivity extends AppCompatActivity {
         tvEasyTitle = findViewById(R.id.tv_easy_title);
         tvMediumTitle = findViewById(R.id.tv_medium_title);
         tvHardTitle = findViewById(R.id.tv_hard_title);
-
-        ivEasyIcon = findViewById(R.id.iv_easy_icon);
-        ivMediumIcon = findViewById(R.id.iv_medium_icon);
-        ivHardIcon = findViewById(R.id.iv_hard_icon);
-
-        containerEasy = findViewById(R.id.icon_container_easy);
-        containerMedium = findViewById(R.id.icon_container_medium);
-        containerHard = findViewById(R.id.icon_container_hard);
 
         ivCheckEasy = findViewById(R.id.iv_check_easy);
         ivCheckMedium = findViewById(R.id.iv_check_medium);
@@ -164,17 +154,17 @@ public class GameDifficultyActivity extends AppCompatActivity {
 
     private void updateDifficultyUI() {
         // Reset all to unselected state
-        setCardSelected(cardEasy, containerEasy, ivEasyIcon, tvEasyTitle, tvEasyDesc, ivCheckEasy, false, 0xFFE6F9EE, 0xFF10B981);
-        setCardSelected(cardMedium, containerMedium, ivMediumIcon, tvMediumTitle, tvMediumDesc, ivCheckMedium, false, 0xFFE0F2FE, 0xFF004A99); // Blue for medium
-        setCardSelected(cardHard, containerHard, ivHardIcon, tvHardTitle, tvHardDesc, ivCheckHard, false, 0xFFFEF2F2, 0xFFEF4444);
+        setCardSelected(cardEasy, null, null, tvEasyTitle, tvEasyDesc, ivCheckEasy, false, 0xFFE6F9EE, 0xFF10B981);
+        setCardSelected(cardMedium, null, null, tvMediumTitle, tvMediumDesc, ivCheckMedium, false, 0xFFE0F2FE, 0xFF004A99);
+        setCardSelected(cardHard, null, null, tvHardTitle, tvHardDesc, ivCheckHard, false, 0xFFFEF2F2, 0xFFEF4444);
 
         // Apply selected state
         if (selectedDifficulty == DIFFICULTY_EASY) {
-            setCardSelected(cardEasy, containerEasy, ivEasyIcon, tvEasyTitle, tvEasyDesc, ivCheckEasy, true, 0xFF34D399, 0xFFFFFFFF);
+            setCardSelected(cardEasy, null, null, tvEasyTitle, tvEasyDesc, ivCheckEasy, true, 0xFF34D399, 0xFFFFFFFF);
         } else if (selectedDifficulty == DIFFICULTY_MEDIUM) {
-            setCardSelected(cardMedium, containerMedium, ivMediumIcon, tvMediumTitle, tvMediumDesc, ivCheckMedium, true, 0xFF337ACC, 0xFFFFFFFF);
+            setCardSelected(cardMedium, null, null, tvMediumTitle, tvMediumDesc, ivCheckMedium, true, 0xFF337ACC, 0xFFFFFFFF);
         } else if (selectedDifficulty == DIFFICULTY_HARD) {
-            setCardSelected(cardHard, containerHard, ivHardIcon, tvHardTitle, tvHardDesc, ivCheckHard, true, 0xFFEF4444, 0xFFFFFFFF);
+            setCardSelected(cardHard, null, null, tvHardTitle, tvHardDesc, ivCheckHard, true, 0xFFEF4444, 0xFFFFFFFF);
         }
     }
 

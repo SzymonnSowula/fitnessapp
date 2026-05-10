@@ -58,7 +58,7 @@
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="#059669">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Łatwy"
-                        android:textColor="#059669"
+                        android:textColor="@color/white"
                         android:textSize="32sp"
                         android:textStyle="bold" />
                     <TextView
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Delikatny ruch, bez pośpiechu"
-                        android:textColor="#64748B"
+                        android:textColor="@color/white"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -107,7 +107,7 @@
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#004A99">
+            app:cardBackgroundColor="#2563EB">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Standardowe tempo i ćwiczenia"
-                        android:textColor="#DBEAFE"
+                        android:textColor="@color/white"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -156,7 +156,7 @@
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="#DC2626">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -173,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Trudny"
-                        android:textColor="#DC2626"
+                        android:textColor="@color/white"
                         android:textSize="32sp"
                         android:textStyle="bold" />
                     <TextView
@@ -181,7 +181,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Dla osób szukających wyzwań"
-                        android:textColor="#64748B"
+                        android:textColor="@color/white"
                         android:textSize="18sp" />
                 </LinearLayout>
 

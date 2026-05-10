@@ -153,46 +153,18 @@ public class GameDifficultyActivity extends AppCompatActivity {
     }
 
     private void updateDifficultyUI() {
-        // Reset all to unselected state
-        setCardSelected(cardEasy, null, null, tvEasyTitle, tvEasyDesc, ivCheckEasy, false, 0xFFE6F9EE, 0xFF10B981);
-        setCardSelected(cardMedium, null, null, tvMediumTitle, tvMediumDesc, ivCheckMedium, false, 0xFFE0F2FE, 0xFF004A99);
-        setCardSelected(cardHard, null, null, tvHardTitle, tvHardDesc, ivCheckHard, false, 0xFFFEF2F2, 0xFFEF4444);
+        // Hide all checkmarks first
+        ivCheckEasy.setVisibility(android.view.View.GONE);
+        ivCheckMedium.setVisibility(android.view.View.GONE);
+        ivCheckHard.setVisibility(android.view.View.GONE);
 
-        // Apply selected state
+        // Show checkmark for selected difficulty
         if (selectedDifficulty == DIFFICULTY_EASY) {
-            setCardSelected(cardEasy, null, null, tvEasyTitle, tvEasyDesc, ivCheckEasy, true, 0xFF34D399, 0xFFFFFFFF);
+            ivCheckEasy.setVisibility(android.view.View.VISIBLE);
         } else if (selectedDifficulty == DIFFICULTY_MEDIUM) {
-            setCardSelected(cardMedium, null, null, tvMediumTitle, tvMediumDesc, ivCheckMedium, true, 0xFF337ACC, 0xFFFFFFFF);
+            ivCheckMedium.setVisibility(android.view.View.VISIBLE);
         } else if (selectedDifficulty == DIFFICULTY_HARD) {
-            setCardSelected(cardHard, null, null, tvHardTitle, tvHardDesc, ivCheckHard, true, 0xFFEF4444, 0xFFFFFFFF);
-        }
-    }
-
-    private void setCardSelected(CardView card, android.view.View iconContainer, ImageView icon, 
-                                TextView title, TextView desc, ImageView check, boolean selected, 
-                                int iconBgColor, int iconColor) {
-        if (selected) {
-            card.setCardBackgroundColor(0xFF004A99);
-            title.setTextColor(0xFFFFFFFF);
-            desc.setTextColor(0xFFDBEAFE);
-            if (iconContainer != null) {
-                iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
-            }
-            if (icon != null) {
-                icon.setColorFilter(iconColor);
-            }
-            check.setVisibility(android.view.View.VISIBLE);
-        } else {
-            card.setCardBackgroundColor(0xFFFFFFFF);
-            title.setTextColor(0xFF004A99);
-            desc.setTextColor(0xFF64748B);
-            if (iconContainer != null) {
-                iconContainer.setBackgroundTintList(android.content.res.ColorStateList.valueOf(iconBgColor));
-            }
-            if (icon != null) {
-                icon.setColorFilter(iconColor);
-            }
-            check.setVisibility(android.view.View.GONE);
+            ivCheckHard.setVisibility(android.view.View.VISIBLE);
         }
     }
 

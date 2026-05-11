@@ -22,6 +22,8 @@ public class Game2048Activity extends AppCompatActivity {
     private TextView tvScore;
     private VoiceNavigator voiceNavigator;
 
+    private GestureDetector gestureDetector;
+
     private final int[] cellColors = {
             0xFFEEE4DA, 0xFFEDE0C8, 0xFFF2B179, 0xFFF59563,
             0xFFF67C5F, 0xFFF65E3B, 0xFFEDCF72, 0xFFEDCC61,
@@ -71,8 +73,13 @@ public class Game2048Activity extends AppCompatActivity {
         findViewById(R.id.btn_down).setOnClickListener(v -> moveDown());
 
         initCells();
-
         recalculateCellSizes();
+
+        gestureDetector = new GestureDetector(this, new SwipeGestureListener());
+        findViewById(R.id.grid_table).setOnTouchListener((v, event) -> {
+            gestureDetector.onTouchEvent(event);
+            return true;
+        });
 
         restartGame();
 
@@ -160,18 +167,24 @@ public class Game2048Activity extends AppCompatActivity {
                 int val = grid[i][j];
                 if (val == 0) {
                     cell.setText("");
-                    cell.setBackgroundColor(0xFFFFFFFF);
+                    cell.setBackgroundColor(0xFFCDC1B4);
                 } else {
                     cell.setText(String.valueOf(val));
                     int colorIdx = (int) (Math.log(val) / Math.log(2)) - 1;
                     cell.setBackgroundColor(cellColors[Math.min(colorIdx, cellColors.length - 1)]);
+                    if (val <= 4) {
+                        cell.setTextColor(0xFF776E65);
+                    } else {
+                        cell.setTextColor(0xFFF9F6F2);
+                    }
                 }
             }
         }
+        tvScore.setText(String.valueOf(score));
     }
 
     private void moveLeft() {
-        if (mergeGrid(true)) {
+        if (mergeLeft()) {
             addRandomTile();
             updateUI();
             checkGameState();
@@ -180,7 +193,7 @@ public class Game2048Activity extends AppCompatActivity {
 
     private void moveRight() {
         reverseGrid();
-        if (mergeGrid(true)) {
+        if (mergeLeft()) {
             reverseGrid();
             addRandomTile();
             updateUI();
@@ -192,7 +205,7 @@ public class Game2048Activity extends AppCompatActivity {
 
     private void moveUp() {
         transposeGrid();
-        if (mergeGrid(true)) {
+        if (mergeLeft()) {
             transposeGrid();
             addRandomTile();
             updateUI();
@@ -205,7 +218,7 @@ public class Game2048Activity extends AppCompatActivity {
     private void moveDown() {
         transposeGrid();
         reverseGrid();
-        if (mergeGrid(true)) {
+        if (mergeLeft()) {
             reverseGrid();
             transposeGrid();
             addRandomTile();
@@ -214,6 +227,61 @@ public class Game2048Activity extends AppCompatActivity {
         } else {
             reverseGrid();
             transposeGrid();
+        }
+    }
+
+    private boolean mergeLeft() {
+        boolean moved = false;
+        for (int i = 0; i < 4; i++) {
+            int[] originalRow = grid[i].clone();
+            List<Integer> tiles = new ArrayList<>();
+            for (int j = 0; j < 4; j++) {
+                if (grid[i][j] != 0) tiles.add(grid[i][j]);
+            }
+
+            List<Integer> mergedTiles = new ArrayList<>();
+            for (int j = 0; j < tiles.size(); j++) {
+                if (j < tiles.size() - 1 && tiles.get(j).equals(tiles.get(j + 1))) {
+                    int mergedValue = tiles.get(j) * 2;
+                    mergedTiles.add(mergedValue);
+                    score += mergedValue;
+                    j++;
+                } else {
+                    mergedTiles.add(tiles.get(j));
+                }
+            }
+
+            while (mergedTiles.size() < 4) mergedTiles.add(0);
+
+            for (int j = 0; j < 4; j++) {
+                grid[i][j] = mergedTiles.get(j);
+                if (grid[i][j] != originalRow[j]) moved = true;
+            }
+        }
+        return moved;
+    }
+
+    private class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e1 == null || e2 == null) return false;
+            float diffY = e2.getY() - e1.getY();
+            float diffX = e2.getX() - e1.getX();
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) moveRight();
+                    else moveLeft();
+                }
+            } else {
+                if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) moveDown();
+                    else moveUp();
+                }
+            }
+            return true;
         }
     }
 
@@ -276,49 +344,6 @@ public class Game2048Activity extends AppCompatActivity {
                 cells[i][j].setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, Math.max(18, cellTextSizeSp));
             }
         }
-    }
-
-    private boolean mergeGrid(boolean left) {
-        boolean moved = false;
-        for (int i = 0; i < 4; i++) {
-            int[] row = grid[i].clone();
-            if (!left) {
-                for (int j = 0; j < 2; j++) {
-                    int tmp = grid[i][j];
-                    grid[i][j] = grid[i][3 - j];
-                    grid[i][3 - j] = tmp;
-                }
-            }
-            List<Integer> tiles = new ArrayList<>();
-            for (int j = 0; j < 4; j++) {
-                if (grid[i][j] != 0) tiles.add(grid[i][j]);
-            }
-            for (int j = 0; j < tiles.size() - 1; j++) {
-                if (tiles.get(j).equals(tiles.get(j + 1))) {
-                    int merged = tiles.get(j) * 2;
-                    tiles.set(j, merged);
-                    tiles.remove(j + 1);
-                    score += merged;
-                    tvScore.setText(String.valueOf(score));
-                }
-            }
-            while (tiles.size() < 4) tiles.add(0);
-
-            if (!left) {
-                for (int j = 0; j < 4; j++) {
-                    grid[i][j] = tiles.get(3 - j);
-                }
-            } else {
-                for (int j = 0; j < 4; j++) {
-                    grid[i][j] = tiles.get(j);
-                }
-            }
-
-            for (int j = 0; j < 4; j++) {
-                if (grid[i][j] != row[j]) moved = true;
-            }
-        }
-        return moved;
     }
 
     private void reverseGrid() {

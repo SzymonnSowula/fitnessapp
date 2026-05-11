@@ -168,11 +168,6 @@ Model ONNX (`rf_rekomendator.onnx`) jest automatycznie kopiowany z `assets/` do 
 3. **Multimodalność** – dotyk + głos, dla osób z ogriczoną sprawnością manualną
 4. **Motywacja** – gry umysłowe + historia postępów zachęcają do regularnej aktywności
 
----
-
-## 📝 Licencja
-
-Projekt realizowany w ramach praktyk zawodowych.
 
 ---
 
